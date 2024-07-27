@@ -1,10 +1,40 @@
 @charset "UTF-8";
 
-html{
+html {
     height: 100%;
+    text-align: center;
 }
 
-body{
+body {
     height: 100%;
     background: #186AC9;
+    /* background-color: #2C7CFF; */
+    font-weight: 5px;
+    color: white;
+    background: linear-gradient(180deg, #2C7CFF 0%, #2C7CFF 50%, #2C7CFF 50%, #FFFF00 100%);
+}
+
+.text-content {
+    padding: 5%;
+    margin: 40px;
+    flex-direction: column;
+    background-color: #999999;
+    display: inline-block;
+    border-radius: 15px;
+    line-height: 25px;
+    background-color: rgba(100, 125, 125, 0.562);
+}
+
+.top {
+    padding: 150px;
+    margin: 0px;
+    text-align: center;
+}
+
+.top h1 img {
+    width: 125px;
+}
+
+.login-top {
+    font-size: 30px;
 }

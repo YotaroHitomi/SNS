@@ -2,8 +2,14 @@
 
 @section('content')
 
+<div class="text-content">
 <div id="clear">
-  <p>〇〇さん</p>
+
+  @if(session('msg'))
+<p class="msg">
+{{ session('msg') }}さん
+</p>
+@endif
   <p>ようこそ！AtlasSNSへ！</p>
   <p>ユーザー登録が完了しました。</p>
   <p>早速ログインをしてみましょう。</p>
@@ -12,3 +18,5 @@
 </div>
 
 @endsection
+
+</div>

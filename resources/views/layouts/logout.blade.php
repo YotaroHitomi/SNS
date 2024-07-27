@@ -20,12 +20,14 @@
   <!--OGPタグ/twitterカード-->
 </head>
 <body>
+      <div class ="top">
   <header>
     <h1><img src="images/atlas.png"></h1>
-    <p>Social Network Service</p>
+    <p class=login-top>Social Network Service</p>
   </header>
   <div id="container">
     @yield('content')
+  </div>
   </div>
   <script src="JavaScriptファイルのURL"></script>
   <script src="JavaScriptファイルのURL"></script>

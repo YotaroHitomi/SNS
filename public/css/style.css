@@ -1,22 +1,158 @@
 @charset "utf-8";
-html{
-}
-body{
-}
+
+html {}
+
+body {}
+
 /* header */
-header{
-    background:#186AC9;
+header {
+    background: #186AC9;
 }
 
 /* main content */
-#row{
+#row {
     display: flex;
     flex-flow: row wrap;
 }
-#container{
+
+#container {
     flex: 0 0 80%;
 }
-#side-bar{
+
+#side-bar {
     flex: 0 0 19%;
     border-left: 1px solid #727272;
+}
+
+#btn {
+    flex: 0 0 19%;
+    border-top: 1px solid #727272;
+    width: 50%;
+    height: 10%;
+    margin-left: 25px;
+}
+
+.btn {
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    width: 50%;
+    height: 100%;
+    background: #186AC9;
+    margin-left: 90px;
+}
+
+.btn a {
+    color: white;
+}
+
+#confirm {
+    margin-bottom: 25%;
+    padding: 15px;
+    line-height: 1.5;
+}
+
+/* 「／」と「＼」で作る方法*/
+
+.menu-trigger {
+    position: relative;
+    width: 100px;
+    height: 64px;
+}
+
+#head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5%;
+}
+
+#head h1 {
+    width: 120px;
+}
+
+#head h1 img {
+    width: 100%;
+}
+
+.menu-trigger :not(:first-of-type) {
+    margin-top: 5px;
+}
+
+.acordion {
+    /* padding-left: 10px; */
+    display: none;
+}
+
+
+.menu-trigger::before,
+.menu-trigger::after {
+    position: absolute;
+    /* 相対位置とする */
+    font-size: 10px;
+    /* 適度な大きさにする */
+    top: 50%;
+    /* 上から50%の位置に指定 */
+    transform: translateY(-50%);
+    /* 要素の半分だけ高さを上にずらす */
+    transition: .3s;
+    /* アニメーション時間を0.3秒に指定 */
+}
+
+.menu-trigger::before {
+    content: '＼';
+    /* 全角の逆スラッシュ */
+    right: 18px;
+    /* 右から18pxの位置に指定*/
+}
+
+.menu-trigger::after {
+    content: '／';
+    /* 全角のスラッシュ */
+    right: 10px;
+    /* 右から10pxの位置に指定*/
+}
+
+.menu-trigger.open::before {
+    right: 10px;
+    /* 右からの位置をafterと入れ替える */
+}
+
+.menu-trigger.open::after {
+    right: 18px;
+    /* 右からの位置をbeforeと入れ替える */
+}
+
+.right {
+    text-align: right;
+    color: white;
+    font-weight: bold;
+}
+
+.header_box {
+    display: flex;
+    align-items: center;
+}
+
+.post {
+    border-bottom: 1px solid #C0C0C0;
+    margin-top: 30px;
+    height: 70px;
+    border-width: 5px;
+}
+
+.search {
+    width: 5%;
+}
+
+.follow {
+    border-bottom: 1px solid #C0C0C0;
+}
+
+.follower {
+    border-bottom: 1px solid #C0C0C0;
+}
+
+.user-search {
+    border-bottom: 1px solid #C0C0C0;
 }

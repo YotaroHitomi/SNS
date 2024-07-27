@@ -42,6 +42,12 @@ class RegisterController extends Controller
     public function register(Request $request){
         if($request->isMethod('post')){
 
+        $validated = $request->validate([
+            'username' => 'required|max:12|min:2',
+            'mail' => 'required|max:40|min:5|unique:users,mail|email',
+            'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
+        ]);
+
             $username = $request->input('username');
             $mail = $request->input('mail');
             $password = $request->input('password');
@@ -51,7 +57,7 @@ class RegisterController extends Controller
                 'mail' => $mail,
                 'password' => bcrypt($password),
             ]);
-
+            \Session::flash('msg' , $username);
             return redirect('added');
         }
         return view('auth.register');

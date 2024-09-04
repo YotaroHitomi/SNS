@@ -33,7 +33,7 @@
          </div>
           <div class="ct-block">
             <label class="contact-text" for="icon image">icon image</label></label>
-            <input id="icon image" class="icon image" type="text" name="icon image" placeholder="">
+            <input id="icon image" class="icon-image" type="text" name="icon image" placeholder="">
           </div>
         </div>
 

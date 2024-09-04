@@ -422,6 +422,7 @@ class ComposerStaticIniteac58ece7d06f1a55d0495675ac339a0
     );
 
     public static $classMap = array (
+        'App\\Author' => __DIR__ . '/../..' . '/app/Author.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Follow' => __DIR__ . '/../..' . '/app/Follow.php',
@@ -429,6 +430,7 @@ class ComposerStaticIniteac58ece7d06f1a55d0495675ac339a0
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
+        'App\\Http\\Controllers\\AuthorsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthorsController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\FollowsController' => __DIR__ . '/../..' . '/app/Http/Controllers/FollowsController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
@@ -450,8 +452,11 @@ class ComposerStaticIniteac58ece7d06f1a55d0495675ac339a0
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Tweet' => __DIR__ . '/../..' . '/app/Tweet.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'AuthorsTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AuthorsTableSeeder.php',
+        'BooksTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BooksTableSeeder.php',
         'Carbon\\AbstractTranslator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/AbstractTranslator.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonConverterInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonConverterInterface.php',

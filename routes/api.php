@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProfileController;//追加
+use App\Http\Controllers\FollowController;//追加
+
 
 /*
 |--------------------------------------------------------------------------

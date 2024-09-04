@@ -1,16 +1,10 @@
 @extends('layouts.login')
 
 @section('content')
-<div class="user-search"></div>
-
-    <div id="search">
-      <form action="list.php" method="post">
-        <input type="text" name="search" value="" placeholder="ユーザー名で検索">
-        <button id="sbtn" type="submit">
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
-
-    </div>
+        <form action="/search" method="post">
+           @csrf
+           <input type="text" name="keyword" class="form" placeholder="タイトルで検索">
+           <button type="submit" class="btn btn-success">検索</button>
+        </form>
 
 @endsection

@@ -11,13 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/hello', function(){
-    echo 'Hello World !';
-});
+// Route::get('/hello', function(){
+//     echo 'Hello World !';
+// });
 // Route::get('/home', 'HomeController@index')->name('home');
 
 //Auth::routes();
@@ -35,53 +35,38 @@ Route::post('/added', 'Auth\RegisterController@added');
 
 //ログイン中のページ
 Route::group(['middleware' => ['LoginUserCheck']], function() {
+
+//投稿フォーム表示用
 Route::get('/top','PostsController@index');
 
 Route::get('/profile','UsersController@profile');
 
-Route::get('/search','UsersController@search');
+Route::get('/top', 'PostsController@createForm');
 
-Route::get('/follow-list','FollowsController@followList');
-Route::get('/follower-list','FollowsController@followerList');
+Route::post('/top','UsersController@userCreate');
 
-//表示用
-Route::get('/post','PostController@create')->name('post.create');
-//投稿を押した時
-Route::post('/post','PostController@store')->name('post.store');
+//投稿内容登録用
+Route::post('/top', 'PostsController@postCreate');
 
-// Route::get('/book/{id}/update-form', 'PostsController@index');
+//検索用
+Route::get('/search','PostsController@search');
 
-Route::get('/hello', 'PostsController@hello');
-
-Route::get('/update-form','PostsController@index');
-
-Route::get('/hello', 'PostsController@hello');
-
-// Route::⑭(⑮,⑯);
-
+//更新フォーム表示用
 Route::get('/post/{id}/update-form', 'PostsController@updateForm');
 
-//プロフィール閲覧で使用するユーザー情報の取得
-Route::get('/user/{id}',[UserController::class,'get_user']);
+//登録用
+Route::post('/top', 'PostsController@update');
 
-//フォロー状態の確認
-Route::get('/follow/status/{id}',[FollowsController::class,'check_following']);
+//削除用
+Route::get('/post/{id}/delete', 'PostsController@delete');
 
-//フォロー付与
-Route::post('/follow/add',[FollowsController::class,'following']);
+//フォローリスト表示用
+Route::get('/follow-list','PostsController@follow');
 
-//フォロー解除
-Route::post('/follow/remove',[FollowsController::class,'unfollowing']);
+//フォロワーリスト表示用
+Route::get('/follower-list','PostsController@postCreate');
 
-// Route::get('/create-form','PostsController@createForm');
-
-// Route::post('/author/create','AuthorsController@authorCreate');
-
-//この下に本の登録用のメソッドを使用するためのルーティングを設定してください。
-// Route::⑭(⑮,⑯);
-
-// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-// Route::post('login', 'Auth\LoginController@login')->name('login.post');
-// Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/top', 'PostsController@index')->name('timeline');
+Route::post('/top', 'PostsController@postTweet')->name('timeline');
 
 });

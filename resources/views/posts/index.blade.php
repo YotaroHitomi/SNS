@@ -13,7 +13,7 @@ TOPページ
                     </div>
                 @else
                     {{ Form::text('tweet', null, ['class' => 'form-control col-9 mr-auto']) }}
-                    {{ Form::submit('ツイート', ['class' => 'btn btn-primary col-2']) }}
+                    {{ Form::submit('', ['class' => 'btn btn-primary col-2']) }}
                 @endguest
                 {{-- 変更ここまで --}}
             </div>

@@ -46,10 +46,6 @@ class User extends Authenticatable
             'name'
         ];
 
-        // リレーションの定義
-        public function posts(){
-        return $this->hasMany('App\Post');
-        }
 
         //フォローしているユーザー
         public function following()

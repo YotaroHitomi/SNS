@@ -49,7 +49,7 @@ Route::post('/top','UsersController@userCreate');
 Route::post('/top', 'PostsController@postCreate');
 
 //検索用
-Route::get('/search','PostsController@search');
+Route::post('/search','PostsController@search');
 
 //更新フォーム表示用
 Route::get('/post/{id}/update-form', 'PostsController@updateForm');
@@ -61,10 +61,21 @@ Route::post('/top', 'PostsController@update');
 Route::get('/post/{id}/delete', 'PostsController@delete');
 
 //フォローリスト表示用
-Route::get('/follow-list','PostsController@follow');
+Route::get('/follow-list','FollowsController@followList');
 
 //フォロワーリスト表示用
-Route::get('/follower-list','PostsController@postCreate');
+Route::get('/follower-list','FollowsController@followerList');
+
+Route::get('/profile/{id}','FollowsController@get_user');
+
+//フォロー状態の確認
+Route::get('/follow/status/{id}','FollowController@check_following');
+
+//フォロー付与
+Route::post('/follow/add','FollowController@following');
+
+//フォロー解除
+Route::post('/follow/remove','FollowController@unfollowing');
 
 Route::get('/top', 'PostsController@index')->name('timeline');
 Route::post('/top', 'PostsController@postTweet')->name('timeline');

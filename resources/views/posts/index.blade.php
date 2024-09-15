@@ -12,8 +12,8 @@ TOPページ
                         <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
                     </div>
                 @else
-                    {{ Form::text('tweet', null, ['class' => 'form-control col-9 mr-auto']) }}
-                    {{ Form::submit('', ['class' => 'btn btn-primary col-2']) }}
+            {{ Form::input('text', 'post', null, ['required', 'class' => 'form-control', 'placeholder' => '投稿内容を入力してください']) }}
+                {{ Form::submit('', ['class' => 'btn btn-primary col-2']) }}
                 @endguest
                 {{-- 変更ここまで --}}
             </div>
@@ -29,9 +29,10 @@ TOPページ
             <div class="pl-3">
                 {{ $post->post }}
             </div>
+                <td><a class="btn btn-primary" href="/post/{{$post->id}}/update-form">更新</a></td>
+                <td><a class="btn btn-danger" href="/post/{{$post->id}}/delete" onclick="return confirm('こちらの本を削除してもよろしいでしょうか？')">削除</a></td>
+            </tr>
             <hr>
         @endforeach
     </div>
-
-
 @endsection

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Follow;//Followモデルをインポート
+use App\Follow;//Followモデルをインポート
 use Illuminate\Support\Facades\Auth; // Authファサードを読み込む
+
+use App\Post;
 
 class FollowsController extends Controller
 {
@@ -45,4 +47,18 @@ class FollowsController extends Controller
             $unfollowing = Follow::where('following', Auth::id())->where('followed', $request->user_id)->delete();
 
         }
+
+        public function followList(Request $request)
+    {
+        $posts = Follow::get();
+
+        return view('follows.followList', ['posts' => $posts]);
     }
+
+            public function followerList(Request $request)
+    {
+        $posts = Post::get();
+
+        return view('follows.followerList', ['posts' => $posts]);
+    }
+}

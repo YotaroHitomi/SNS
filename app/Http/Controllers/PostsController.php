@@ -28,12 +28,9 @@ class PostsController extends Controller
     public function postTweet(Request $request)
     {
 
-        $user = $request->input('user_id');
-        $post = $request->input('post');
-
         Post::create([
-            'user_id' => $user,
-            'post'    => $post,
+            'user_id' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
+            'post' => $request->post, // ツイート内容
         ]);
         return back();
     }

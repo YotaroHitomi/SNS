@@ -18,12 +18,12 @@ class Post extends Model
     // }
 
     protected $fillable = [
-        'user_id', 'title', 'price',
+        'user_id', 'post',
     ];
 
     // リレーションの定義
     public function user(){
-    return $this->belongsTo('App\User');
+    return $this->belongsTo('App\Author');
     }
 }
 

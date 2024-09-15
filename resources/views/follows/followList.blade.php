@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
-    @section('content')
+@section('content')
     <div class="container">
 
         <form action="/search" method="post">
@@ -34,4 +34,4 @@
             @endforeach
         </table>
     </div>
-    @endsection
+@endsection

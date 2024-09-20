@@ -29,7 +29,7 @@ class PostsController extends Controller
     {
 
         Post::create([
-            'user_id' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
+            'user' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
             'post' => $request->post, // ツイート内容
         ]);
         return back();
@@ -83,4 +83,12 @@ class PostsController extends Controller
         // 3つ目の処理
         return view('users.search',['posts'=>$posts]);
     }}
+
+    public function timeline() {
+            $posts = Post::query()->whereIn('user_id', Auth::user()->follows()->pluck('followed_user_id'))->latest()->get();
+            return view('posts.timeline')->with([
+                'posts' => $posts,
+                ]);
+        }
+
 }

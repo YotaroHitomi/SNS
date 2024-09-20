@@ -43,6 +43,10 @@ Route::get('/profile','UsersController@profile');
 
 Route::get('/top', 'PostsController@createForm');
 
+Route::get('/search', 'UsersController@createForm');
+
+Route::get('/search', 'UsersController@postTweet');
+
 Route::post('/top','UsersController@userCreate');
 
 //投稿内容登録用
@@ -50,6 +54,12 @@ Route::post('/top', 'PostsController@postCreate');
 
 //検索用
 Route::post('/search','PostsController@search');
+
+Route::get('/search','UsersController@searchCreate');
+
+Route::get('/search','UsersController@searchPost');
+
+Route::get('/search','UsersController@index');
 
 //更新フォーム表示用
 Route::get('/post/{id}/update-form', 'PostsController@updateForm');

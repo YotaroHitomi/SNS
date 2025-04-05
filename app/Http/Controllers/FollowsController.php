@@ -24,41 +24,34 @@ class FollowsController extends Controller
             return response()->json(['status' => true]);
         endif;
     }
-
-        //フォローする(中間テーブルをインサート)
-        public function following(Request $request){
-
-            //自分がフォローしているかどうか検索
-            $check = Follow::where('following', Auth::id())->where('followed', $request->user_id);
-
-            //検索結果が0(まだフォローしていない)場合のみフォローする
-            if($check->count() == 0):
-                $follow = new Follow;
-                $follow->following = Auth::id();
-                $follow->followed = $request->user_id;
-                $follow->save();
-            endif;
-        }
-
-        //フォローを外す
-        public function unfollowing(Request $request){
-
-            //削除対象のレコードを検索して削除
-            $unfollowing = Follow::where('following', Auth::id())->where('followed', $request->user_id)->delete();
-
-        }
-
-        public function followList(Request $request)
+    public function follow($userId)
     {
-        $posts = Follow::get();
+        $follow = Follow::create([
+            'follower_id' => Auth::id(),
+            'followed_id' => $userId,
+        ]);
 
-        return view('follows.followList', ['posts' => $posts]);
+        return response()->json(['message' => 'Followed successfully']);
     }
 
-            public function followerList(Request $request)
+    public function unfollow($userId)
     {
-        $posts = Post::get();
+        Follow::where('follower_id', Auth::id())
+            ->where('followed_id', $userId)
+            ->delete();
 
-        return view('follows.followerList', ['posts' => $posts]);
+        return response()->json(['message' => 'Unfollowed successfully']);
+    }
+
+    public function following()
+    {
+        $following = Auth::user()->following()->get();
+        return response()->json($following);
+    }
+
+    public function followers()
+    {
+        $followers = Auth::user()->followers()->get();
+        return response()->json($followers);
     }
 }

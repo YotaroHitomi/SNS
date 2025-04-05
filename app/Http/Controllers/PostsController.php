@@ -29,7 +29,7 @@ class PostsController extends Controller
     {
 
         Post::create([
-            'user' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
+            'user_id' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
             'post' => $request->post, // ツイート内容
         ]);
         return back();
@@ -43,18 +43,18 @@ class PostsController extends Controller
 
     public function update(Request $request)
     {
-        // 1つ目の処理
-        $id = $request->input('id');
-        $up_title = $request->input('upTitle');
-        $up_price = $request->input('upPrice');
-        // 2つ目の処理
-        Post::where('id', $id)->update([
-              'title' => $up_title,
-              'price' => $up_price,
-        ]);
-        // 3つ目の処理
-        return redirect('/top');
-    }
+     $request->validate([
+        'user_id' => 'required|max:255',
+        'post' => 'required',
+    ]);
+
+    $post = Post::findOrFail($id);
+    $post->user = $request->user;
+    $post->post = $request->post;
+    $post->save();
+
+    return redirect()->route('posts.index')->with('success', '投稿が更新されました。');
+}
 
     //削除用
     public function delete($id)
@@ -76,7 +76,7 @@ class PostsController extends Controller
         $keyword = $request->input('keyword');
         // 2つ目の処理
         if(!empty($keyword)){
-             $posts = Post::where('title','like', '%'.$keyword.'%')->get();
+             $posts = Post::where('post','like', '%'.$keyword.'%')->get();
         }else{
              $posts = Post::all();
         }

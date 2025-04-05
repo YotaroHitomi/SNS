@@ -46,31 +46,57 @@ class User extends Authenticatable
             'name'
         ];
 
+    public function followers()
+{
+    return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
+}
 
-        //フォローしているユーザー
-        public function following()
-        {
-            return $this->belongsToMany(User::class, 'follows','following', 'followed');
-        }
+public function following()
+{
+    return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+}
 
-        //フォローされているユーザー
-        public function followed()
-        {
-
-            return $this->belongsToMany(User::class, 'follows','followed','following');
-
-        }
-
-        // フォロワー→フォロー
-    public function followUsers()
+    // フォローする
+    public function follow(Int $user_id)
     {
-        return $this->belongsToMany('App\User', 'follow_users', 'followed_user_id', 'following_user_id');
+        return $this->follows()->attach($user_id);
     }
 
-    // フォロー→フォロワー
-    public function follows()
+    // フォロー解除する
+    public function unfollow(Int $user_id)
     {
-        return $this->belongsToMany('App\User', 'follow_users', 'following_user_id', 'followed_user_id');
+        return $this->follows()->detach($user_id);
     }
 
+    // フォローしているか
+    public function isFollowing(Int $user_id)
+    {
+        return (boolean) $this->follows()->where('followed_id', $user_id)->first(['id']);
     }
+
+    // フォローされているか
+    public function isFollowed(Int $user_id)
+    {
+        return (boolean) $this->followers()->where('following_id', $user_id)->first(['id']);
+    }
+
+        public function follows()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+
+    // public function followers()
+    // {
+    //     return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
+    // }
+
+    // public function followCount()
+    // {
+    //     return $this->follows()->count();
+    // }
+
+    // public function followerCount()
+    // {
+    //     return $this->followers()->count();
+    // }
+}

@@ -2,39 +2,34 @@
 
 @section('content')
 
-    <div class="container">
-      <div class="ttle">
-        <!-- <h2>Contact</h2>
-        <p class="ja-title">お問い合わせ</p> -->
+<img src="{{ asset('storage/images/' .auth()->user()->images) }}">
+
+<form action="{{ url('/profile') }}" enctype="multipart/form-data" method="get">
+  @csrf
+  @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
       </div>
-      <form action="index.php" method="post">
-        <div class="ct-block">
-          <label class="contact-text" for="name">user name</label>
-          <input id="name" class="form-name" type="text" name="yourname" placeholder="">
-        </div>
-
-        <div class="ct-block">
-          <label class="contact-text" for="email">mail adress</label></label>
-          <input id="email" class="form-mail" type="text" name="mail" placeholder="">
-        </div>
-
-        <div class="ct-block">
-          <label class="contact-text" for="Password">Password</label></label>
-          <input id="Password" class="Password" type="text" name="Password" placeholder="">
-        </div>
-
-          <div class="ct-block">
-          <label class="contact-text" for="Password confirm">Password confirm</label></label>
-          <input id="Password confirm" class="Password confirm" type="text" name="Password confirm" placeholder="">
-         </div>
-          <div class="ct-block">
-            <label class="contact-text" for="bio">bio</label></label>
-            <input id="bio" class="bio" type="text" name="bio" placeholder="">
-         </div>
-          <div class="ct-block">
-            <label class="contact-text" for="icon image">icon image</label></label>
-            <input id="icon image" class="icon-image" type="text" name="icon image" placeholder="">
-          </div>
-        </div>
+   @endif
+  <dl class="UserProfile">
+    <dt>username</dt>
+    <dd><input type="text" name="username" value="{{ Auth::user()->username }}"></dd>
+    <dt>mail address</dt>
+    <dd><input type="text" name="mail" value="{{ Auth::user()->mail }}"></dd>
+    <dt>password</dt>
+    <dd><input type="password" name="newpassword" ></dd>
+    <dt>password confirm</dt>
+    <dd><input type="password" name="newpassword_confirmation"></dd>
+    <dt>bio</dt>
+    <dd><input type="text" name="bio" value="{{ Auth::user()->bio }}"></dd>
+    <dt>icon image</dt>
+    <dd><input type="file" name="iconimage"></dd>
+  </dl>
+  <input type="submit" name="profileupdate" value="更新">
+</form>
 
 @endsection

@@ -12,23 +12,42 @@ TOPページ
                         <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
                     </div>
                 @else
-            {{ Form::input('text', 'post', null, ['required', 'class' => 'form-control', 'placeholder' => '投稿内容を入力してください']) }}
+<input type="text" name="post" class="form-control" placeholder="投稿内容を入力してください" required>
+
                 {{ Form::submit('', ['class' => 'btn btn-primary col-2']) }}
                 @endguest
             </div>
-            {!! Form::close() !!}
-        @foreach ($posts as $post)
-            <div class="mb-1">
-                <strong>{{ $post->name }}</strong> {{ $post->created_at }}
-            </div>
-            <div class="pl-3">
-                {{ $post->post }}
-            </div>
-                <td><a class="js-modal-open" href="#" data-toggle="modal" data-target="#updateModal" post="{{ $post->id }}" post_id="{{ $post->title }}" data-content="{{ $post->content }}">更新</a></td>
-                <td><a class="btn btn-danger" href="/post/{{$post->id}}/delete" onclick="return confirm('こちらの本を削除してもよろしいでしょうか？')">削除</a></td>
-            </tr>
             <hr>
-        @endforeach
+            {!! Form::close() !!}
+@foreach ($posts as $post)
+    <div class="mb-2 border-bottom pb-2">
+        <div>
+            <strong>{{ $post->name }}</strong> <small class="text-muted">{{ $post->created_at }}</small>
+        </div>
+        <div class="ms-3 mb-2">
+            {{ $post->post }}
+        </div>
+
+        <div class="d-flex gap-2">
+            <!-- 更新ボタン -->
+            <a href="#" class="btn btn-sm btn-outline-primary js-modal-open"
+               data-toggle="modal"
+               data-target="#updateModal"
+               data-id="{{ $post->id }}"
+               data-content="{{ $post->post }}">
+                更新
+            </a>
+
+            <!-- 削除ボタン -->
+            <a href="/post/{{ $post->id }}/delete"
+               class="btn btn-sm btn-danger"
+               onclick="return confirm('この投稿を削除してもよろしいですか？')">
+                削除
+            </a>
+        </div>
+    </div>
+    <hr>
+@endforeach
     </div>
    <!-- モーダルの中身 -->
     <div class="modal js-modal">

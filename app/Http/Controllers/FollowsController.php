@@ -10,6 +10,14 @@ use App\Post;
 
 class FollowsController extends Controller
 {
+    public function index()
+    {
+        // ログイン中のユーザーのフォロワーを取得
+        $user = auth()->user();
+        $followers = $user->followers()->with('follower')->get();
+
+        return view('follow.index', compact('followers'));
+    }
     //フォローしているかどうかの状態確認
     public function check_following($id){
 
@@ -24,34 +32,76 @@ class FollowsController extends Controller
             return response()->json(['status' => true]);
         endif;
     }
-    public function follow($userId)
-    {
-        $follow = Follow::create([
-            'follower_id' => Auth::id(),
-            'followed_id' => $userId,
-        ]);
 
-        return response()->json(['message' => 'Followed successfully']);
-    }
+        //フォローする(中間テーブルをインサート)
+        public function following(Request $request){
 
-    public function unfollow($userId)
-    {
-        Follow::where('follower_id', Auth::id())
-            ->where('followed_id', $userId)
-            ->delete();
+            //自分がフォローしているかどうか検索
+            $check = Follow::where('following', Auth::id())->where('followed', $request->user_id);
 
-        return response()->json(['message' => 'Unfollowed successfully']);
-    }
+            //検索結果が0(まだフォローしていない)場合のみフォローする
+            if($check->count() == 0):
+                $follow = new Follow;
+                $follow->following = Auth::id();
+                $follow->followed = $request->user_id;
+                $follow->save();
+            endif;
+        }
 
-    public function following()
-    {
-        $following = Auth::user()->following()->get();
-        return response()->json($following);
-    }
+        //フォローを外す
+        public function unfollowing(Request $request){
 
-    public function followers()
-    {
-        $followers = Auth::user()->followers()->get();
-        return response()->json($followers);
-    }
+            //削除対象のレコードを検索して削除
+            $unfollowing = Follow::where('following', Auth::id())->where('followed', $request->user_id)->delete();
+
+        }
+
+// フォローリスト用
+public function followList()
+{
+    $user = auth()->user();
+    $followings = $user->followings()->get(); // フォロー中のユーザー一覧
+
+    return view('follows.FollowList', compact('followings'));
 }
+
+// フォロワーリスト用
+public function followerList()
+{
+    $user = auth()->user();
+    $followers = $user->follower()->get(); // フォロー中のユーザー一覧
+
+    return view('follows.FollowerList', compact('follower'));
+}
+
+    }
+
+//     class FollowController extends Controller
+// {
+//     public function index()
+//     {
+//         $user = auth()->user();
+//         $followingUsers = $user->following()->with('posts')->get();
+
+//         return view('follows.index', compact('followingUsers'));
+//     }
+// }
+
+// class FollowController extends Controller
+// {
+//     public function toggleFollow($id)
+//     {
+//         $user = auth()->user();
+//         $isFollowing = $user->isFollowing($id);
+
+//         if ($isFollowing) {
+//             // フォロー解除
+//             $user->following()->detach($id);
+//         } else {
+//             // フォローする
+//             $user->following()->attach($id);
+//         }
+
+//         return back(); // リロード
+//     }
+// }

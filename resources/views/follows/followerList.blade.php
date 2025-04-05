@@ -1,48 +1,29 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 @section('content')
-    <h1>{{ $user->name }}のフォロワー</h1>
+<p>followList</p>
+    <h1>{{Auth::user()->username}}のフォロー中ユーザー</h1>
+    <ul>
+        @foreach($followers as $user)
+            <li>
+                <img src="{{ $followed->profile_image ? asset('storage/' . $followed->profile_image) : asset('images/default-avatar.png') }}" alt="{{ $followed->name }}のアイコン" width="50" height="50">
+                <span>{{ $followed->name }}</span>
+            </li>
+        @endforeach
+    </ul>
+        <h1>フォローしているユーザーの投稿</h1>
 
-    @if ($followers->isEmpty())
-        <p>フォロワーはまだいません。</p>
-    @else
-        <ul>
-            @foreach ($followers as $follower)
-                <li>
-                    <a href="{{ route('user.profile', $follower->id) }}">
-                        {{ $follower->name }}のプロフィール
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-
-        <h1>Followed Users</h1>
-
-<ul>
-    @foreach ($followedUsers as $followedUser)
-        <li>{{ $followedUser->name }}</li>
+    @foreach ($followers as $user)
+        <div class="post">
+            <div class="post-header">
+                <a href="{{ route('user.profile', $post->user->id) }}">
+                    <img src="{{ asset('storage/' . $post->user->profile_image) }}" alt="{{ $post->user->name }} のアイコン" class="post-author-icon">
+                </a>
+                <p>{{ $post->user->name }} さんの投稿</p>
+            </div>
+            <p>{{ $post->content }}</p>
+            <span>{{ $post->created_at->diffForHumans() }}</span>
+        </div>
     @endforeach
-</ul>
 
-@if (auth()->user()->isNotFollowed($user))
-    <form action="{{ route('follow', $user->id) }}" method="POST">
-        @csrf
-        <button type="submit">Follow</button>
-    </form>
-@else
-    <form action="{{ route }}"></form>
-
-    @if (auth()->user()->isNotFollowed($user))
-    <form action="{{ route('follow', $user->id) }}" method="POST">
-        @csrf
-        <button type="submit">Follow</button>
-    </form>
-@else
-    <form action="{{ route('unfollow', $user->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit">Unfollow</button>
-    </form>
-@endif
-    @endif
 @endsection

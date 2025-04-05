@@ -19,13 +19,25 @@ public function getFollowCount($user_id)
   {
       return $this->where('followed_id', '<>',  $user_id)->count();
   }
-      public function follower()
+
+      public function user()
     {
-        return $this->belongsTo(User::class, 'follower_id');
+        return $this->belongsTo(User::class, 'followed_id');  // フォローされたユーザー
+    }
+
+    public function follower()
+    {
+        return $this->belongsTo(User::class, 'follower_id');  // フォロワー
     }
 
     public function followed()
     {
         return $this->belongsTo(User::class, 'followed_id');
     }
+
+    public function icon()
+    {
+        return $this->hasOne(Icon::class);
+    }
+
 }

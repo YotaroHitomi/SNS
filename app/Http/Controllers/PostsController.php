@@ -91,4 +91,16 @@ class PostsController extends Controller
                 ]);
         }
 
+public function followPosts()
+{
+    $user = Auth::user();
+
+    // フォローしているユーザーの投稿を取得
+    $followings = $user->followings()->pluck('users.id'); // フォロー中ユーザーのIDを取得
+
+    // それらのユーザーの投稿を取得
+    $posts = Post::whereIn('user_id', $followings)->latest()->get();
+
+    return view('follows.FollowList', compact('posts'));
+}
 }

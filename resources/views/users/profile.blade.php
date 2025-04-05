@@ -32,4 +32,15 @@
   <input type="submit" name="profileupdate" value="更新">
 </form>
 
+
+
+    @if (auth()->id() !== $profileUser->id)
+        <form action="{{ route('toggleFollow', $profileUser->id) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="btn {{ auth()->user()->follows->contains($profileUser->id) ? 'btn-danger' : 'btn-primary' }}">
+                {{ auth()->user()->follows->contains($profileUser->id) ? 'フォロー解除' : 'フォロー' }}
+            </button>
+        </form>
+    @endif
 @endsection

@@ -255,3 +255,252 @@ header {
     padding: 20px;
     border-radius: 10px;
 }
+
+/* モーダルのスタイル */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.is-show {
+    display: flex;
+}
+
+.modal__content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* 水色の投稿ボタン */
+.btn-post {
+    background-color: #1DA1F2;
+    /* Twitter系の青に近い */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50%;
+    /* 丸型 */
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+/* ホバーで少し濃い青に */
+.btn-post:hover {
+    background-color: #0d8ddb;
+}
+
+/* アイコンのアニメーション */
+.btn-post i {
+    transition: transform 0.3s ease;
+}
+
+.btn-post:hover i {
+    transform: translateX(2px);
+}
+
+.post-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.btn-post {
+    background-color: #1DA1F2;
+    /* 水色 */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-post:hover {
+    background-color: #0d8ddb;
+}
+
+.btn-post:hover i {
+    transform: translateX(2px);
+}
+
+/* ボタンを正方形に設定 */
+.btn-square {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    text-align: center;
+    line-height: 0;
+}
+
+/* 検索フォーム内でボタンと検索ワードを横並びにする */
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+/* 検索ワードの表示をボタンの隣に配置 */
+.search-form p {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+/* 検索フォームの入力フィールドのスタイル調整 */
+.search-form input {
+    width: 200px;
+    margin-right: 10px;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* 右寄せに設定 */
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.profile-image {
+    margin-bottom: 20px;
+    margin-right: 250px;
+    align-self: center;
+}
+
+.profile-image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 200px;
+    /* アイコンとフォームとの間にスペースを追加 */
+}
+
+.profile-form {
+    max-width: 500px;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 100px;
+    /* 少し右寄せ */
+    margin-left: auto;
+    /* 左側を自動調整で右寄せ */
+}
+
+.UserProfile {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.UserProfile dt {
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 20px;
+    width: 30%;
+    text-align: right;
+}
+
+.UserProfile dd {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.UserProfile dd input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+
+.UserProfile dd input[type="file"] {
+    padding: 4px;
+    font-size: 14px;
+    background-color: #f0f0f0;
+}
+
+.alert.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.alert ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.alert li {
+    margin-bottom: 5px;
+}
+
+.btn-update {
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-update:hover {
+    background-color: #0056b3;
+}

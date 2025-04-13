@@ -3,218 +3,226 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\FollowUser;
-use App\Post;
-use App\Validator;
+use App\Models\User;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    //
-    public function profile(){
-        return view('users.profile');
-    }
+    // プロフィールページの表示
+public function profile()
+{
+    $user = Auth::user(); // ログインユーザーを取得
 
-        public function createForm()
+    // フォロー数とフォロワー数を取得
+    $followsCount = $user->followings()->count();
+    $followersCount = $user->followers()->count();
+
+    // プロフィール画像のURLを取得
+    $profileImage = $user->profile_picture; // アクセサを使用してプロフィール画像URLを取得
+
+    return view('users.profile', compact('user', 'followsCount', 'followersCount', 'profileImage'));
+}
+
+    // プロフィールの更新
+    public function updateProfile(Request $request)
     {
-        $users = User::get(); //Userモデル（usersテーブル）からレコード情報を取得
-        return view('posts.index',['users'=>$users]);
-    }
-
-    public function postTweet(Request $request)
-    {
-
-        Post::create([
-            'user' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
-            'post' => $request->post, // ツイート内容
+        // バリデーション
+        $validated = $request->validate([
+            'username' => 'required|string|max:255',
+            'mail' => 'required|email|max:255',
+            'newpassword' => 'nullable|min:6|confirmed',
+            'bio' => 'nullable|string',
+            'iconimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        return back();
+
+        // 現在のユーザーを取得
+        $user = Auth::user();
+
+        // ユーザー情報を更新
+        $user->username = $request->username;
+        $user->mail = $request->mail;
+
+        // パスワードが設定されていれば更新
+        if ($request->newpassword) {
+            $user->password = Hash::make($request->newpassword);
+        }
+
+        // Bioの更新
+        $user->bio = $request->bio;
+
+        // アイコン画像の更新（画像がアップロードされた場合のみ）
+        if ($request->hasFile('iconimage')) {
+            $imagePath = $request->file('iconimage')->store('images', 'public');
+            $user->profile_image = $imagePath;  // ここを修正
+        }
+
+        // ユーザー情報を保存
+        $user->save();
+
+        return redirect()->route('profile.profile')->with('status', 'Profile updated successfully!');
     }
 
-    //登録用
-    public function userCreate(Request $request)
-    {
+    // フォローの処理
+public function follow(User $user)
+{
+    if ($user->id != auth()->id()) {
+        auth()->user()->followings()->attach($user->id); // フォローする
+    }
+    return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
+}
+    // アンフォローの処理
+public function unfollow(User $user)
+{
+    if ($user->id != auth()->id()) {
+        auth()->user()->followings()->detach($user->id); // フォロー解除
+    }
+    return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
+}
 
+    // フォロー状態をトグル
+public function toggleFollow($userId)
+{
+    $user = auth()->user();
+    $targetUser = User::findOrFail($userId);
+
+    // すでにフォローしているかどうかの判定
+    if ($user->followings->contains($targetUser)) {
+        // フォロー解除 -> フォロワーを削除
+        $user->followings()->detach($targetUser);
+    } else {
+        // 新たにフォロー
+        $user->followings()->attach($targetUser);
+    }
+
+    // フォロー解除した場合でもリストからは削除されないように、リダイレクト
+    return redirect()->route('users.profile', $userId);
+}
+
+    // フォロワー情報と投稿を表示
+    public function followsProfile($id)
+    {
+        // ユーザーIDに基づいてユーザー情報を取得
+        $user = User::with('followings.posts')  // フォローユーザーの投稿も一緒に取得
+            ->findOrFail($id);
+
+        // フォローユーザーの情報と投稿をビューに渡す
+        $followings = $user->followings;
+
+        return view('users.followsProfile', compact('followings', 'user'));
+    }
+
+    // プロフィールの更新
+    public function profileupdate(Request $request)
+    {
+        // バリデーション
         $request->validate([
-              'userName' => 'required|unique:users,name|max:10',
-        ]);
-        $name = $request->input('usersName');
-        User::create(['name' => $name]);
-        return back();
-    }
-
-        public function index(){
-    {
-        $posts = Post::get();
-
-        return view('users.search', ['posts' => $posts]);
-    }
-    }
-
-        public function searchCreate()
-    {
-        $users = User::get(); //Userモデル（usersテーブル）からレコード情報を取得
-        return view('users.search',['users'=>$users]);
-    }
-
-    public function searchPost (Request $request)
-    {
-
-        Post::create([
-            // 'user_id' => Auth::user()->id, // Auth::user()は、現在ログインしている人（つまりツイートしたユーザー）
-            'post' => $request->post, // ツイート内容
-        ]);
-        return back();
-    }
-
-    public function profileupdate(Request $request){
-        $validator = Validator::make($request->all(),[
-          'username'  => 'required|min:2|max:12',
-          'mail' => ['required', 'min:5', 'max:40', 'email', Rule::unique('users')->ignore(Auth::id())],
-          'newpassword' => 'min:8|max:20|confirmed|alpha_num',
-          'newpassword_confirmation' => 'min:8|max:20|alpha_num',
-          'bio' => 'max:150',
-          'iconimage' => 'image',
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string|max:1000',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // 画像のバリデーション
         ]);
 
         $user = Auth::user();
-        //画像登録
-        $image = $request->file('iconimage')->store('public/images');
-        $validator->validate();
-        $user->update([
-            'username' => $request->input('username'),
-            'mail' => $request->input('mail'),
-            'password' => bcrypt($request->input('newpassword')),
-            'bio' => $request->input('bio'),
-            'images' => basename($image),
-        ]);
 
-        return redirect('/profile');
+        // プロフィール画像の更新処理（画像が送信されている場合）
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $path = $image->store('profile_images', 'public');
+            $user->profile_image = $path;
+        }
+
+        // 名前と自己紹介の更新
+        $user->name = $request->input('name');
+        $user->bio = $request->input('bio');
+        $user->save();
+
+        // 成功した場合、リダイレクトしてメッセージを表示
+        return redirect()->route('users.profile')->with('success', 'プロフィールが更新されました');
     }
 
+    // 特定のユーザーのプロフィールページ
+    public function show($id)
+    {
+        $user = User::with('posts', 'followings.posts')  // フォローユーザの投稿も一緒に取得
+            ->findOrFail($id);
+
+        // プロフィールページ用に、フォローユーザの情報も返す
+        return view('users.show', compact('user'));
+    }
+
+    // ユーザーのフォローしているユーザー一覧を表示
+    public function showFollowings()
+    {
+        $followings = auth()->user()->followings;  // ユーザーのフォローユーザーを取得
+
+        return view('users.followings', compact('followings'));
+    }
+
+    // ユーザー検索機能
 public function search(Request $request)
 {
-    $follows = Auth::user()->follows;  // または必要なデータを取得
-    return view('users.search', compact('follows'));
-}
+    $query = $request->input('query');
 
-    public function showFollowers($userId)
+    // ユーザー名で部分一致検索を行い、結果を返す
+    $followings = Auth::user()->followings()
+        ->where('username', 'like', '%' . $query . '%')
+        ->get();
+
+    return view('users.search', compact('followings', 'query'));
+}
+    // ユーザー作成フォーム（必要に応じて追加）
+    public function createForm()
     {
-        $user = User::findOrFail($userId);
-        $follows = $user->follow; // フォロワーリスト
-        return view('user.follows', compact('follows'));
+        // ここにフォーム表示などの処理を追加
+        return view('users.search'); // 例えば create.blade.php ビューを表示
     }
 
-    public function showFollowing($userId)
-    {
-        $user = User::findOrFail($userId);
-        $following = $user->following; // フォローリスト
-        return view('user.following', compact('following'));
-    }
-
-public function updateProfileImage(Request $request)
+public function followersProfile($id)
 {
-    $request->validate([
-        'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    // ユーザーIDに基づいてユーザー情報を取得
+    $user = User::with('followers.posts')  // フォロワーユーザーの投稿も一緒に取得
+        ->findOrFail($id);
 
-    $path = $request->file('profile_image')->store('profile_images', 'public');
+    // フォロワーユーザーの情報と投稿をビューに渡す
+    $followers = $user->followers;  // ここでフォロワーユーザーを取得
 
-    auth()->user()->update([
-        'profile_image' => $path,
-    ]);
-
-    return back()->with('status', 'プロフィール画像が更新されました！');
+    // 修正: $user 変数もビューに渡す
+    return view('follows.FollowerList', compact('followers', 'user'));  // ここで $user を渡す
 }
 
-
-    // 特定のユーザーのプロフィールを表示
-public function showProfile($userId)
+public function followList()
 {
-    $profileUser = User::findOrFail($userId); // $profileUserを取得
-    return view('users.profile', compact('profileUser')); // ビューに渡す
+    // ユーザーがフォローしているユーザーを取得
+    $followings = Auth::user()->followings;
+
+    return view('users.followList', compact('followings'));
 }
 
-
-    public function postCounts(){
-  $posts = Post::get();
-  return view('yyyy', compact('posts'));
-}
-
-public function follow($userId)
+public function followers(Request $request)
 {
-    $user = auth()->user(); // 現在ログインしているユーザー
-    $followedUser = User::findOrFail($userId); // フォローするユーザー
-
-    if ($user->id !== $followedUser->id) {
-        $user->follows()->attach($followedUser->id);
-    }
-
-    return redirect()->back();
-}
-
-public function unfollow($userId)
-{
-    $user = auth()->user(); // 現在ログインしているユーザー
-    $followedUser = User::findOrFail($userId); // フォローを外すユーザー
-
-    $user->follows()->detach($followedUser->id);
-
-    return redirect()->back();
-}
-
-public function showFollowedUsers($userId)
-{
-    $user = User::findOrFail($userId);
-    $followedUsers = $user->follows; // フォローしているユーザーのリスト
-
-    return view('user.followed', compact('followedUsers'));
-}
-
-public function updateIcon(Request $request)
-{
-    $request->validate([
-        'icon' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
-
     $user = auth()->user();
-    $icon = $request->file('icon');
-    $iconPath = $icon->store('icons', 'public');
+    $query = $request->input('query');
 
-    $user->update(['icon_path' => $iconPath]);
+    // ユーザーが検索した場合
+    if ($query) {
+        $followings = $user->followings()->where('username', 'LIKE', "%{$query}%")->get();
+    } else {
+        $followings = $user->followings;
+    }
 
-    return back()->with('success', 'Icon updated successfully!');
+    return view('followers.index', compact('followings'));
 }
 
-public function show($id)
+public function showFollowers()
 {
-    $user = User::findOrFail($id);
-    $followingCount = $user->following->count(); // フォローしているユーザーの数を取得
+    $followers = Auth::user()->followers;  // 現在ログインしているユーザーのフォロワーを取得
 
-return view('layouts.login', compact('user', 'followingCount'));
+    // フォロワー情報をログに出力
+    Log::info('Followers: ', $followers->toArray());
+
+    return view('users.followerList', compact('followers'));
 }
 
-    // public function showFollowedPosts()
-    // {
-    //     // 現在のユーザーがフォローしているユーザーを取得
-    //     $user = auth()->user();
-
-    //     // フォローしているユーザーのIDを取得
-    //     $followingIds = $user->following()->pluck('following_id');
-
-    //     // フォローしているユーザーの投稿を取得
-    //     $posts = Post::whereIn('user_id', $followingIds)->latest()->get();
-
-    //     return view('followerList', compact('posts'));
-    // }
 
 }
-
-// class UserController extends Controller
-// {
-//     public function index()
-//     {
-//         $users = User::where('id', '!=', auth()->id())->get();
-//         return view('users.index', compact('users'));
-//     }
-// }

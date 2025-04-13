@@ -67,17 +67,25 @@ $(document).ready(function () {
 //   alert('hello world')
 // });
 
-<script>
-    // 更新ボタンをクリックしたとき
-  document.querySelector('.open-modal').addEventListener('click', function() {
-    document.querySelector('.js-modal').classList.add('is-visible');
-    });
+$(function () {
+  // 編集ボタンがクリックされた時にモーダルを開く
+  $('.js-modal-open').on('click', function () {
+    const postId = $(this).data('id'); // 投稿ID
+    const postContent = $(this).data('content'); // 投稿内容
 
-  // モーダル背景や閉じるリンクをクリックしたときにモーダルを閉じる
-  document.querySelectorAll('.js-modal-close').forEach(function(closeBtn) {
-    closeBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      document.querySelector('.js-modal').classList.remove('is-visible');
-    });
-    });
-</script>
+    // モーダルを表示
+    $('.js-modal').fadeIn();
+
+    // 投稿の内容とIDをフォームにセット
+    $('#postId').val(postId);
+    $('#postContent').val(postContent);
+
+    return false; // デフォルトのリンク動作を無効化
+  });
+
+  // モーダルを閉じる処理
+  $('.js-modal-close').on('click', function () {
+    $('.js-modal').fadeOut();
+    return false;
+  });
+});

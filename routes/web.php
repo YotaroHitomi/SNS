@@ -1,29 +1,14 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\FollowController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', [HomeController::class, 'index']);
 
-// Route::get('/hello', function(){
-//     echo 'Hello World !';
-// });
-// Route::get('/home', 'HomeController@index')->name('home');
-
-//Auth::routes();
-
-
-//ログアウト中のページ
+// ログインと登録のルート
 Route::get('/login', 'Auth\LoginController@login');
 Route::post('/login', 'Auth\LoginController@login');
 
@@ -33,128 +18,128 @@ Route::post('/register', 'Auth\RegisterController@register');
 Route::get('/added', 'Auth\RegisterController@added');
 Route::post('/added', 'Auth\RegisterController@added');
 
-//ログイン中のページ
-Route::group(['middleware' => ['LoginUserCheck']], function() {
+// ログイン中のページ (ログイン状態を確認するミドルウェア)
+Route::middleware(['LoginUserCheck'])->group(function() {
 
-//投稿フォーム表示用
-// Route::get('/top','PostsController@index');
+    // プロフィール関連
+    Route::get('/profile', [UsersController::class, 'profile'])->name('users.profile');
+    Route::get('/profile/{id}', [UsersController::class, 'profileupdate']);
+    Route::post('/profile', [UsersController::class, 'profileupdate']); // プロフィール更新のPOST
 
-Route::get('/profile','UsersController@profile');
+    // 投稿関連
+    Route::get('/top', [PostsController::class, 'index'])->name('timeline');
+    Route::post('/top', [PostsController::class, 'postCreate']); // 投稿作成
 
-// Route::get('/top', 'PostsController@createForm');
+    // 検索関連
+    Route::get('/search', [UsersController::class, 'searchCreate']);
+    Route::post('/search', [UsersController::class, 'search']); // 検索処理
 
-// Route::post('/top','UsersController@userCreate');
+    // フォロー関連
+    Route::get('/follow-list', [FollowsController::class, 'followList']);
+    Route::get('/follower-list', [FollowsController::class, 'followerList']);
+    Route::get('/follow/status/{id}', [FollowsController::class, 'check_following']);
 
-//検索用
-Route::post('/search','PostsController@search');
+    // フォロー/アンフォロー
+    Route::post('/follow/{userId}', [UsersController::class, 'follow'])->name('user.follow');
+    Route::post('/unfollow/{userId}', [UsersController::class, 'unfollow'])->name('user.unfollow');
 
-Route::get('/search','UsersController@searchCreate');
+    // フォローしているユーザーの投稿を表示
+    Route::get('/followed-posts', [PostsController::class, 'followPosts'])->name('followed.posts');
+    Route::get('/followed-posts/{userId}', [PostsController::class, 'showFollowedPosts'])->name('followed.posts.by.user');
 
-Route::get('/search','UsersController@searchPost');
+    // 投稿の更新・削除
+    Route::get('/post/{id}/update-form', [PostsController::class, 'updateForm']); // 投稿更新フォーム
+    Route::patch('/post/{id}/update', [PostsController::class, 'update'])->name('posts.update'); // 投稿更新処理
+    Route::get('/post/{id}/delete', [PostsController::class, 'delete']); // 投稿削除
 
-Route::get('/search','UsersController@index');
+    // プロフィール画像の更新
+    Route::post('/profile/image', [UsersController::class, 'updateProfileImage']);
 
-Route::get('/search', 'UsersController@createForm');
-
-Route::get('/search', 'UsersController@postTweet');
-
-//更新フォーム表示用
-Route::get('/post/{id}/update-form', 'PostsController@updateForm');
-
-//投稿内容登録用
-Route::post('/top', 'PostsController@postCreate');
-
-//登録用
-Route::post('/top', 'PostsController@update');
-
-//削除用
-Route::get('/post/{id}/delete', 'PostsController@delete');
-
-//フォローリスト表示用
-Route::get('/follow-list','FollowsController@followList');
-
-//フォロワーリスト表示用
-Route::get('/follower-list','FollowsController@followerList');
-
-Route::get('/profile/{id}','UsersController@profileupdate');
-
-Route::get('/followList','UsersController@updateProfileImage');
-
-Route::get('/followList','UsersController@showsProfile');
-
-Route::get('/followList','UsersController@postCounts');
-
-// フォロー機能
-// Route::get('/followList','UsersController@follow');
-
-// アンフォロー機能
-// Route::get('/followList','UsersController@unfollow');
-
-// フォロー、フォロワーリスト一覧表示用
-// Route::get('/followList','UsersController@showFollowUsers');
-
-// Route::get('/followList','UsersController@updateIcon');
-
-// フォロー、フォロワーの投稿リスト表示
-// Route::get('/followList','UsersController@showFollowedPosts');
-
-//フォロー状態の確認
-Route::get('/follow/status/{id}','FollowsController@check_following');
-
-Route::get('/top', 'PostsController@index')->name('timeline');
-Route::post('/top', 'PostsController@postTweet')->name('timeline');
-
-// Route::get('/search', 'UsersController@searchresult')->name('search');
-
-// ログイン状態
-// Route::get('/search',);
-
-//     // ユーザ関連
-//     Route::get('/search', 'UsersController@index');
-
-//     Route::get('/search', 'UsersController@show');
-
-//     Route::get('/search', 'UsersController@edit');
-
-//     // Route::get('/search', 'UsersController@update');
-
-//     // フォロー/フォロー解除を追加
-//     Route::post('users/{user}/follow', 'UsersController@follow')->name('follow');
-//     Route::delete('users/{user}/unfollow', 'UsersController@unfollow')->name('unfollow');
-
-Route::post('/posts/{post}', 'PostController@update')->name('posts.update');
-
-Route::post('/posts/{id}', 'PostController@update')->name('posts.update');
-
-// Route::post('/top', 'PostsController@postTweet')->name('timeline');
-
-// フォローリストをユーザ検索欄で表示させる
-Route::post('/followerList', 'UsersController@showsFollowers');
-
-Route::post('/following', 'UsersController@showsFollowing');
-
-Route::post('/profile', 'UsersController@showsProfile');
-});
-
-// フォロー、アンフォロー機能用
-Route::middleware('auth')->group(function() {
-    Route::post('/follow/{userId}', [UserController::class, 'follow'])->name('follow');
-
-    Route::post('/unfollow/{userId}', [UserController::class, 'unfollow'])->name('unfollow');
-
-    Route::get('/user/{userId}/followed', [UserController::class, 'showFollowedUsers'])->name('followed.users');
+    // フォロー・フォロワー一覧表示
+    Route::get('/followed-users', [UsersController::class, 'showFollowedUsers']);
+    Route::get('/followers', [UsersController::class, 'showFollowers']);
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/followerList', [FollowController::class, 'index'])->name('followers.index');
+    // フォロー・アンフォロー機能
+    Route::post('/follow/{userId}', [UsersController::class, 'follow'])->name('follow');
+    Route::post('/unfollow/{userId}', [UsersController::class, 'unfollow'])->name('unfollow');
+
+    // フォローしているユーザーを表示
+    Route::get('/followed-users/{userId}', [UsersController::class, 'showFollowedUsers'])->name('followed.users');
 });
 
-Route::get('/followed-posts', [UserController::class, 'showFollowedPosts'])->name('followed.posts');
+// リソースルート（投稿）
+Route::resource('posts', PostsController::class);
 
-// Route::get('/follows', [FollowController::class, 'index'])->name('follows.index');
+// 特定のフォロー・フォロワーの表示
+Route::get('/followed-posts', [UsersController::class, 'showFollowedPosts'])->name('followed.posts');
 
-// Route::post('/follow/{id}', [FollowController::class, 'toggleFollow'])->name('follow.toggle');
+// フォロワー一覧表示用
+Route::get('/followerList', [FollowController::class, 'index'])->name('followers.index');
 
-// Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/search', [UsersController::class, 'createForm'])->name('users.search'); // ← これが必要
+Route::post('/search', [UsersController::class, 'search'])->name('users.search.execute');
 
-Route::get('/followed-posts', [PostController::class, 'followPosts'])->name('followed.posts');
+Route::patch('/follow/{userId}', [UsersController::class, 'toggleFollow'])->name('toggleFollow');
+
+Route::middleware(['auth'])->group(function() {
+    // ユーザーのプロフィールページ
+    Route::get('/profile/{user}', [UsersController::class, 'show'])->name('users.show');
+});
+
+Route::get('/users/{user}', [UsersController::class, 'followsProfile'])->name('users.profile');
+
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    // プロフィール表示
+Route::get('/profile', function () {
+    return view('users.profile');
+})->name('users.profile.page');
+
+    // プロフィール更新
+    Route::put('/profile', [UsersController::class, 'updateProfile'])->name('profile.update');
+});
+
+Route::get('/profile/{user}', [UsersController::class, 'show'])->name('users.profile');
+
+Route::middleware(['auth'])->group(function () {
+    // プロフィール関連
+    Route::get('/profile', [UsersController::class, 'profile'])->name('users.profile');
+    Route::post('/profile/update', [UsersController::class, 'profileupdate'])->name('users.profile.update'); // プロフィール更新
+});
+
+Route::middleware(['auth'])->group(function () {
+    // ユーザーのプロフィールページ表示
+    Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
+});
+
+Route::get('/index', [PostsController::class, 'index'])->name('index');
+
+Route::post('/posts', [PostsController::class, 'postCreate'])->name('posts.create');
+
+Route::post('/posts', [PostsController::class, 'postCreate'])->name('posts.create');
+
+Route::get('/create-form', [UsersController::class, 'createForm']);
+
+Route::get('/create-form', [UsersController::class, 'createForm']);
+
+Route::get('users/search', [UsersController::class, 'search'])->name('users.search');
+Route::get('users/following', [UsersController::class, 'followList'])->name('users.following');
+Route::get('users/followers', [UsersController::class, 'followerList'])->name('users.followers');
+Route::patch('users/{user}/toggle-follow', [UsersController::class, 'toggleFollow'])->name('toggleFollow');
+
+Route::post('/user/{user}/follow', [UserController::class, 'follow'])->name('user.follow');
+
+Route::post('/user/{user}/unfollow', [UserController::class, 'unfollow'])->name('user.unfollow');
+
+// posts.indexページにアクセスするためのルート
+Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
+
+// 投稿を保存するためのルート
+Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
+
+Route::post('posts.store', [PostsController::class, 'postTweet'])->name('posts.store');
+
+Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');

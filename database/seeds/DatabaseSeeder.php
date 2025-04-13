@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,9 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        //下記コマンドを記述しましょう。
+        // UsersTableSeederを呼び出し
         $this->call(UsersTableSeeder::class);
+
+        // PostsTableSeederを呼び出し
         $this->call(PostsTableSeeder::class);
     }
 }

@@ -15,12 +15,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('username')->unique(); // ユーザー名にユニーク制約を追加
+            $table->string('name')->unique(); // ユーザー名にユニーク制約を追加
             $table->string('mail')->unique(); // メールもユニーク制約を追加
             $table->string('password');
             $table->string('profile_image')->nullable()->default('default-icon.png'); // デフォルト画像を設定
-            $table->text('bio')->nullable();
-            $table->timestamps();
+            $table->text('bio')->nullable(); // bioカラムを追加
+            $table->timestamps(); // created_at と updated_at のタイムスタンプ
         });
     }
 
@@ -31,6 +31,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('users'); // usersテーブルの削除
     }
 }

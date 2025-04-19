@@ -10,26 +10,23 @@ use App\Models\User;
 class PostsController extends Controller
 {
     // 投稿一覧
-    public function index()
-    {
-        $user = Auth::user();
+public function index()
+{
+    $user = Auth::user();
 
-        // ユーザーがフォローしているユーザーの投稿を取得
-        $followings = $user->followings;  // フォローしているユーザーのコレクション
-        $followedPosts = Post::whereIn('user_id', $followings->pluck('id'))->latest()->get();  // フォロー中のユーザーの投稿を取得
+    // フォローしているユーザーのIDを取得し、自分のIDも追加
+    $userIds = $user->followings->pluck('id')->toArray(); // フォロー中のユーザーID配列
+    $userIds[] = $user->id; // 自分自身のIDを追加
 
-        // デフォルトの投稿（User One と User Two の投稿を取得）
-        $defaultUsersPosts = Post::whereIn('user_id', [2, 3])  // User One と User Two のID（デフォルトユーザーのID）
-                             ->latest()->get();
+    // 投稿を取得（デフォルトユーザーの投稿も含めたい場合はここで追加）
+    $defaultUsersPosts = Post::whereIn('user_id', [2, 3])->latest()->get();
+    $mainPosts = Post::whereIn('user_id', $userIds)->latest()->get();
 
-        // フォローしているユーザーの投稿とデフォルト投稿をマージ
-        $posts = $followedPosts->merge($defaultUsersPosts);
+    // 結合して重複排除、日付順にソート
+    $posts = $mainPosts->merge($defaultUsersPosts)->unique('id')->sortByDesc('created_at');
 
-        // 投稿を新しい順に並べ替え
-        $posts = $posts->sortByDesc('created_at');
-
-        return view('posts.index', compact('posts', 'followings'));
-    }
+    return view('posts.index', compact('posts'));
+}
 
     // 投稿の保存（新規投稿）
     public function store(Request $request)
@@ -45,72 +42,41 @@ class PostsController extends Controller
         $post->post = $request->post;  // フォームから送信された投稿内容
         $post->save();  // データベースに保存
 
-        // 投稿後にリダイレクトする（投稿完了後にどこかにリダイレクトしたい場合）
-        return redirect()->route('posts.index');  // 適切なルートにリダイレクト
+        // 投稿後にリダイレクトする
+        return redirect()->route('posts.index')->with('success', '投稿が完了しました');
     }
 
     // 投稿の更新（既存投稿の内容を更新）
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'post' => 'required',  // 投稿内容が必須
-        ]);
-
-        $post = Post::findOrFail($id);
-
-        // 自分の投稿かどうかをチェック
-        if (Auth::id() != $post->user_id) {
-            abort(403, 'Unauthorized action.');  // 不正な操作
-        }
-
-        $post->post = $request->post;  // 投稿内容を更新
-        $post->save();  // データベースに保存
-
-        return redirect()->route('posts.index')->with('success', '投稿が更新されました。');
-    }
-
-    // 投稿の編集フォーム（編集画面に遷移）
-    public function edit($id)
-    {
-        $post = Post::findOrFail($id);
-
-        // 自分の投稿かどうかをチェック
-        if (Auth::id() != $post->user_id) {
-            abort(403, 'Unauthorized action.');  // 不正な操作
-        }
-
-        return view('posts.edit', compact('post'));  // 編集画面を表示
-    }
-
-    // 投稿の削除
-    public function destroy($id)
-    {
-        $post = Post::findOrFail($id);
-
-        // 自分の投稿かどうかをチェック
-        if (Auth::id() != $post->user_id) {
-            abort(403, 'Unauthorized action.');  // 不正な操作
-        }
-
-        $post->delete();  // データベースから削除
-
-        return redirect()->route('posts.index')->with('success', '投稿が削除されました');
-    }
-
-    public function postTweet(Request $request)
+public function update(Request $request, $id)
 {
-    // バリデーション
+    $post = Post::findOrFail($id);
+
+    // 本人確認
+    if ($post->user_id !== auth()->id()) {
+        abort(403);
+    }
+
     $request->validate([
-        'post' => 'required|max:255',
+        'post' => 'required|string|max:255',
     ]);
 
-    // 投稿を新規作成
-    $post = new Post();
-    $post->user_id = Auth::id();  // ログイン中のユーザーID
-    $post->post = $request->post;  // フォームから送信された内容
-    $post->save();  // 投稿を保存
+    $post->post = $request->post;
+    $post->save();
 
-    // 投稿完了後、適切な場所にリダイレクト
-    return redirect()->route('posts.index')->with('success', '投稿が完了しました');
+    return redirect()->back()->with('success', '投稿を更新しました');
+}
+
+    // 投稿の削除
+public function destroy($id)
+{
+    $post = Post::findOrFail($id);
+
+    if ($post->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $post->delete();
+
+    return redirect()->back()->with('success', '投稿を削除しました');
 }
 }

@@ -14,38 +14,35 @@ class FollowsController extends Controller
     public function followList()
     {
         $user = auth()->user();
-        $followings = $user->followings()->get(); // フォロー中ユーザーのリストを取得
+        $followings = $user->followings; // フォロー中ユーザーのリストを取得
 
         // フォロー中ユーザーがいない場合、投稿も空にする
         if ($followings->isEmpty()) {
             $posts = collect();
         } else {
-            $posts = Post::whereIn('user_id', $followings->pluck('id'))->get(); // フォロー中ユーザーの投稿を取得
+            // フォロー中ユーザーの投稿を取得
+            $posts = Post::whereIn('user_id', $followings->pluck('id'))->get();
         }
 
-        return view('follows.followList', compact('followings', 'posts')); // フォロー中ユーザーを渡す
+        return view('follows.followList', compact('followings', 'posts'));
     }
 
     // フォローする
-    public function follow($followedUserId)
+    public function follow(User $user)
     {
-        $user = auth()->user();
-
-        // すでにフォローしていない場合のみフォローする
-        if (!$user->isFollowing(User::find($followedUserId))) {
-            $user->followings()->attach($followedUserId); // フォロー処理
+        if ($user->id != auth()->id()) {
+            auth()->user()->followings()->attach($user->id); // フォローする
         }
+        return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
     }
 
     // フォローを外す
-    public function unfollow($followedUserId)
+    public function unfollow(User $user)
     {
-        $user = auth()->user();
-
-        // すでにフォローしている場合のみアンフォローする
-        if ($user->isFollowing(User::find($followedUserId))) {
-            $user->followings()->detach($followedUserId); // アンフォロー処理
+        if ($user->id != auth()->id()) {
+            auth()->user()->followings()->detach($user->id); // アンフォロー
         }
+        return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
     }
 
     // フォロワーリスト

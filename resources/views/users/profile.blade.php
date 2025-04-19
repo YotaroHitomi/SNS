@@ -26,7 +26,7 @@
     <dl class="UserProfile">
       <div class="form-row">
         <dt>Username</dt>
-        <dd><input type="text" name="username" value="{{ old('username', auth()->user()->username) }}"></dd>
+        <dd><input type="text" name="name" value="{{ old('name', auth()->user()->name) }}"></dd>
       </div>
 
       <div class="form-row">

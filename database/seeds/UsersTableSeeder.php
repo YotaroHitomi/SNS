@@ -1,21 +1,23 @@
 <?php
 
-namespace Database\Seeds;
-
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        // usersテーブルのデータを初期化（削除）
-        User::truncate(); // または DB::table('users')->truncate();
+        // 外部キー制約を無効にする
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // usersテーブルのデータを削除
+        User::query()->delete(); // 修正箇所
 
         // Admin User
         $admin = User::create([
-            'username' => 'Admin User',
+            'name' => 'Admin User',
             'mail' => 'admin@example.com',
             'password' => Hash::make('away13590022'),
             'profile_image' => 'icon1.png',
@@ -23,14 +25,14 @@ class UsersTableSeeder extends Seeder
 
         // Other Users
         $user1 = User::create([
-            'username' => 'User One',
+            'name' => 'User One',
             'mail' => 'user1@example.com',
             'password' => Hash::make('password'),
             'profile_image' => 'icon2.png',
         ]);
 
         $user2 = User::create([
-            'username' => 'User Two',
+            'name' => 'User Two',
             'mail' => 'user2@example.com',
             'password' => Hash::make('password'),
             'profile_image' => 'icon3.png',
@@ -51,5 +53,8 @@ class UsersTableSeeder extends Seeder
         $user2->posts()->create([
             'post' => 'これはUser Twoさんの一つ目の投稿です.',
         ]);
+
+        // 外部キー制約を再度有効にする
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

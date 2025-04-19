@@ -1,9 +1,9 @@
 @extends('layouts.login')
 
 @section('content')
-
+    <p>Follower List</p>
 <!-- ユーザー情報 -->
-<h1>{{ Auth::user()->username }}のフォロワーユーザー</h1>
+<h1>{{ Auth::user()->username }}</h1>
 
 <!-- フォロワーユーザーの一覧 -->
 <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -12,11 +12,11 @@
             <!-- フォロワーユーザーのプロフィール画像 -->
             <a href="{{ route('users.show', $follower->id) }}">
                <img
-                   src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"  <!-- 画像をランダムに表示 -->
+                   src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
                    alt="{{ $follower->name }}'s Profile Image"
                    width="50" height="50">
             </a>
-            <span>{{ $follower->name }}</span> <!-- フォロワーユーザー名 -->
+
         </li>
     @endforeach
 </ul>
@@ -33,11 +33,11 @@
                 <a href="{{ route('users.show', $follower->id) }}">
                     <!-- 投稿者のアイコン -->
                     <img
-                        src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"  <!-- 投稿者のプロフィール画像もランダムで表示 -->
+                        src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
                         alt="{{ $follower->name }}'s Profile Image"
                         width="50" height="50">
                 </a>
-                <p>{{ $follower->username }} さんの投稿</p>
+                <p>{{ $follower->username }}</p>
             </div>
             <div>
                 <p>{{ $post->content }}</p> <!-- 投稿内容 -->

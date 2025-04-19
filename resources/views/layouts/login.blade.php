@@ -27,7 +27,7 @@
             <div id="">
                 <div id="">
                     <div class="header_box">
-                        <p class="right">{{Auth::user()->username}}さん</p>
+                        <p class="right">{{Auth::user()->name}}さん</p>
                         <div class="menu-trigger"></div>
                         <img src="images/icon1.png">
                     </div>

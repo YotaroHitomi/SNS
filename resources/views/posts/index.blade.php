@@ -13,13 +13,10 @@ TOPページ
                 </div>
             @else
                 <div class="d-flex align-items-center w-100">
-                    <!-- ユーザーアイコン -->
                     <img src="{{ asset('images/icon1.png') }}" alt="User Icon">
 
-                    <!-- 投稿フォーム（textareaに変更） -->
-                    <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 125px; width: 70%;"></textarea>
+                    <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 150px; width: 70%;"></textarea>
 
-                    <!-- 送信ボタン -->
                     <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 50%; align-items: center; justify-content: center;">
                         <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
                     </button>
@@ -31,55 +28,153 @@ TOPページ
 
     <!-- フォローしているユーザーの投稿のみ表示 -->
     <div class="container">
-        <h1>フォローしているユーザーの投稿</h1>
         @foreach ($posts as $post)
-            <div style="width: 560px; height: 150px; overflow: hidden;" class="post">
-                <div class="post-header">
-                    <a href="{{ route('users.show', $post->user->id) }}">
+            <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+                <div class="post-header d-flex align-items-center mb-2">
+                    <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
                         <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                             alt="{{ $post->user->name }}'s Profile Image" width="50" height="50">
+                             alt="{{ $post->user->name }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
+                        <strong>{{ $post->user->name }}</strong>
                     </a>
-                    <p>{{ $post->user->name }} さんの投稿</p>
                 </div>
-                <p>{{ $post->post }}</p>
-                <span>{{ $post->created_at->diffForHumans() }}</span>
+                <p class="mt-2">{{ $post->post }}</p>
 
-                <!-- 更新ボタン -->
-                @can('update', $post)
-                    <a href="#" class="btn btn-warning btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#editModal-{{ $post->id }}">更新</a>
-                @endcan
+                <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
 
-                <!-- 削除ボタン -->
-                @can('delete', $post)
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm ms-2">削除</button>
-                    </form>
-                @endcan
-            </div>
+                @if(Auth::check() && Auth::user()->id == $post->user_id)
+                    <div class="post-actions d-flex justify-content-end">
+                        <button class="btn btn-warning js-modal-open me-2" data-id="{{ $post->id }}" data-content="{{ $post->post }}" style="background: none; border: none;">
+                            <img src="{{ asset('images/edit.png') }}" alt="編集" style="width: 30px; height: 30px; border-radius: 5px;">
+                        </button>
 
-            <!-- 更新用モーダル -->
-            <div class="modal fade" id="editModal-{{ $post->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $post->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel-{{ $post->id }}">投稿を編集</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('posts.update', $post->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <textarea name="post" class="form-control" required>{{ $post->post }}</textarea>
-                                <button type="submit" class="btn btn-primary mt-3">更新</button>
-                            </form>
-                        </div>
+                        <!-- 削除ボタン：モーダル表示 -->
+                        <button type="button" class="btn btn-danger js-delete-open" data-post-id="{{ $post->id }}" style="background: none; border: none;">
+                            <img src="{{ asset('images/trash.png') }}" alt="削除" style="width: 20px; height: 20px; border-radius: 5px;">
+                        </button>
                     </div>
-                </div>
+                @endif
             </div>
         @endforeach
     </div>
 </div>
 
+<!-- BootstrapのJS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 編集モーダル -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">投稿の編集</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="postContent" class="form-label">投稿内容</label>
+                        <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 削除確認モーダル -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+            </div>
+            <div class="modal-body">
+                本当にこの投稿を削除しますか？
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="POST" action="">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 編集モーダル表示
+    document.querySelectorAll('.js-modal-open').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const postId = this.dataset.id;
+            const postContent = this.dataset.content;
+            document.getElementById('postContent').value = postContent;
+            document.getElementById('editForm').action = `/posts/${postId}`;
+            const myModal = new bootstrap.Modal(document.getElementById('editModal'));
+            myModal.show();
+        });
+    });
+
+    // 削除確認モーダル表示
+    document.querySelectorAll('.js-delete-open').forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.dataset.postId;
+            document.getElementById('deleteForm').action = `/posts/${postId}`;
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            deleteModal.show();
+        });
+    });
+</script>
+
+<style>
+    .post-date {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .post {
+        position: relative;
+    }
+
+    .post-actions {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .modal.fade .modal-dialog {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+    }
+
+    .modal-dialog.modal-lg {
+        max-width: 50%;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    #postContent {
+        height: 250px;
+        font-size: 16px;
+    }
+
+    .js-modal-open img,
+    .js-delete-open img {
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
 @endsection

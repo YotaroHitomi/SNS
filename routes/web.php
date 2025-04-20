@@ -61,7 +61,7 @@ Route::middleware(['LoginUserCheck'])->group(function() {
 Route::resource('posts', 'PostsController');
 
 // フォロワー一覧表示用
-Route::get('/followerList', 'FollowController@index')->name('followers.index');
+Route::get('/followers', [UsersController::class, 'followers'])->name('followers.index');
 
 // 検索関連
 Route::get('/search', 'UsersController@createForm')->name('users.search');
@@ -92,8 +92,8 @@ Route::get('users/following', 'UsersController@followList')->name('users.followi
 Route::get('users/followers', 'UsersController@followerList')->name('users.followers');
 Route::patch('users/{user}/toggle-follow', 'UsersController@toggleFollow')->name('toggleFollow');
 
-Route::post('/user/{user}/follow', 'UserController@follow')->name('user.follow');
-Route::post('/user/{user}/unfollow', 'UserController@unfollow')->name('user.unfollow');
+Route::post('/user/{user}/follow', 'UsersController@follow')->name('user.follow');
+Route::post('/user/{user}/unfollow', 'UsersController@unfollow')->name('user.unfollow');
 
 // 投稿ページ
 Route::get('/posts', 'PostsController@index')->name('posts.index');
@@ -107,13 +107,10 @@ Route::put('/posts/{post}', 'PostsController@update')->name('posts.update');
 
 Route::delete('/posts/{post}', 'PostsController@destroy')->name('posts.destroy');
 
-// フォロワー一覧（検索対応）
-Route::get('/followers', 'UsersController@followers')->name('followers.index');
-
 // フォロー/アンフォロー切替（PATCHで受ける）
 Route::patch('/follow/{userId}', 'UsersController@toggleFollow')->name('toggleFollow');
 
 // プロフィールページへのリンク（ユーザーIDで遷移）
-Route::get('/users/{user}', 'UsersController@followsProfile')->name('users.profile');
+Route::get('/users/{id}', 'UsersController@followsProfile')->name('users.profile');
 
 Route::get('/following', [UsersController::class, 'following'])->name('users.search');

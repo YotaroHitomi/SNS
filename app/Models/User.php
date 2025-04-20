@@ -26,10 +26,10 @@ public function posts()
     }
 
     // フォロワーを取得
-    public function followers()
-    {
-        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'following_id');
-    }
+public function followers()
+{
+    return $this->belongsToMany(User::class, 'follows', 'followed_id', 'following_id');
+}
 
     // フォローしているかどうか判定
     public function isFollowing(User $user): bool

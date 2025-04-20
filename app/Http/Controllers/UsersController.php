@@ -41,7 +41,7 @@ class UsersController extends Controller
         $user = Auth::user();
 
         // ユーザー情報を更新
-        $user->name = $request->username;
+        $user->name = $request->name;
         $user->mail = $request->mail;
 
         // パスワードが設定されていれば更新
@@ -61,7 +61,7 @@ class UsersController extends Controller
         // ユーザー情報を保存
         $user->save();
 
-        return redirect()->route('profile.profile')->with('status', 'Profile updated successfully!');
+        return redirect()->route('users.show')->with('status', 'Profile updated successfully!');
     }
 
     // フォローの処理
@@ -211,17 +211,27 @@ public function followingList(Request $request)
 
 public function followers(Request $request)
 {
-    $user = auth()->user();
+    $user = Auth::user();
+
+    // フォロワーのユーザー一覧を取得
+    $followersQuery = $user->followers();
+
+    // クエリパラメータが存在する場合のみ検索を行う
     $query = $request->input('query');
 
-    if ($query) {
-        $followers = $user->followers()->where('username', 'LIKE', "%{$query}%")->get();
-    } else {
-        $followers = $user->followers;
+    // 検索クエリがあればフィルタリング
+    if ($request->filled('query')) {
+        $followersQuery = $followersQuery->where(function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('name', 'like', "%{$query}%");
+        });
     }
 
-    return view('followers.index', compact('followers', 'query'));
+    $followers = $followersQuery->get(); // フォロワーを取得
+
+    return view('users.search', compact('followers', 'query'));
 }
+
 
 public function showFollowers(Request $request)
 {

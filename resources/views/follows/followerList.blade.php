@@ -37,12 +37,12 @@
                         alt="{{ $follower->name }}'s Profile Image"
                         width="50" height="50">
                 </a>
-                <p>{{ $follower->username }}</p>
+                <p>{{ $post->user->name }}</p> <!-- ユーザー名を表示 -->
             </div>
             <div>
                 <p>{{ $post->content }}</p> <!-- 投稿内容 -->
             </div>
-            <span>{{ $post->created_at->diffForHumans() }}</span>  <!-- 投稿日時を追加 -->
+            <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
         </div>
         <hr>
     @endforeach

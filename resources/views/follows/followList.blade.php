@@ -1,7 +1,8 @@
 @extends('layouts.login')
 
 @section('content')
-    <p>Follow List</p>
+    <p style="margin-right: 20px;">Follow List</p>
+
 
     <h1>{{ Auth::user()->username }}</h1>
     <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -13,7 +14,7 @@
                 </a>
                 <!-- ユーザー名もプロフィールページへリンク -->
                 <a href="{{ route('users.show', $user->id) }}" style="text-decoration: none; color: black;">
-                    <p>{{ $user->username }}</p>
+                    <p>{{ $user->username }}</p> <!-- ユーザー名を表示 -->
                 </a>
             </li>
         @endforeach
@@ -30,13 +31,13 @@
                 </a>
                 <!-- 投稿者のユーザー名もプロフィールページへリンク -->
                 <a href="{{ route('users.show', $post->user->id) }}" style="text-decoration: none; color: black;">
-                    <p>{{ $post->user->username }}</p>
+                    <p>{{ $post->user->name }}</p> <!-- ユーザー名を表示 -->
                 </a>
             </div>
             <div>
                 <p>{{ $post->content }}</p>
             </div>
-            <span>{{ $post->created_at->diffForHumans() }}</span>  <!-- 投稿日時を追加 -->
+            <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
         </div>
         <hr>
     @endforeach

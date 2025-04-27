@@ -23,7 +23,7 @@
 <body>
     <header>
         <div id = "head">
-            <h1><a href="/top"><img src="images/atlas.png"></a></h1>
+            <h1><a href="/index"><img src="images/atlas.png"></a></h1>
             <div id="">
                 <div id="">
                     <div class="header_box">
@@ -52,12 +52,12 @@
                 <p>{{Auth::user()->username}}さんの</p>
                 <div>
                     <p>フォロー数</p>
-                    <p>〇〇名</p>
+                    <p>{{ Auth::user()->followings()->count() }}名</p>
                 </div>
                 <p class="btn"><a href="/follow-list">フォローリスト</a></p>
                 <div>
                     <p>フォロワー数</p>
-                    <p>〇〇名</p>
+                    <p>{{ Auth::user()->followers()->count() }}名</p>
                 </div>
                 <p class="btn"><a href="/follower-list">フォロワーリスト</a></p>
             </div>

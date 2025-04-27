@@ -2,8 +2,6 @@
 
 @section('content')
     <p>Follow List</p>
-    <!-- ユーザー情報 -->
-    <h1>{{ Auth::user()->name }}</h1>
 
     <!-- フォローユーザーの一覧 -->
     <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -18,7 +16,7 @@
                 </a>
                 <!-- ユーザー名もプロフィールページへリンク -->
                 <a href="{{ route('users.show', $following->id) }}" style="text-decoration: none; color: black;">
-                    <p>{{ $following->name }}</p> <!-- ユーザー名を表示 -->
+
                 </a>
             </li>
         @endforeach

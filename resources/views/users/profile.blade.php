@@ -55,7 +55,7 @@
       </div>
     </dl>
 
-    <input type="submit" name="profileupdate" value="Update" class="btn-update">
+    <input type="submit" name="profileupdate" value="更新" class="btn-update">
   </form>
 </div>
 

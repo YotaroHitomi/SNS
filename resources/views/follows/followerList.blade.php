@@ -2,8 +2,6 @@
 
 @section('content')
     <p>Follower List</p>
-<!-- ユーザー情報 -->
-<h1>{{ Auth::user()->name }}</h1>
 
 <!-- フォロワーユーザーの一覧 -->
 <ul style="display: flex; flex-wrap: wrap; gap: 10px;">

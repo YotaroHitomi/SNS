@@ -47,7 +47,7 @@
                                 <form action="{{ route('toggleFollow', $follower->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="btn btn-sm {{ auth()->user()->followings->contains($follower->id) ? 'btn-danger' : 'btn-primary' }}">
+                                    <button type="submit" class="btn btn-sm {{ auth()->user()->followings->contains($follower->id) ? 'btn-primary' : 'btn-danger' }}">
                                         {{ auth()->user()->followings->contains($follower->id) ? 'フォロー解除' : 'フォロー' }}
                                     </button>
                                 </form>

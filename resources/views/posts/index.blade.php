@@ -17,9 +17,9 @@ TOPページ
 
                     <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 150px; width: 70%;"></textarea>
 
-                    <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 50%; align-items: center; justify-content: center;">
-                        <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
-                    </button>
+<button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px; align-items: center; justify-content: center; border: none;">
+    <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
+</button>
                 </div>
             @endguest
         </div>
@@ -65,21 +65,15 @@ TOPページ
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content rounded-4">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">投稿の編集</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+
             <div class="modal-body">
 <form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
     @csrf
     @method('PUT')
     <div class="mb-3">
-        <label for="postContent" class="form-label">投稿内容</label>
         <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
     </div>
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">更新</button>
-    </div>
+<img src="{{ asset('images/edit.png') }}" alt="編集" style="width: 30px; height: 30px; border-radius: 5px;">
 </form>
             </div>
         </div>

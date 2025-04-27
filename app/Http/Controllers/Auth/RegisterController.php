@@ -43,21 +43,21 @@ class RegisterController extends Controller
         if($request->isMethod('post')){
 
         $validated = $request->validate([
-            'username' => 'required|max:12|min:2',
-            'mail' => 'required|max:40|min:5|unique:users,mail|email',
+            'name' => 'required|max:12|min:2',
+            'email' => 'required|max:40|min:5|unique:users,email|email',
             'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
         ]);
 
-            $username = $request->input('username');
-            $mail = $request->input('mail');
+            $name = $request->input('name');
+            $email = $request->input('email');
             $password = $request->input('password');
 
             User::create([
-                'username' => $username,
-                'mail' => $mail,
+                'name' => $name,
+                'email' => $email,
                 'password' => bcrypt($password),
             ]);
-            \Session::flash('msg' , $username);
+            \Session::flash('msg' , $name);
             return redirect('added');
         }
         return view('auth.register');

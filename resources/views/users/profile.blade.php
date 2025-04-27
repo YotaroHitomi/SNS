@@ -29,10 +29,10 @@
         <dd><input type="text" name="name" value="{{ old('name', auth()->user()->name) }}"></dd>
       </div>
 
-      <div class="form-row">
-        <dt>Email Address</dt>
-        <dd><input type="text" name="mail" value="{{ old('mail', auth()->user()->mail) }}"></dd>
-      </div>
+<div class="form-row">
+  <dt>Email Address</dt>
+  <dd><input type="text" name="email" value="{{ old('email', auth()->user()->email) }}"></dd>
+</div>
 
       <div class="form-row">
         <dt>Password</dt>

@@ -6,23 +6,23 @@
 {!! Form::open(['url' => '/register']) !!}
 
 <h2>新規ユーザー登録</h2>
-@if ($errors->has('username'))
+@if ($errors->has('name'))
   <span class="invalid-feedback" role="alert">
-    {{ $errors->first('username') }}
+    {{ $errors->first('name') }}
   </span>
 @endif
 <br>
 {{ Form::label('ユーザー名') }}
-{{ Form::text('username',null,['class' => 'input']) }}
+{{ Form::text('name',null,['class' => 'input']) }}
 <br>
-@if ($errors->has('mail'))
+@if ($errors->has('email'))
   <span class="invalid-feedback" role="alert">
-    {{ $errors->first('mail') }}
+    {{ $errors->first('email') }}
   </span>
 @endif
 <br>
 {{ Form::label('メールアドレス') }}
-{{ Form::text('mail',null,['class' => 'input']) }}
+{{ Form::text('email',null,['class' => 'input']) }}
 <br>
 @if ($errors->has('password'))
   <span class="invalid-feedback" role="alert">

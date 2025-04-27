@@ -3,7 +3,7 @@
 @section('content')
     <p>Follower List</p>
 <!-- ユーザー情報 -->
-<h1>{{ Auth::user()->username }}</h1>
+<h1>{{ Auth::user()->name }}</h1>
 
 <!-- フォロワーユーザーの一覧 -->
 <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -16,7 +16,6 @@
                    alt="{{ $follower->name }}'s Profile Image"
                    width="50" height="50">
             </a>
-
         </li>
     @endforeach
 </ul>
@@ -40,7 +39,7 @@
                 <p>{{ $post->user->name }}</p> <!-- ユーザー名を表示 -->
             </div>
             <div>
-                <p>{{ $post->content }}</p> <!-- 投稿内容 -->
+                <p>{{ $post->post }}</p> <!-- 投稿内容 -->
             </div>
             <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
         </div>

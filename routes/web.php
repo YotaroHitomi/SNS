@@ -5,6 +5,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\FollowController;
+use App\Models\Post;
 
 Route::get('/', 'HomeController@index'); // ホームページ
 
@@ -54,14 +55,12 @@ Route::middleware(['LoginUserCheck'])->group(function() {
 
     // フォロー・フォロワー一覧表示
     Route::get('/followed-users', 'UsersController@showFollowedUsers');
-    Route::get('/followers', 'UsersController@showFollowers');
 });
 
 // 投稿リソースルート
 Route::resource('posts', 'PostsController');
 
 // フォロワー一覧表示用
-Route::get('/followers', [UsersController::class, 'followers'])->name('followers.index');
 
 // 検索関連
 Route::get('/search', 'UsersController@createForm')->name('users.search');
@@ -114,3 +113,23 @@ Route::patch('/follow/{userId}', 'UsersController@toggleFollow')->name('toggleFo
 Route::get('/users/{id}', 'UsersController@followsProfile')->name('users.profile');
 
 Route::get('/following', [UsersController::class, 'following'])->name('users.search');
+
+Route::get('/users/{id}', 'UsersController@show')->name('users.show');
+
+Route::get('/followers', 'FollowsController@index')->name('followers.index');
+
+Route::get('/follow-list', 'FollowsController@followList')->name('follow.list');
+
+Route::get('/top', function () {
+    $user = Auth::user();
+    $followings = $user->followings->pluck('id')->toArray();
+    $followings[] = $user->id; // 自分自身も含める
+
+    $posts = Post::whereIn('user_id', $followings)
+                 ->latest()
+                 ->get();
+
+    return view('posts.index', compact('posts'));
+})->name('top');
+
+Route::get('/search', [FollowsController::class, 'index'])->name('search');

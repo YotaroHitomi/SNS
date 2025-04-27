@@ -8,12 +8,12 @@
 
 <p>AtlasSNSへようこそ</p>
 
-<div class="mail">
+<div class="email">
 
 {{ Form::label('e-mail' ) }}
 
 <br>
-{{ Form::text('mail',null,['class' => 'input']) }}
+{{ Form::text('email',null,['class' => 'input']) }}
 
 </div>
 

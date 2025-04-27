@@ -5,7 +5,7 @@
     <!-- 左側：プロフィール画像と情報 -->
     <div style="display: flex; align-items: center;">
         <!-- プロフィール画像 -->
-        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}" alt="{{ $user->username }}'s Profile Image" width="80" height="80" style="border-radius: 50%; margin-right: 20px;">
+        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}" alt="{{ $user->name }}'s Profile Image" width="80" height="80" style="border-radius: 50%; margin-right: 20px;">
 
         <!-- ユーザー名と自己紹介 -->
         <div>
@@ -34,7 +34,7 @@
 
 <!-- ユーザーの投稿一覧 -->
 <div class="container mt-5">
-        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}" alt="{{ $user->username }}'s Profile Image" width="80" height="80" style="border-radius: 50%; margin-right: 20px;">
+        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}" alt="{{ $user->name }}'s Profile Image" width="80" height="80" style="border-radius: 50%; margin-right: 20px;">
     <h2>{{ $user->name }} の投稿</h2>
     @foreach($user->posts as $post)
         <div class="post mb-4" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">

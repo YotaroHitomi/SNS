@@ -31,6 +31,17 @@ class PostsTableSeeder extends Seeder
                     ]);
                 }
             }
+
+            // フォロワーユーザーに対してデフォルト投稿を作成
+            foreach ($user->followers as $follower) {
+                // 同じ投稿がすでに存在するか確認
+                if (Post::where('user_id', $follower->id)->where('post', 'このユーザーはあなたにフォローされていますが、まだ投稿をしていません。')->doesntExist()) {
+                    Post::create([
+                        'user_id' => $follower->id,  // フォロワーのユーザーID
+                        'post' => 'このユーザーはあなたにフォローされていますが、まだ投稿をしていません。',
+                    ]);
+                }
+            }
         }
 
         // 外部キー制約を再度有効にする

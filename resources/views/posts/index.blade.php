@@ -70,14 +70,17 @@ TOPページ
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-3">
-                        <label for="postContent" class="form-label">投稿内容</label>
-                        <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
-                    </div>
-                </form>
+<form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
+    @csrf
+    @method('PUT')
+    <div class="mb-3">
+        <label for="postContent" class="form-label">投稿内容</label>
+        <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">更新</button>
+    </div>
+</form>
             </div>
         </div>
     </div>

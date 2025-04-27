@@ -10,6 +10,11 @@ use App\Models\User;
 
 class FollowsController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+
     // フォロー中ユーザーリスト
     public function followList()
     {
@@ -65,4 +70,26 @@ class FollowsController extends Controller
             return response()->json(['status' => true]);
         }
     }
+
+    public function index(Request $request)
+{
+    $query = $request->input('query');
+
+    // 現在のユーザーのフォロワー一覧を取得
+    $followersQuery = auth()->user()->followers();
+
+    // 検索キーワードがある場合、フィルタリングする
+    if ($query) {
+        $followersQuery = $followersQuery->where(function($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('name', 'like', "%{$query}%");
+        });
+    }
+
+    // 実行して取得
+    $followers = $followersQuery->get();
+
+    return view('users.search', compact('followers'));
+}
+
 }

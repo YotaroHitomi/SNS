@@ -8,7 +8,7 @@
     <title></title>
     <link rel="stylesheet" href="{{ asset('css/reset.css') }} ">
     <link rel="stylesheet" href="{{ asset('css/style.css') }} ">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!--スマホ,タブレット対応-->
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <!--サイトのアイコン指定-->
@@ -18,18 +18,18 @@
     <link rel="icon" href="画像URL" sizes="62x62" type="image/png" />
     <!--iphoneのアプリアイコン指定-->
     <link rel="apple-touch-icon-precomposed" href="画像のURL" />
-    <!--OGPタグ/twitterカード-->
 </head>
 <body>
     <header>
-        <div id = "head">
-<h1><a href="{{ route('index') }}"><img src="{{ asset('images/atlas.png') }}" alt="Atlasロゴ"></a></h1>
-            <div id="">
-                <div id="">
+        <div id="head">
+            <h1><a href="{{ route('index') }}"><img src="{{ asset('images/atlas.png') }}" alt="Atlasロゴ"></a></h1>
+            @auth
+            <div>
+                <div>
                     <div class="header_box">
-                        <p class="right">{{Auth::user()->username}}さん</p>
+                        <p class="right">{{ Auth::user()->username }}さん</p>
                         <div class="menu-trigger"></div>
-                        <img src="images/icon1.png">
+                        <img src="{{ asset('images/icon1.png') }}">
                     </div>
                     <div>
                         <ul class="acordion">
@@ -40,16 +40,19 @@
                     </div>
                 </div>
             </div>
+            @endauth
         </div>
     </header>
+
     <div id="row">
         <div id="container">
-        @yield('content')
-        </div >
+            @yield('content')
+        </div>
 
+        @auth
         <div id="side-bar">
             <div id="confirm">
-                <p>{{Auth::user()->username}}さんの</p>
+                <p>{{ Auth::user()->username }}さんの</p>
                 <div>
                     <p>フォロー数</p>
                     <p>{{ Auth::user()->followings()->count() }}名</p>
@@ -63,9 +66,11 @@
             </div>
             <p class="btn" id="btn"><a href="/search">ユーザー検索</a></p>
         </div>
+        @endauth
     </div>
-    <footer>
-    </footer>
+
+    <footer></footer>
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

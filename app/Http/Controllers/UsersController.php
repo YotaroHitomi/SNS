@@ -28,10 +28,12 @@ class UsersController extends Controller
     // プロフィールの更新
     public function updateProfile(Request $request)
     {
+        $user = Auth::user();
+
         // バリデーション
         $validated = $request->validate([
             'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'. $user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'newpassword' => 'nullable|min:6|confirmed',
             'bio' => 'nullable|string',
             'iconimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -23,11 +23,11 @@
 <body>
     <header>
         <div id = "head">
-            <h1><a href="/index"><img src="images/atlas.png"></a></h1>
+<h1><a href="{{ route('index') }}"><img src="{{ asset('images/atlas.png') }}" alt="Atlasロゴ"></a></h1>
             <div id="">
                 <div id="">
                     <div class="header_box">
-                        <p class="right">{{Auth::user()->name}}さん</p>
+                        <p class="right">{{Auth::user()->username}}さん</p>
                         <div class="menu-trigger"></div>
                         <img src="images/icon1.png">
                     </div>

@@ -133,3 +133,5 @@ Route::get('/top', function () {
 })->name('top');
 
 Route::get('/search', [FollowsController::class, 'index'])->name('search');
+
+Route::get('/index', 'PostsController@index')->name('index');

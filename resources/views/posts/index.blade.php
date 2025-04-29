@@ -31,11 +31,15 @@ TOPページ
         @foreach ($posts as $post)
             <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
                 <div class="post-header d-flex align-items-center mb-2">
-                    <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
-                        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                             alt="{{ $post->user->name }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
-                        <strong>{{ $post->user->name }}</strong>
-                    </a>
+@if ($post->user)
+    <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
+             alt="{{ $post->user->username }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
+        <strong>{{ $post->user->username }}</strong>
+    </a>
+@else
+    <p>ユーザー情報がありません</p>
+@endif
                 </div>
                 <p class="mt-2">{{ $post->post }}</p>
 
@@ -73,7 +77,11 @@ TOPページ
     <div class="mb-3">
         <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
     </div>
-<img src="{{ asset('images/edit.png') }}" alt="編集" style="width: 30px; height: 30px; border-radius: 5px;">
+<div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary" style="background: none; border: none;">
+        <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 30px; height: 30px; border-radius: 5px;">
+    </button>
+</div>
 </form>
             </div>
         </div>

@@ -30,8 +30,8 @@ class UsersController extends Controller
     {
         // バリデーション
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'. $user->id,
             'newpassword' => 'nullable|min:6|confirmed',
             'bio' => 'nullable|string',
             'iconimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -41,7 +41,7 @@ class UsersController extends Controller
         $user = Auth::user();
 
         // ユーザー情報を更新
-        $user->name = $request->name;
+        $user->username = $request->username;
         $user->email = $request->email;
 
         // パスワードが設定されていれば更新
@@ -118,7 +118,7 @@ public function toggleFollow($userId)
     {
         // バリデーション
         $request->validate([
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'bio' => 'nullable|string|max:1000',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // 画像のバリデーション
         ]);
@@ -133,7 +133,7 @@ public function toggleFollow($userId)
         }
 
         // 名前と自己紹介の更新
-        $user->name = $request->input('name');
+        $user->username = $request->input('username');
         $user->bio = $request->input('bio');
         $user->save();
 
@@ -170,8 +170,8 @@ public function search(Request $request)
     $user = auth()->user();
 
     // 検索処理（フォロワーとフォローの両方）
-    $followings = $user->followings()->where('name', 'like', "%{$query}%")->get();
-    $followers = $user->followers()->where('name', 'like', "%{$query}%")->get();
+    $followings = $user->followings()->where('username', 'like', "%{$query}%")->get();
+    $followers = $user->followers()->where('username', 'like', "%{$query}%")->get();
 
     return view('users.search', compact('query', 'followings', 'followers'));
 }
@@ -198,8 +198,8 @@ public function followingList(Request $request)
 
     if ($query) {
         $followingsQuery->where(function ($q) use ($query) {
-            $q->where('name', 'like', "%{$query}%")
-              ->orWhere('name', 'like', "%{$query}%");
+            $q->where('username', 'like', "%{$query}%")
+              ->orWhere('username', 'like', "%{$query}%");
         });
     }
 
@@ -221,8 +221,8 @@ public function followers(Request $request)
     // 検索クエリがあればフィルタリング
     if ($request->filled('query')) {
         $followersQuery = $followersQuery->where(function ($q) use ($query) {
-            $q->where('name', 'like', "%{$query}%")
-              ->orWhere('name', 'like', "%{$query}%");
+            $q->where('username', 'like', "%{$query}%")
+              ->orWhere('username', 'like', "%{$query}%");
         });
     }
 
@@ -242,7 +242,7 @@ public function showFollowers(Request $request)
     // 検索処理
     if ($query) {
         $followers = $followers->filter(function($follower) use ($query) {
-            return str_contains($follower->name, $query);
+            return str_contains($follower->username, $query);
         });
     }
 
@@ -259,7 +259,7 @@ public function following(Request $request)
     $followingsQuery = $user->followings();
 
     if ($query) {
-        $followingsQuery->where('name', 'like', '%' . $query . '%');
+        $followingsQuery->where('username', 'like', '%' . $query . '%');
     }
 
     $followings = $followingsQuery->get();

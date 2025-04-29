@@ -11,7 +11,7 @@
                 <a href="{{ route('users.show', $following->id) }}">
                     <img
                         src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                        alt="{{ $following->name }}'s Profile Image"
+                        alt="{{ $following->username }}'s Profile Image"
                         width="50" height="50">
                 </a>
                 <!-- ユーザー名もプロフィールページへリンク -->
@@ -32,8 +32,8 @@
                 <div class="post-header d-flex align-items-center mb-2">
                     <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
                         <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                             alt="{{ $post->user->name }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
-                        <strong>{{ $post->user->name }}</strong>
+                             alt="{{ $post->user->username }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
+                        <strong>{{ $post->user->username }}</strong>
                     </a>
                 </div>
                 <p class="mt-2">{{ $post->post }}</p>

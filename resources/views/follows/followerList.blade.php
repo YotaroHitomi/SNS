@@ -11,7 +11,7 @@
             <a href="{{ route('users.show', $follower->id) }}">
                <img
                    src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                   alt="{{ $follower->name }}'s Profile Image"
+                   alt="{{ $follower->username }}'s Profile Image"
                    width="50" height="50">
             </a>
         </li>
@@ -31,10 +31,10 @@
                     <!-- 投稿者のアイコン -->
                     <img
                         src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                        alt="{{ $follower->name }}'s Profile Image"
+                        alt="{{ $follower->username }}'s Profile Image"
                         width="50" height="50">
                 </a>
-                <p>{{ $post->user->name }}</p> <!-- ユーザー名を表示 -->
+                <p>{{ $post->user->username }}</p> <!-- ユーザー名を表示 -->
             </div>
             <div>
                 <p>{{ $post->post }}</p> <!-- 投稿内容 -->

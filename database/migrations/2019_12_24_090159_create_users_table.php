@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique(); // ユーザー名にユニーク制約を追加
+            $table->string('username')->unique(); // ユーザー名にユニーク制約を追加
             $table->string('email')->unique(); // メールもユニーク制約を追加
             $table->string('password');
             $table->string('profile_image')->nullable()->default('default-icon.png'); // デフォルト画像を設定

@@ -49,7 +49,7 @@
 
         <div id="side-bar">
             <div id="confirm">
-                <p>{{Auth::user()->name}}さんの</p>
+                <p>{{Auth::user()->username}}さんの</p>
                 <div>
                     <p>フォロー数</p>
                     <p>{{ Auth::user()->followings()->count() }}名</p>

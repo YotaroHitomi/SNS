@@ -88,27 +88,28 @@ TOPページ
     </div>
 </div>
 
-<!-- 削除確認モーダル -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content rounded-4">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 本当にこの投稿を削除しますか？
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-center">
                 <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">削除</button>
+                    <div class="d-flex justify-content-between w-100">
+                        <button type="submit" class="btn btn-danger px-4 py-2 me-2">OK</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     // 編集モーダル表示
@@ -164,17 +165,23 @@ TOPページ
     }
 
     .modal-dialog.modal-lg {
-        max-width: 50%;
+        max-width: 90%;
     }
 
     .modal-body {
         padding: 20px;
     }
 
-    #postContent {
-        height: 250px;
-        font-size: 16px;
-    }
+ #postContent {
+    width: 100%;
+    height: 300px;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 20px;
+    resize: none; /* ユーザーによるサイズ変更を無効にする場合 */
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
     .js-modal-open img,
     .js-delete-open img {

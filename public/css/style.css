@@ -28,7 +28,7 @@ header {
     flex: 0 0 19%;
     border-top: 1px solid #727272;
     width: 50%;
-    height: 10%;
+    height: 5%;
     margin-left: 25px;
 }
 
@@ -512,4 +512,62 @@ header {
 
 .post-header strong {
     font-size: 16px;
+}
+
+/* フォロー中ボタンのスタイル */
+.btn-following {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+}
+
+/* フォローしていないボタンのスタイル */
+.btn-not-following {
+    background-color: #00BFFF;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+}
+
+/* フォーム内ボタンのスタイル調整 */
+button {
+    border: none;
+    cursor: pointer;
+}
+
+/* フォロワーアイテムの間隔調整 */
+.follower-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    /* アイテム間のスペースを広げる */
+    margin-left: 150px;
+}
+
+.follower-item img {
+    margin-right: 20px;
+    /* アイコンとユーザー名・ボタンの間隔 */
+}
+
+/* 名前の間隔調整 */
+.follower-name {
+    margin-left: 10px;
+}
+
+/* フォローボタンと名前の間隔調整 */
+button {
+    margin-left: 15px;
+}
+
+/* フォローボタンを中央に配置 */
+.btn-following,
+.btn-not-following {
+    width: 150px;
+    text-align: center;
 }

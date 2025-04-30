@@ -1,7 +1,8 @@
 @extends('layouts.login')
 
 @section('content')
-    <p>Follower List</p>
+    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+        <p style="margin: 0;">Follower List</p>
 
 <!-- フォロワーユーザーの一覧 -->
 <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -17,6 +18,7 @@
         </li>
     @endforeach
 </ul>
+</div>
 
 <hr>
 
@@ -24,25 +26,34 @@
 
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)
-    @foreach($follower->posts as $post) <!-- フォロワーユーザーの投稿を表示 -->
-        <div style="width: 560px; height: 150px; overflow: hidden;">
-            <div class="post-header">
-                <a href="{{ route('users.show', $follower->id) }}">
-                    <!-- 投稿者のアイコン -->
+    @foreach($follower->posts as $post)
+        <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+            <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
+            <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
+                <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
                     <img
                         src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
                         alt="{{ $follower->username }}'s Profile Image"
-                        width="50" height="50">
+                        width="50" height="50"
+                        style="border-radius: 50%;">
+                    <span style="margin-left: 10px;">{{ $post->user->username }}</span>
                 </a>
-                <p>{{ $post->user->username }}</p> <!-- ユーザー名を表示 -->
             </div>
+
+            <!-- 投稿内容 -->
             <div>
-                <p>{{ $post->post }}</p> <!-- 投稿内容 -->
+                <p>{{ $post->post }}</p>
             </div>
-            <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
+
+            <!-- 投稿日時 -->
+               <div style="font-size: 0.9rem; color: #888; text-align: right;">
+        <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
+    </div>
+
         </div>
         <hr>
     @endforeach
 @endforeach
+
 
 @endsection

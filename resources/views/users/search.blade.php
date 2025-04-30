@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="followers-list">
-    <h1>{{ Auth::user()->name }} のフォロワー</h1>
 
     {{-- メッセージ --}}
     @if (session('success'))
@@ -11,7 +10,6 @@
 
     {{-- 検索フォーム --}}
     <div class="search-container">
-        <h2>ユーザー検索</h2>
         <form action="{{ route('followers.index') }}" method="GET" class="search-form d-flex align-items-center">
             <input type="text" name="query" placeholder="ユーザー名で検索" value="{{ request('query') }}" class="form-control">
             <button type="submit" class="btn btn-secondary btn-square">
@@ -35,24 +33,25 @@
                         @endphp
 
                         {{-- プロフィール画像 --}}
-                        <a href="{{ route('users.profile', $follower->id) }}">
-                            <img src="{{ asset('images/icon' . $iconNumber . '.png') }}" alt="{{ $follower->name }} のアイコン" class="rounded-circle mr-3" width="50" height="50">
+                        <a href="{{ route('users.profile', $follower->id) }}" class="d-flex align-items-center">
+                            <img src="{{ asset('images/icon' . $iconNumber . '.png') }}" alt="{{ $follower->username }} のアイコン" class="rounded-circle" width="50" height="50">
                         </a>
 
-                        <div>
-                            <p class="mb-0">{{ $follower->name }}</p>
-
-                            {{-- フォローボタン --}}
-                            @if (auth()->id() !== $follower->id)
-                                <form action="{{ route('toggleFollow', $follower->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-sm {{ auth()->user()->followings->contains($follower->id) ? 'btn-primary' : 'btn-danger' }}">
-                                        {{ auth()->user()->followings->contains($follower->id) ? 'フォロー解除' : 'フォロー' }}
-                                    </button>
-                                </form>
-                            @endif
+                        {{-- ユーザー名の表示（アイコンの横に配置） --}}
+                        <div class="follower-name ml-2">
+                            <p class="mb-0">{{ $follower->username }}</p>
                         </div>
+
+                        {{-- フォローボタン --}}
+                        @if (auth()->id() !== $follower->id)
+                            <form action="{{ route('toggleFollow', $follower->id) }}" method="POST" class="d-inline ml-3">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn {{ auth()->user()->followings->contains($follower->id) ? 'btn-following' : 'btn-not-following' }}">
+                                    {{ auth()->user()->followings->contains($follower->id) ? 'フォロー解除' : 'フォロー' }}
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 @endforeach
             </div>

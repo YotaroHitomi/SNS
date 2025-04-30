@@ -26,7 +26,7 @@
     <h1>フォローユーザーの投稿</h1>
 
     @foreach ($posts as $post)
-        <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+        <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー：アイコンと名前 -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <a href="{{ route('users.show', $post->user->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">

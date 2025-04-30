@@ -27,7 +27,7 @@
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)
     @foreach($follower->posts as $post)
-        <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+        <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
@@ -51,7 +51,6 @@
     </div>
 
         </div>
-        <hr>
     @endforeach
 @endforeach
 

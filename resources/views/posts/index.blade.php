@@ -15,7 +15,7 @@ TOPページ
                 <div class="d-flex align-items-center w-100">
                     <img src="{{ asset('images/icon1.png') }}" alt="User Icon">
 
-                    <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 150px; width: 70%;"></textarea>
+<textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 150px; width: 70%; padding: 15px 20px; font-size: 16px;"></textarea>
 
 <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px; align-items: center; justify-content: center; border: none;">
     <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
@@ -29,7 +29,7 @@ TOPページ
     <!-- フォローしているユーザーの投稿のみ表示 -->
     <div class="container">
         @foreach ($posts as $post)
-            <div style="width: 560px; min-height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+            <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
                 <div class="post-header d-flex align-items-center mb-2">
 @if ($post->user)
     <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
@@ -103,6 +103,7 @@ TOPページ
                     @method('DELETE')
                     <div class="d-flex justify-content-between w-100">
                         <button type="submit" class="btn btn-danger px-4 py-2 me-2">OK</button>
+
                     </div>
                 </form>
             </div>

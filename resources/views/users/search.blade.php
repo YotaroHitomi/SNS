@@ -20,7 +20,6 @@
             @endif
         </form>
         <hr>
-
         {{-- 検索結果 --}}
         @if($followers->isNotEmpty())
             <h3>検索結果</h3>

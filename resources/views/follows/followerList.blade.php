@@ -2,7 +2,7 @@
 
 @section('content')
     <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-        <p style="margin: 0;">Follower List</p>
+        <p style="margin-left:25px;">Follower List</p>
 
 <!-- フォロワーユーザーの一覧 -->
 <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -21,8 +21,6 @@
 </div>
 
 <hr>
-
-<h1>フォロワーユーザーの投稿</h1>
 
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)

@@ -3,7 +3,7 @@
 @section('content')
     <!-- フォローユーザー一覧 -->
     <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-        <p style="margin: 0;">Follow List</p>
+        <p style="margin-left:25px;">Follow List</p>
 
         <ul style="display: flex; flex-wrap: wrap; gap: 10px;">
             @foreach($followings as $following)
@@ -22,8 +22,6 @@
 
     <!-- フォローユーザーの投稿 -->
     <hr>
-
-    <h1>フォローユーザーの投稿</h1>
 
     @foreach ($posts as $post)
         <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">

@@ -19,9 +19,9 @@
         @if (auth()->user()->isFollowing($user))
             <form action="{{ route('user.unfollow', $user->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-danger" style="padding: 10px 20px; font-size: 14px; border-radius: 25px; background-color: #dc3545; border-color: #dc3545;">
-                フォロー解除
-            </button>
+               <button type="submit" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}" style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px">
+            {{ auth()->user()->followings->contains($user->id) ? 'フォロー解除' : 'フォロー' }}
+        </button>
         </form>
             </form>
         @else

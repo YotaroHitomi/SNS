@@ -12,15 +12,23 @@ TOPページ
                     <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
                 </div>
             @else
-                <div class="d-flex align-items-center w-100">
-                    <img src="{{ asset('images/icon1.png') }}" alt="User Icon">
+<div class="d-flex align-items-center w-100" style="position: relative;">
+    {{-- ユーザーアイコン --}}
+    <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
+         style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-bottom:100px">
 
-<textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required style="border: none; border-radius: 25px; height: 150px; width: 70%; padding: 15px 20px; font-size: 16px;"></textarea>
+    {{-- テキストエリア --}}
+    <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required
+        style="border: none; border-radius: 25px; height: 150px; width: 60%; padding: 15px 20px; font-size: 16px;"></textarea>
 
-<button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px; align-items: center; justify-content: center; border: none;">
-    <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
-</button>
-                </div>
+    {{-- 送信ボタン（左下に配置） --}}
+    <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px;
+        align-items: center; justify-content: center; border: none; position: absolute; bottom: 0; left: 70%;">
+        <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
+    </button>
+</div>
+
+
             @endguest
         </div>
         <hr>

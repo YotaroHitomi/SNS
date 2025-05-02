@@ -1,7 +1,6 @@
 @extends('layouts.login')
 
 @section('content')
-TOPページ
 <div class="container mt-3">
     {!! Form::open(['route' => 'posts.store', 'method' => 'POST']) !!}
         {{ csrf_field() }}
@@ -69,10 +68,10 @@ TOPページ
              style="width: 25px; height: 25px;">
     </button>
 <button type="button"
-        class="delete-btn js-delete-open"
-        data-post-id="{{ $post->id }}"
-        style="width: 25px; height: 25px; background: url('/images/trash.png') no-repeat center center; background-size: cover; border: none; padding: 0; margin: 0;">
-</button>
+            class="delete-btn js-delete-open"
+            data-post-id="{{ $post->id }}">
+        <img src="{{ asset('images/trash.png') }}" alt="削除" style="width: 25px; height: 25px;">
+    </button>
 </div>
         @endif
     </div>
@@ -169,14 +168,20 @@ TOPページ
         position: relative;
     }
 
-    .post-actions {
-        position: absolute;
-        bottom: 10px;
-        right: 25px;
-        display: flex;
-        gap: 5x;
-    }
+ .post-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 25px;
+    display: flex;
+    gap: 15px; /* ← ここでしっかり間隔を取る */
+}
 
+.post-actions button {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+}
     .modal.fade .modal-dialog {
         position: fixed;
         bottom: 0;

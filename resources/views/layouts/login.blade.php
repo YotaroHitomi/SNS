@@ -29,7 +29,8 @@
                     <div class="header_box">
                         <p class="right">{{ Auth::user()->username }}さん</p>
                         <div class="menu-trigger"></div>
-                        <img src="{{ asset('images/icon1.png') }}">
+                        <img src="{{ asset('images/icon1.png') }}" width="50" height="50">
+
                     </div>
                     <div>
                         <ul class="acordion">
@@ -53,12 +54,12 @@
         <div id="side-bar">
             <div id="confirm">
                 <p>{{ Auth::user()->username }}さんの</p>
-                <div>
+               <div style="margin-top:15px;">
                     <p>フォロー数 &nbsp;&nbsp;&nbsp;{{ Auth::user()->followings()->count() }}名</p>
                 </div>
                 <p class="btn"><a href="/follow-list">フォローリスト</a></p>
-                <div>
-                    <p>フォロワー数 &nbsp;&nbsp;&nbsp;{{ Auth::user()->followers()->count() }}名</p>
+                <div style="margin-top:15px;">
+                    <p>フォロワー数 {{ Auth::user()->followers()->count() }}名</p>
                 </div>
                 <p class="btn"><a href="/follower-list">フォロワーリスト</a></p>
             </div>

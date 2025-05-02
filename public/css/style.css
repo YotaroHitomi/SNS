@@ -27,23 +27,24 @@ header {
 #btn {
     flex: 0 0 19%;
     border-top: 1px solid #727272;
-    width: 50%;
-    height: 5%;
-    margin-left: 25px;
 }
 
 .btn {
     border-radius: 5px;
     color: white;
     text-align: center;
-    width: 65%;
-    height: 35px;
     background: #186AC9;
     margin-left: 90px;
 }
 
 .btn a {
-    color: white;
+    display: inline-block;
+    padding: 8px 8px;
+    background: #186AC9;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+
 }
 
 p.btn {
@@ -60,8 +61,8 @@ p.btn {
 
 .menu-trigger {
     position: relative;
-    width: 100px;
-    height: 64px;
+    width: 65px;
+    height: 65px;
 }
 
 #head {
@@ -108,6 +109,8 @@ p.btn {
     /* 全角の逆スラッシュ */
     right: 18px;
     /* 右から18pxの位置に指定*/
+    color: white;
+    font-weight: bold;
 }
 
 .menu-trigger::after {
@@ -115,6 +118,8 @@ p.btn {
     /* 全角のスラッシュ */
     right: 10px;
     /* 右から10pxの位置に指定*/
+    color: white;
+    font-weight: bold;
 }
 
 .menu-trigger.open::before {
@@ -603,4 +608,10 @@ button {
     right: 15px;
     font-size: 0.8rem;
     color: #888;
+}
+
+.username {
+    position: relative;
+    top: -20px;
+    /* お好みで調整。マイナス値で上に移動 */
 }

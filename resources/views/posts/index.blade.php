@@ -12,14 +12,14 @@ TOPページ
                     <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
                 </div>
             @else
-<div class="d-flex align-items-center w-100" style="position: relative;">
+<div class="d-flex align-items-center w-100" style="position: relative;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     {{-- ユーザーアイコン --}}
     <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
          style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-bottom:100px">
 
     {{-- テキストエリア --}}
-    <textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required
-        style="border: none; border-radius: 25px; height: 150px; width: 60%; padding: 15px 20px; font-size: 16px;"></textarea>
+<textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required
+    style="border: none; border-radius: 25px; height: 150px; width: 60%; padding: 15px 20px; font-size: 16px; resize: none;"></textarea>
 
     {{-- 送信ボタン（左下に配置） --}}
 <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px;
@@ -43,35 +43,37 @@ TOPページ
     <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
         <div class="post-header d-flex align-items-center mb-2">
             @if ($post->user)
-                <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
+                <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
                         alt="{{ $post->user->username }}'s Profile Image"
                         width="50" height="50" class="me-3 rounded-circle">
-                    <strong>{{ $post->user->username }}</strong>
+<strong class="username">{{ $post->user->username }}</strong>
+
                 </a>
             @else
                 <p>ユーザー情報がありません</p>
             @endif
         </div>
-       <p>&nbsp;&nbsp;&nbsp;
-        <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
+
+        <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
 
         <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
 
         @if($isOwnPost)
-            <div class="post-actions d-flex justify-content-end">
-                <button class="btn btn-warning js-modal-open me-2"
-                        data-id="{{ $post->id }}"
-                        data-content="{{ $post->post }}"
-                        style="background: none; border: none;">
-                    <img src="{{ asset('images/edit.png') }}" alt="編集"
-                         style="width: 30px; height: 30px; border-radius: 5px;">
-                </button>
-                <button type="button"
-        class="btn btn-danger js-delete-open delete-btn"
-        data-post-id="{{ $post->id }}">
+<div class="post-actions d-flex align-items-center" style="gap: 0; padding: 0; margin: 0;">
+    <button class="js-modal-open"
+            data-id="{{ $post->id }}"
+            data-content="{{ $post->post }}"
+            style="background: none; border: none; padding: 0; margin: 0;">
+        <img src="{{ asset('images/edit.png') }}" alt="編集"
+             style="width: 25px; height: 25px;">
+    </button>
+<button type="button"
+        class="delete-btn js-delete-open"
+        data-post-id="{{ $post->id }}"
+        style="width: 25px; height: 25px; background: url('/images/trash.png') no-repeat center center; background-size: cover; border: none; padding: 0; margin: 0;">
 </button>
-            </div>
+</div>
         @endif
     </div>
 @endforeach
@@ -170,9 +172,9 @@ TOPページ
     .post-actions {
         position: absolute;
         bottom: 10px;
-        right: 10px;
+        right: 25px;
         display: flex;
-        gap: 10px;
+        gap: 5x;
     }
 
     .modal.fade .modal-dialog {

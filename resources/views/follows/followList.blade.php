@@ -24,7 +24,7 @@
     <hr>
 
     @foreach ($posts as $post)
-        <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+        <div style="height: 125px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー：アイコンと名前 -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <a href="{{ route('users.show', $post->user->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
@@ -38,12 +38,12 @@
             </div>
 
             <!-- 投稿内容 -->
-            <p class="mt-2">{{ $post->post }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
 
             <!-- 投稿日時 -->
-               <div style="font-size: 0.9rem; color: #888; text-align: right;">
-        <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
-    </div>
+              <div class="post-date-top-right">
+    <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
+</div>
 
 
             <!-- 編集・削除ボタン（投稿者本人のみ表示） -->

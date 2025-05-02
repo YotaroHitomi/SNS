@@ -25,7 +25,7 @@
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)
     @foreach($follower->posts as $post)
-        <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
+        <div style="height: 125px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
@@ -40,13 +40,13 @@
 
             <!-- 投稿内容 -->
             <div>
-                <p>{{ $post->post }}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
             </div>
 
             <!-- 投稿日時 -->
-               <div style="font-size: 0.9rem; color: #888; text-align: right;">
-        <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
-    </div>
+               <div class="post-date-top-right">
+    <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
+</div>
 
         </div>
     @endforeach

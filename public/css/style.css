@@ -36,14 +36,18 @@ header {
     border-radius: 5px;
     color: white;
     text-align: center;
-    width: 50%;
-    height: 100%;
+    width: 65%;
+    height: 35px;
     background: #186AC9;
     margin-left: 90px;
 }
 
 .btn a {
     color: white;
+}
+
+p.btn {
+    margin-top: 25px;
 }
 
 #confirm {
@@ -404,6 +408,7 @@ header {
     margin-bottom: 20px;
     margin-right: 250px;
     align-self: center;
+
 }
 
 .profile-image img {
@@ -516,6 +521,7 @@ header {
 
 /* フォロー中ボタンのスタイル */
 .btn-following {
+    background-color: #00BFFF;
     background-color: red;
     color: white;
     padding: 10px 20px;
@@ -526,7 +532,7 @@ header {
 
 /* フォローしていないボタンのスタイル */
 .btn-not-following {
-    background-color: #00BFFF;
+
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -570,4 +576,31 @@ button {
 .btn-not-following {
     width: 150px;
     text-align: center;
+}
+
+.delete-btn {
+    width: 40px;
+    height: 40px;
+    background: url('/images/trash.png') no-repeat center center;
+    background-size: 25px 25px;
+    border: none;
+    border-radius: 5px;
+    transition: background-image 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-image: url('/images/trash-h.png');
+}
+
+.post {
+    position: relative;
+    /* 親を relative にしておくのがポイント */
+}
+
+.post-date-top-right {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 0.8rem;
+    color: #888;
 }

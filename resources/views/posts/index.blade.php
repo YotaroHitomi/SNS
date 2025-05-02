@@ -22,10 +22,10 @@ TOPページ
         style="border: none; border-radius: 25px; height: 150px; width: 60%; padding: 15px 20px; font-size: 16px;"></textarea>
 
     {{-- 送信ボタン（左下に配置） --}}
-    <button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px;
+<button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px;
         align-items: center; justify-content: center; border: none; position: absolute; bottom: 0; left: 70%;">
-        <i class="fas fa-paper-plane" style="font-size: 24px;"></i>
-    </button>
+    <img src="/images/post.png" alt="Post" style="width: 50px; height: 50px;">
+</button>
 </div>
 
 
@@ -36,37 +36,46 @@ TOPページ
 
     <!-- フォローしているユーザーの投稿のみ表示 -->
     <div class="container">
-        @foreach ($posts as $post)
-            <div style="height: 150px;" class="post mb-4 border rounded p-3 bg-light">
-                <div class="post-header d-flex align-items-center mb-2">
-@if ($post->user)
-    <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
-        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-             alt="{{ $post->user->username }}'s Profile Image" width="50" height="50" class="me-3 rounded-circle">
-        <strong>{{ $post->user->username }}</strong>
-    </a>
-@else
-    <p>ユーザー情報がありません</p>
-@endif
-                </div>
-                <p class="mt-2">{{ $post->post }}</p>
+@foreach ($posts as $post)
+    @php
+        $isOwnPost = Auth::check() && Auth::user()->id === $post->user_id;
+    @endphp
+    <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
+        <div class="post-header d-flex align-items-center mb-2">
+            @if ($post->user)
+                <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
+                    <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
+                        alt="{{ $post->user->username }}'s Profile Image"
+                        width="50" height="50" class="me-3 rounded-circle">
+                    <strong>{{ $post->user->username }}</strong>
+                </a>
+            @else
+                <p>ユーザー情報がありません</p>
+            @endif
+        </div>
+       <p>&nbsp;&nbsp;&nbsp;
+        <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
 
-                <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
+        <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
 
-                @if(Auth::check() && Auth::user()->id == $post->user_id)
-                    <div class="post-actions d-flex justify-content-end">
-                        <button class="btn btn-warning js-modal-open me-2" data-id="{{ $post->id }}" data-content="{{ $post->post }}" style="background: none; border: none;">
-                            <img src="{{ asset('images/edit.png') }}" alt="編集" style="width: 30px; height: 30px; border-radius: 5px;">
-                        </button>
-
-                        <!-- 削除ボタン：モーダル表示 -->
-                        <button type="button" class="btn btn-danger js-delete-open" data-post-id="{{ $post->id }}" style="background: none; border: none;">
-                            <img src="{{ asset('images/trash.png') }}" alt="削除" style="width: 20px; height: 20px; border-radius: 5px;">
-                        </button>
-                    </div>
-                @endif
+        @if($isOwnPost)
+            <div class="post-actions d-flex justify-content-end">
+                <button class="btn btn-warning js-modal-open me-2"
+                        data-id="{{ $post->id }}"
+                        data-content="{{ $post->post }}"
+                        style="background: none; border: none;">
+                    <img src="{{ asset('images/edit.png') }}" alt="編集"
+                         style="width: 30px; height: 30px; border-radius: 5px;">
+                </button>
+                <button type="button"
+        class="btn btn-danger js-delete-open delete-btn"
+        data-post-id="{{ $post->id }}">
+</button>
             </div>
-        @endforeach
+        @endif
+    </div>
+@endforeach
+
     </div>
 </div>
 

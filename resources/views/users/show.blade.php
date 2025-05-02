@@ -49,7 +49,7 @@
         <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</h5>
         <p style="font-size: 1rem; color: #333;">{{ $post->content }}</p>
        <div class="post-date-top-right">
-    <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
+   <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
 </div>
     </div>
 @endforeach

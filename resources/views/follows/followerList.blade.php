@@ -1,11 +1,12 @@
 @extends('layouts.login')
 
 @section('content')
-    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+<div style="display: flex; gap: 15px; font-size:20px; flex-wrap: wrap; min-height: 90px; padding: 20px 0; margin-top:25px;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <p style="margin-left:25px;">Follower List</p>
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- フォロワーユーザーの一覧 -->
-<ul style="display: flex; flex-wrap: wrap; gap: 10px;">
+<ul style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:-5px;">
     @foreach($followers as $follower)
         <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
             <!-- フォロワーユーザーのプロフィール画像 -->
@@ -25,7 +26,7 @@
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)
     @foreach($follower->posts as $post)
-        <div style="height: 125px;" class="post mb-4 border rounded p-3 bg-light">
+        <div style="height: 90px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
@@ -45,7 +46,7 @@
 
             <!-- 投稿日時 -->
                <div class="post-date-top-right">
-    <small>投稿日: {{ $post->created_at->diffForHumans() }}</small>
+    <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
 </div>
 
         </div>

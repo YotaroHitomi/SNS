@@ -5,7 +5,7 @@
 <div class="profile-container">
   <!-- プロフィール画像の表示 -->
   <div class="profile-image">
-    <img src="images/icon1.png" alt="Profile Icon" style="width: 60px; height: 60px; border-radius: 50%;">
+    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%;">
   </div>
 
   <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">
@@ -44,10 +44,10 @@
         <dd><input type="password" name="newpassword_confirmation"></dd>
       </div>
 
-      <div class="form-row">
-        <dt>Bio</dt>
-        <dd><input type="text" name="bio" value="{{ old('bio', auth()->user()->bio) }}"></dd>
-      </div>
+<div class="form-row" style="margin-bottom: 20px;">
+  <dt>Bio</dt>
+  <dd><input type="text" name="bio" value="{{ old('bio', auth()->user()->bio) }}"></dd>
+</div>
 
       <div class="form-row">
         <dt>Profile Icon</dt>
@@ -55,7 +55,9 @@
       </div>
     </dl>
 
-    <input type="submit" name="profileupdate" value="更新" class="btn-update">
+<input type="submit" name="profileupdate" value="更新"
+  style="background-color: red; color: white; width: 120px; height: 50px; border: none; border-radius: 15px; font-weight: bold; font-size: 16px;">
+
   </form>
 </div>
 

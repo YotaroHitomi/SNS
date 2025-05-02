@@ -145,7 +145,7 @@ p.btn {
 
 .post {
     border-bottom: 1px solid #C0C0C0;
-    margin-top: 30px;
+    margin-top: 15px;
     height: 70px;
     border-width: 5px;
 }
@@ -386,6 +386,7 @@ p.btn {
 .search-form {
     display: flex;
     align-items: center;
+    padding: 50px;
 }
 
 /* 検索ワードの表示をボタンの隣に配置 */
@@ -396,7 +397,7 @@ p.btn {
 
 /* 検索フォームの入力フィールドのスタイル調整 */
 .search-form input {
-    width: 200px;
+    width: 250px;
     margin-right: 10px;
 }
 
@@ -430,7 +431,7 @@ p.btn {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    margin-right: 100px;
+    margin-right: 200px;
     /* 少し右寄せ */
     margin-left: auto;
     /* 左側を自動調整で右寄せ */
@@ -439,7 +440,9 @@ p.btn {
 .UserProfile {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 35px;
+    margin-right: 65px;
+    margin-top: -50px;
 }
 
 .form-row {
@@ -452,7 +455,7 @@ p.btn {
 .UserProfile dt {
     font-weight: bold;
     font-size: 14px;
-    margin-right: 20px;
+    margin-right: 125px;
     width: 30%;
     text-align: right;
 }
@@ -464,16 +467,17 @@ p.btn {
 }
 
 .UserProfile dd input {
-    width: 100%;
+    width: 150%;
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f0f0f0;
+    margin-left: -50px;
 }
 
 .UserProfile dd input[type="file"] {
-    padding: 4px;
+    padding: 35px;
     font-size: 14px;
     background-color: #f0f0f0;
 }
@@ -558,7 +562,7 @@ button {
     align-items: center;
     margin-bottom: 20px;
     /* アイテム間のスペースを広げる */
-    margin-left: 150px;
+    margin-left: 250px;
 }
 
 .follower-item img {

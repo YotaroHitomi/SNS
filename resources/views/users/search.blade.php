@@ -10,15 +10,23 @@
 
     {{-- 検索フォーム --}}
     <div class="search-container">
-        <form action="{{ route('followers.index') }}" method="GET" class="search-form d-flex align-items-center">
-            <input type="text" name="query" placeholder="ユーザー名で検索" value="{{ request('query') }}" class="form-control">
-            <button type="submit" class="btn btn-secondary btn-square">
-                <img src="{{ asset('images/search.png') }}" alt="検索" style="width: 20px; height: 20px;">
-            </button>
-            @if(request('query'))
-                <p class="ml-3 mb-0">検索ワード: <strong>{{ request('query') }}</strong></p>
-            @endif
-        </form>
+<form action="{{ route('followers.index') }}" method="GET" class="search-form d-flex align-items-center" style="max-width: 600px; margin-bottom: 20px;">
+    <input type="text" name="query" placeholder="ユーザー名"
+        value="{{ request('query') }}"
+        class="form-control mr-2"
+        style="height: 50px; font-size: 18px;">
+
+    <button type="submit" class="btn btn-secondary d-flex align-items-center justify-content-center"
+        style="height: 50px; width: 50px; padding: 0; margin-left:25px;">
+        <img src="{{ asset('images/search.png') }}" alt="検索"
+            style="width: 35px; height: 35px; padding:5px;">
+    </button>
+
+    @if(request('query'))
+        <p class="ml-3 mb-0">検索ワード: <strong>{{ request('query') }}</strong></p>
+    @endif
+</form>
+
         <hr>
         {{-- 検索結果 --}}
         @if($followers->isNotEmpty())

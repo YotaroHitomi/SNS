@@ -22,7 +22,6 @@
         <hr>
         {{-- 検索結果 --}}
         @if($followers->isNotEmpty())
-            <h3>検索結果</h3>
             <div class="follows-list">
                 @foreach ($followers as $follower)
                     <div class="follower-item d-flex align-items-center mb-3">

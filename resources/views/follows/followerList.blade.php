@@ -27,7 +27,7 @@
     @foreach($follower->posts as $post)
         <div style="height: 125px;" class="post mb-4 border rounded p-3 bg-light">
             <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
-            <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
+            <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
                     <img
                         src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
@@ -40,7 +40,7 @@
 
             <!-- 投稿内容 -->
             <div>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
             </div>
 
             <!-- 投稿日時 -->

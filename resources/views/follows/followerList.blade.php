@@ -11,10 +11,11 @@
         <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
             <!-- フォロワーユーザーのプロフィール画像 -->
             <a href="{{ route('users.show', $follower->id) }}">
-               <img
-                   src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                   alt="{{ $follower->username }}'s Profile Image"
-                   width="50" height="50">
+<img src="{{ asset('images/' . $follower->profile_image) }}"
+     alt="{{ $follower->username }}'s Profile Image"
+     width="50" height="50"
+     class="rounded-circle object-fit-cover"
+     style="object-fit: cover; border-radius: 50%;">
             </a>
         </li>
     @endforeach
@@ -30,11 +31,13 @@
             <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
-                    <img
-                        src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                        alt="{{ $follower->username }}'s Profile Image"
-                        width="50" height="50"
-                        style="border-radius: 50%;">
+ <img
+    src="{{ asset('images/' . $post->user->profile_image) }}"
+    alt="{{ $post->user->username }}'s Profile Image"
+    width="50" height="50"
+    class="rounded-circle object-fit-cover"
+    style="object-fit: cover; border-radius: 50%;">
+
                     <span style="margin-left: 10px;">{{ $post->user->username }}</span>
                 </a>
             </div>

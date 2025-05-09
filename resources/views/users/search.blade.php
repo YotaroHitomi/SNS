@@ -41,7 +41,11 @@
 
                         {{-- プロフィール画像 --}}
                         <a href="{{ route('users.profile', $follower->id) }}" class="d-flex align-items-center">
-                            <img src="{{ asset('images/icon' . $iconNumber . '.png') }}" alt="{{ $follower->username }} のアイコン" class="rounded-circle" width="50" height="50">
+<img src="{{ asset('images/' . $follower->profile_image) }}"
+     alt="{{ $follower->username }}'s Profile Image"
+     width="50" height="50"
+     class="me-3 rounded-circle object-fit-cover"
+     style="object-fit: cover;">
                         </a>
 
                         {{-- ユーザー名の表示（アイコンの横に配置） --}}

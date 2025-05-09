@@ -5,8 +5,11 @@
     <!-- 左側：プロフィール画像と情報 -->
     <div style="display: flex; align-items: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- プロフィール画像 -->
-        <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}" alt="{{ $user->username }}'s Profile Image" width="40" height="40" style="border-radius: 50%; margin-right: 20px;">
-
+<img src="{{ asset('images/' . $user->profile_image) }}"
+     alt="{{ $user->username }}'s Profile Image"
+     width="50" height="50"
+     class="me-3 rounded-circle"
+     style="object-fit: cover;">
         <!-- ユーザー名と自己紹介 -->
         <div style="max-width: 500px;">&nbsp;&nbsp;
             <h1 style="margin-bottom: 8px;">name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }}</h1>&nbsp;&nbsp;
@@ -43,7 +46,11 @@
             @php
                 $iconNumber = ($post->user->id % 7) + 1;
             @endphp
-            <img src="{{ asset('images/icon' . $iconNumber . '.png') }}" alt="{{ $post->user->username }} のアイコン" class="rounded-circle" width="40" height="40" style="margin-right: 10px;">
+<img src="{{ asset('images/' . $user->profile_image) }}"
+     alt="{{ $user->username }}'s Profile Image"
+     width="50" height="50"
+     class="me-3 rounded-circle"
+     style="object-fit: cover;">
             <strong>{{ $post->user->username }}</strong>
         </div>
         <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</h5>

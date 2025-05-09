@@ -43,9 +43,10 @@
         <div class="post-header d-flex align-items-center mb-2">
             @if ($post->user)
                 <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <img src="{{ asset('images/icon' . rand(1, 7) . '.png') }}"
-                        alt="{{ $post->user->username }}'s Profile Image"
-                        width="50" height="50" class="me-3 rounded-circle">
+                    <img src="{{ asset('images/' . $post->user->profile_image) }}"
+     alt="{{ $post->user->username }}'s Profile Image"
+     width="50" height="50" class="me-3 rounded-circle">
+
 <strong class="username">{{ $post->user->username }}</strong>
 
                 </a>

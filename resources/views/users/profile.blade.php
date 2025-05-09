@@ -55,9 +55,7 @@
       </div>
     </dl>
 
-<input type="submit" name="profileupdate" value="更新"
-  style="background-color: red; color: white; width: 120px; height: 50px; border: none; border-radius: 15px; font-weight: bold; font-size: 16px;">
-
+    <input type="submit" name="profileupdate" value="更新" class="btn-update">
   </form>
 </div>
 

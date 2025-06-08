@@ -67,6 +67,13 @@
     background-color: #000080; /* ブルー */
     color: #fff;               /* 白い文字 */
 }
+    .right {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 16px;
+    }
     </style>
 </head>
 <body>

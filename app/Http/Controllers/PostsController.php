@@ -32,9 +32,13 @@ public function index()
     public function store(Request $request)
     {
         // バリデーション
-        $validated = $request->validate([
-            'post' => 'required|max:255', // 投稿内容が必須で255文字以内
-        ]);
+    $request->validate([
+        'post' => 'required|string|min:1|max:150',
+    ], [
+        'post.required' => '入力必須です。',
+        'post.min' => '1文字以上入力してください。',
+        'post.max' => '150文字以内で入力してください。',
+    ]);
 
         // 新しい投稿を作成
         $post = new Post();

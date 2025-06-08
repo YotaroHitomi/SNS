@@ -6,33 +6,33 @@
         {{ csrf_field() }}
         <div class="row mb-4">
             @guest
-                <div class="mx-auto">
-                    <a class="btn btn-primary" href="{{ route('login') }}">ログインしてツイートする</a>
-                    <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
-                </div>
-            @else
-<div class="d-flex align-items-center w-100" style="position: relative;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    {{-- ユーザーアイコン --}}
-    <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
-         style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-bottom:100px">
-
-    {{-- テキストエリア --}}
-<textarea name="post" class="form-control" placeholder="投稿内容を入力してください" required
-    style="border: none; border-radius: 25px; height: 150px; width: 60%; padding: 15px 20px; font-size: 16px; resize: none;"></textarea>
-
-    {{-- 送信ボタン（左下に配置） --}}
-<button type="submit" class="btn btn-primary ms-2" style="width: 60px; height: 60px; padding: 0; border-radius: 10px;
-        align-items: center; justify-content: center; border: none; position: absolute; bottom: 0; left: 70%;">
-    <img src="/images/post.png" alt="Post" style="width: 50px; height: 50px;">
-</button>
-</div>
-
-
-            @endguest
+        <div class="mx-auto">
+            <a class="btn btn-primary" href="{{ route('login') }}">ログインしてツイートする</a>
+            <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
         </div>
-        <hr>
-    {!! Form::close() !!}
+    @else
+<div class="d-flex align-items-center w-100" style="position: relative;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{-- ユーザーアイコン --}}
+            <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
+                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px">
 
+            {{-- テキストエリア --}}
+            <textarea name="post"
+                      class="form-control @error('post') is-invalid @enderror"
+                      placeholder="投稿内容を入力してください"
+                      style="border: none; border-radius: 25px; height: 125px; width: 60%; padding: 15px 20px; font-size: 16px; resize: none;">{{ old('post') }}</textarea>
+
+            {{-- 投稿ボタン --}}
+            <button type="submit" class="btn btn-primary ms-2"
+                style="width: 60px; height: 60px; border-radius: 10px; border: none; position: absolute; bottom: 0; left: 70%;">
+                <img src="/images/post.png" alt="Post" style="width: 50px; height: 50px;">
+            </button>
+        </div>
+    @endguest
+</div>
+<hr>
+
+{!! Form::close() !!}
     <!-- フォローしているユーザーの投稿のみ表示 -->
     <div class="container">
 @foreach ($posts as $post)

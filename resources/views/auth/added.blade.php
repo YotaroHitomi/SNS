@@ -3,20 +3,32 @@
 @section('content')
 
 <div class="text-content">
-<div id="clear">
+  <div id="clear">
 
-  @if(session('msg'))
-<p class="msg">
-{{ session('msg') }}さん
-</p>
-@endif
-  <p>ようこそ！AtlasSNSへ！</p>
-  <p>ユーザー登録が完了しました。</p>
-  <p>早速ログインをしてみましょう。</p>
+    @if(session('registered_username'))
+      <p class="msg">
+        {{ session('registered_username') }}さん
+      </p>
+    @endif
 
-  <p class="btn"><a href="/login">ログイン画面へ</a></p>
+    <p style="margin-bottom: 20px;">ようこそ！AtlasSNSへ！</p>
+    <p>ユーザー登録が完了しました。</p>
+    <p style="margin-bottom: 40px;">早速ログインをしてみましょう。</p>
+
+    <p class="btn" style="margin-top: 30px;">
+      <a href="/login" style="
+        background-color: red;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+      ">
+        ログイン画面へ
+      </a>
+    </p>
+
+  </div>
 </div>
 
 @endsection
-
-</div>

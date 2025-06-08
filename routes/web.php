@@ -135,3 +135,5 @@ Route::get('/top', function () {
 Route::get('/search', [FollowsController::class, 'index'])->name('search');
 
 Route::get('/index', 'PostsController@index')->name('index');
+
+Route::get('/added', 'Auth\RegisterController@added')->name('register.added');

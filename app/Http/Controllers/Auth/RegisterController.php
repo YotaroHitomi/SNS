@@ -39,31 +39,36 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function register(Request $request){
-        if($request->isMethod('post')){
-
+public function register(Request $request)
+{
+    if ($request->isMethod('post')) {
         $validated = $request->validate([
-            'name' => 'required|max:12|min:2',
+            'username' => 'required|max:12|min:2',
             'email' => 'required|max:40|min:5|unique:users,email|email',
             'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
         ]);
 
-            $name = $request->input('name');
-            $email = $request->input('email');
-            $password = $request->input('password');
+        $name = $request->input('username');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-            User::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => bcrypt($password),
-            ]);
-            \Session::flash('msg' , $name);
-            return redirect('added');
-        }
-        return view('auth.register');
+        User::create([
+            'username' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
+        ]);
+
+        // セッションに登録済みユーザー名を保存
+        session()->flash('registered_username', $name);
+
+        return redirect('added');
     }
 
-    public function added(){
-        return view('auth.added');
-    }
+    return view('auth.register');
+}
+
+public function added()
+{
+    return view('auth.added');
+}
 }

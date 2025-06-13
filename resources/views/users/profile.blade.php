@@ -5,7 +5,7 @@
 <div class="profile-container">
   <!-- プロフィール画像の表示 -->
   <div class="profile-image">
-    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:35px ; margin-bottom:-25px; ">
+    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:150px ; margin-bottom:-25px; ">
   </div>
 
   <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">
@@ -25,22 +25,22 @@
 
     <dl class="UserProfile">
       <div class="form-row">
-        <dt>Username</dt>
+        <dt>ユーザ名</dt>
         <dd><input type="text" name="username" value="{{ old('name', auth()->user()->username) }}"></dd>
       </div>
 
 <div class="form-row">
-  <dt>Email Address</dt>
+  <dt>Eメールアドレス</dt>
   <dd><input type="text" name="email" value="{{ old('email', auth()->user()->email) }}"></dd>
 </div>
 
       <div class="form-row">
-        <dt>Password</dt>
+        <dt>パスワード</dt>
         <dd><input type="password" name="newpassword"></dd>
       </div>
 
       <div class="form-row">
-        <dt>Confirm Password</dt>
+        <dt>パスワード確認</dt>
         <dd><input type="password" name="newpassword_confirmation"></dd>
       </div>
 
@@ -50,7 +50,7 @@
 </div>
 
       <div class="form-row">
-        <dt>Profile Icon</dt>
+        <dt>アイコン画像</dt>
         <dd><input type="file" name="iconimage"></dd>
       </div>
     </dl>

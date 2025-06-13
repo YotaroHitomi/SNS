@@ -81,8 +81,8 @@ class FollowsController extends Controller
     // 検索キーワードがある場合、フィルタリングする
     if ($query) {
         $followersQuery = $followersQuery->where(function($q) use ($query) {
-            $q->where('name', 'like', "%{$query}%")
-              ->orWhere('name', 'like', "%{$query}%");
+            $q->where('username', 'like', "%{$query}%")
+              ->orWhere('username', 'like', "%{$query}%");
         });
     }
 

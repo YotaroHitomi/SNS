@@ -5,7 +5,7 @@
 <div class="profile-container">
   <!-- プロフィール画像の表示 -->
   <div class="profile-image">
-    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%;">
+    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:35px ; margin-bottom:-25px; ">
   </div>
 
   <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">

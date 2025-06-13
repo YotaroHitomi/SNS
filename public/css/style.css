@@ -397,7 +397,7 @@ p.btn {
 
 /* 検索フォームの入力フィールドのスタイル調整 */
 .search-form input {
-    width: 250px;
+    width: 300px;
     margin-right: 10px;
 }
 
@@ -618,4 +618,39 @@ button {
     position: relative;
     top: -20px;
     /* お好みで調整。マイナス値で上に移動 */
+}
+
+.error-box {
+
+    /* 最低高さを確保してフォームの位置ズレ防止 */
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #721c24;
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+    margin-left: 120px;
+}
+
+.btn-update {
+    display: block;
+    margin: 40px auto 0;
+    width: 250px;
+    padding: 12px 0;
+    font-size: 18px;
+    border-radius: 30px;
+    background-color: #dc3545;
+    /* Bootstrap 赤 */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.UserProfile dd input[type="file"] {
+    padding: 10px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }

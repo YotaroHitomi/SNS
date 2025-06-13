@@ -1,6 +1,7 @@
 @extends('layouts.login')
 
 @section('content')
+TOPページ
 <div class="container mt-3">
     {!! Form::open(['route' => 'posts.store', 'method' => 'POST']) !!}
         {{ csrf_field() }}
@@ -14,17 +15,29 @@
 <div class="d-flex align-items-center w-100" style="position: relative;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {{-- ユーザーアイコン --}}
             <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
-                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px">
+                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px ; margin-bottom:-130px;">
+
+@if ($errors->any())
+    <div class="alert alert-danger error-box">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@else
+    <div class="error-box" style="visibility: hidden;">&nbsp;</div>
+@endif
 
             {{-- テキストエリア --}}
             <textarea name="post"
                       class="form-control @error('post') is-invalid @enderror"
                       placeholder="投稿内容を入力してください"
-                      style="border: none; border-radius: 25px; height: 125px; width: 60%; padding: 15px 20px; font-size: 16px; resize: none;">{{ old('post') }}</textarea>
+                      style="border: none; border-radius: 25px; height: 125px; width: 60%; padding: 15px 20px; font-size: 16px; resize: none; margin-left:120px;">{{ old('post') }}</textarea>
 
             {{-- 投稿ボタン --}}
             <button type="submit" class="btn btn-primary ms-2"
-                style="width: 60px; height: 60px; border-radius: 10px; border: none; position: absolute; bottom: 0; left: 70%;">
+                style="width: 60px; height: 60px; border-radius: 10px; border: none; position: absolute; bottom: 0; left: 75%;">
                 <img src="/images/post.png" alt="Post" style="width: 50px; height: 50px;">
             </button>
         </div>
@@ -85,30 +98,75 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- 編集モーダル -->
+<!-- 編集モーダル -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-4">
+  <div class="modal-dialog" style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-width: 900px;
+    width: 95vw;
+    margin: 0 auto; /* 横中央 */
+  ">
+    <div class="modal-content" style="
+      background-color: #fff;
+      padding: 20px;
+      border: 1.5px solid #ccc;
+      border-radius: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+    ">
 
-            <div class="modal-body">
-<form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
-    @csrf
-    @method('PUT')
-    <div class="mb-3">
-        <textarea id="postContent" name="post" class="form-control" required style="border-radius: 25px; height: 250px; width: 100%;"></textarea>
-    </div>
-<div class="d-flex justify-content-end">
-    <button type="submit" class="btn btn-primary" style="background: none; border: none;">
-        <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 30px; height: 30px; border-radius: 5px;">
-    </button>
-</div>
-</form>
-            </div>
+      <form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
+        @csrf
+        @method('PUT')
+
+        <div class="modal-body" style="padding: 0;">
+          <textarea id="postContent"
+                    name="post"
+                    class="form-control"
+                    required
+                    placeholder="投稿内容を編集してください..."
+                    style="
+                      width: 100%;
+                      height: 300px;
+                      font-size: 18px;
+                      padding: 15px;
+                      border: 1px solid #ddd;
+                      border-radius: 8px;
+                      background-color: #fff;
+                      resize: none;
+                      box-sizing: border-box;
+                      margin-bottom: 20px;
+                    "></textarea>
         </div>
-    </div>
+
+<div class="modal-footer" style="
+  justify-content: center;
+  border-top: none;
+  padding-top: 0;
+  padding-bottom: 0;
+">
+  <button type="submit" style="
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  ">
+    <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 40px; height: 40px;">
+  </button>
 </div>
 
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal show d-block" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true" style="background: none;">
+    <div class="modal-dialog modal-sm modal-dialog-centered custom-delete-modal">
         <div class="modal-content rounded-4">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
@@ -122,13 +180,14 @@
                     @method('DELETE')
                     <div class="d-flex justify-content-between w-100">
                         <button type="submit" class="btn btn-danger px-4 py-2 me-2">OK</button>
-
+                        <button type="button" class="btn btn-secondary px-4 py-2 js-cancel-delete">キャンセル</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -150,8 +209,21 @@
         button.addEventListener('click', function () {
             const postId = this.dataset.postId;
             document.getElementById('deleteForm').action = `/posts/${postId}`;
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            deleteModal.show();
+        });
+    });
+        // 削除確認モーダル表示
+    document.querySelectorAll('.js-delete-open').forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.dataset.postId;
+            document.getElementById('deleteForm').action = `/posts/${postId}`;
+            document.getElementById('deleteConfirmModal').style.display = 'block';
+        });
+    });
+
+    // キャンセルボタンでモーダル非表示
+    document.querySelectorAll('.js-cancel-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            document.getElementById('deleteConfirmModal').style.display = 'none';
         });
     });
 </script>
@@ -214,5 +286,24 @@
         object-fit: cover;
         border-radius: 5px;
     }
+
+        .custom-delete-modal {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1055; /* Bootstrapモーダルと同等のレイヤー */
+    }
+
+    #deleteConfirmModal {
+        background-color: transparent !important; /* 背景暗転を無効に */
+    }
+
+
+
+    .modal-backdrop.show {
+    background-color: rgba(255, 255, 255, 1) !important;
+    opacity: 1 !important;
+}
 </style>
 @endsection

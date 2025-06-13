@@ -8,6 +8,7 @@
         max-width: 400px;
         margin: 50px auto;
         color: #fff;
+        text-align: left; /* フォーム全体を左寄せ */
     }
 
     h2 {
@@ -25,6 +26,7 @@
         display: block;
         font-weight: bold;
         margin-bottom: 8px;
+        text-align: left; /* ラベルを左寄せ */
     }
 
     .input {
@@ -41,6 +43,7 @@
         font-size: 14px;
         margin-bottom: 5px;
         display: block;
+        text-align: left; /* エラーメッセージも左寄せ */
     }
 
     .submit-button {
@@ -77,7 +80,7 @@
 
     <div class="input-block">
         @if ($errors->has('username'))
-            <span class="invalid-feedback" role="alert">{{ $errors->first('name') }}</span>
+            <span class="invalid-feedback" role="alert">{{ $errors->first('username') }}</span>
         @endif
         {{ Form::label('username', 'ユーザー名') }}
         {{ Form::text('username', null, ['class' => 'input']) }}

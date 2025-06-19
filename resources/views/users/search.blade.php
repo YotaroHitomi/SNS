@@ -10,7 +10,9 @@
 
     {{-- 検索フォーム --}}
     <div class="search-container">
-<form action="{{ route('followers.index') }}" method="GET" class="search-form d-flex align-items-center" style="max-width: 600px; margin-bottom: 20px;">
+<form action="{{ route('followers.index') }}" method="GET"
+    class="search-form d-flex align-items-center w-100"
+    style="max-width: 900px; margin-bottom: 20px;">
     <input type="text" name="query" placeholder="ユーザー名"
         value="{{ request('query') }}"
         class="form-control mr-2"
@@ -28,8 +30,8 @@
 </form>
 
         <hr>
-        {{-- 検索結果 --}}
         @if($followers->isNotEmpty())
+            <h3>検索結果</h3>
             <div class="follows-list">
                 @foreach ($followers as $follower)
                     <div class="follower-item d-flex align-items-center mb-3">

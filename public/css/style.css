@@ -397,7 +397,7 @@ p.btn {
 
 /* 検索フォームの入力フィールドのスタイル調整 */
 .search-form input {
-    width: 300px;
+    width: 350px;
     margin-right: 10px;
 }
 
@@ -513,10 +513,6 @@ p.btn {
     justify-content: center;
     cursor: pointer;
     text-align: center;
-}
-
-.btn-update:hover {
-    background-color: #0056b3;
 }
 
 .post-header a {
@@ -645,11 +641,13 @@ button {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-align: center;
+    line-height: 1;
 }
 
 .UserProfile dd input[type="file"] {
     padding: 10px;
-    height: 50px;
+    height: 130px;
     font-size: 16px;
     border-radius: 6px;
     border: 1px solid #ccc;

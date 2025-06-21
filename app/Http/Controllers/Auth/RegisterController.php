@@ -42,11 +42,15 @@ class RegisterController extends Controller
 public function register(Request $request)
 {
     if ($request->isMethod('post')) {
-        $validated = $request->validate([
-            'username' => 'required|max:12|min:2',
-            'email' => 'required|max:40|min:5|unique:users,email|email',
-            'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
-        ]);
+$validated = $request->validate([
+    'username' => 'required|max:12|min:2',
+    'email' => 'required|max:40|min:5|unique:users,email|email',
+    'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
+], [
+    'email.required' => 'メールアドレスは必須です。',
+    'email.email' => 'メールアドレスの形式が正しくありません。',
+    'email.unique' => 'そのメールアドレスは既に登録されています。',
+]);
 
         $name = $request->input('username');
         $email = $request->input('email');

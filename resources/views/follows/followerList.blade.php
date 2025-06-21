@@ -22,7 +22,7 @@
 </ul>
 </div>
 
-<hr>
+<hr class="section-divider">
 
 <!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)

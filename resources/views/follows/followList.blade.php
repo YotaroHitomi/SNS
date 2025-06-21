@@ -22,7 +22,7 @@
     </div>
 
     <!-- フォローユーザーの投稿 -->
-    <hr>
+<hr class="section-divider">
 
     @foreach ($posts as $post)
         <div style="height: 90px;" class="post mb-4 border rounded p-3 bg-light">

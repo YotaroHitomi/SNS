@@ -42,7 +42,7 @@
         </div>
     @endguest
 </div>
-<hr>
+<hr class="section-divider">
 
 {!! Form::close() !!}
     <!-- フォローしているユーザーの投稿のみ表示 -->
@@ -97,17 +97,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- 編集モーダル -->
-<!-- 編集モーダル -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    max-width: 900px;
-    width: 95vw;
-    margin: 0 auto; /* 横中央 */
-  ">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content" style="
       background-color: #fff;
       padding: 20px;
@@ -117,7 +108,6 @@
       box-sizing: border-box;
       position: relative;
     ">
-
       <form id="editForm" method="POST" action="{{ route('posts.update', '0') }}">
         @csrf
         @method('PUT')
@@ -142,87 +132,130 @@
                     "></textarea>
         </div>
 
-<div class="modal-footer" style="
-  justify-content: center;
-  border-top: none;
-  padding-top: 0;
-  padding-bottom: 0;
-">
-  <button type="submit" style="
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  ">
-    <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 40px; height: 40px;">
-  </button>
-</div>
+        <div class="modal-footer" style="justify-content: center; border-top: none; padding-top: 0; padding-bottom: 0;">
+          <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+            <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 40px; height: 40px;">
+          </button>
+        </div>
 
       </form>
-
     </div>
   </div>
 </div>
 
-<div class="modal show d-block" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true" style="background: none;">
-    <div class="modal-dialog modal-sm modal-dialog-centered custom-delete-modal">
-        <div class="modal-content rounded-4">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
+<!-- 削除確認モーダル -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-sm custom-delete-modal" style="margin: 0 auto;">
+        <div class="modal-content rounded-4" style="background-color: transparent; box-shadow: none;">
+            <div class="modal-header" style="background-color: #fff; border: none; border-radius: 8px 8px 0 0;">
             </div>
-            <div class="modal-body text-center">
-                本当にこの投稿を削除しますか？
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <form id="deleteForm" method="POST" action="">
-                    @csrf
-                    @method('DELETE')
-                    <div class="d-flex justify-content-between w-100">
-                        <button type="submit" class="btn btn-danger px-4 py-2 me-2">OK</button>
-                        <button type="button" class="btn btn-secondary px-4 py-2 js-cancel-delete">キャンセル</button>
-                    </div>
-                </form>
-            </div>
+<div class="modal-body text-center" style="background-color: #fff; padding: 10px 15px; border:none;">
+    この投稿を削除します。よろしいでしょうか？
+</div>
+<div class="modal-footer d-flex justify-content-center" style="background-color: #fff; border:none; border-radius: 0 0 8px 8px; gap: 10px; padding: 10px 0;">
+    <form id="deleteForm" method="POST" action="" style="display: flex; gap: 10px;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger px-4 py-2">OK</button>
+        <button type="button" class="btn btn-secondary px-4 py-2 js-cancel-delete">キャンセル</button>
+    </form>
+</div>
         </div>
     </div>
 </div>
 
+<style>
+#deleteConfirmModal .modal-footer form {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    width: auto;
+}
 
+#deleteConfirmModal .modal-footer .btn {
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+#deleteConfirmModal .modal-footer .btn-danger {
+    background-color: #186AC9;
+    color: #fff;
+    border: none;
+    margin-right: -73px;
+}
+
+#deleteConfirmModal .modal-footer .btn-secondary {
+    background-color: #fff;
+    border: 2px solid #000;
+    color: #000;
+    margin-right: 15px;
+}
+
+    /* フェードインアニメーション */
+    #deleteConfirmModal.fade .modal-dialog {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    #deleteConfirmModal.show .modal-dialog {
+        opacity: 1;
+    }
+
+        #deleteConfirmModal .modal-dialog {
+        margin: 0 auto !important;
+        max-width: 400px;
+    }
+
+</style>
 
 <script>
-    // 編集モーダル表示
-    document.querySelectorAll('.js-modal-open').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const postId = this.dataset.id;
-            const postContent = this.dataset.content;
-            document.getElementById('postContent').value = postContent;
-            document.getElementById('editForm').action = `/posts/${postId}`;
-            const myModal = new bootstrap.Modal(document.getElementById('editModal'));
-            myModal.show();
-        });
-    });
+document.querySelectorAll('.js-modal-open').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        const postId = this.dataset.id;
+        const postContent = this.dataset.content;
+        document.getElementById('postContent').value = postContent;
+        document.getElementById('editForm').action = `/posts/${postId}`;
 
-    // 削除確認モーダル表示
+        const editModalEl = document.getElementById('editModal');
+        const editModal = new bootstrap.Modal(editModalEl);
+        editModal.show();
+    });
+});
+
     document.querySelectorAll('.js-delete-open').forEach(button => {
         button.addEventListener('click', function () {
             const postId = this.dataset.postId;
             document.getElementById('deleteForm').action = `/posts/${postId}`;
-        });
-    });
-        // 削除確認モーダル表示
-    document.querySelectorAll('.js-delete-open').forEach(button => {
-        button.addEventListener('click', function () {
-            const postId = this.dataset.postId;
-            document.getElementById('deleteForm').action = `/posts/${postId}`;
-            document.getElementById('deleteConfirmModal').style.display = 'block';
+            const deleteModalEl = document.getElementById('deleteConfirmModal');
+
+            // Bootstrapのモーダルインスタンスを作成
+            const deleteModal = new bootstrap.Modal(deleteModalEl);
+
+            // 表示前にopacityを0にしておく（念のため）
+            deleteModalEl.querySelector('.modal-dialog').style.opacity = 0;
+
+            // モーダルを表示
+            deleteModal.show();
+
+            // 少し遅延を入れてopacityを1に（フェードイン効果）
+            setTimeout(() => {
+                deleteModalEl.querySelector('.modal-dialog').style.opacity = 1;
+            }, 10);
         });
     });
 
-    // キャンセルボタンでモーダル非表示
+
     document.querySelectorAll('.js-cancel-delete').forEach(button => {
         button.addEventListener('click', function () {
-            document.getElementById('deleteConfirmModal').style.display = 'none';
+            const deleteModalElement = document.getElementById('deleteConfirmModal');
+            const modalInstance = bootstrap.Modal.getInstance(deleteModalElement);
+            if(modalInstance) {
+                modalInstance.hide();
+            }
         });
     });
 </script>
@@ -240,69 +273,89 @@
         position: relative;
     }
 
- .post-actions {
-    position: absolute;
-    bottom: 10px;
-    right: 25px;
-    display: flex;
-    gap: 15px; /* ← ここでしっかり間隔を取る */
+    .post-actions {
+        position: absolute;
+        bottom: 10px;
+        right: 25px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .post-actions button {
+        margin: 0;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+/* 削除モーダルの位置を上部中央に調整 */
+#deleteConfirmModal .modal-dialog {
+    margin-top: 5vh !important;   /* 上から5%の位置 */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 400px;             /* 必要に応じて幅調整 */
+    background-color: transparent !important; /* ここは残してOK */
 }
 
-.post-actions button {
-    margin: 0;
-    padding: 0;
-    background: none;
+/* モーダルコンテンツは白背景・影あり */
+#deleteConfirmModal .modal-content {
+    background-color: #fff !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+/* ヘッダーのみ上角丸 */
+#deleteConfirmModal .modal-header {
+    border-radius: 8px 8px 0 0;
     border: none;
+    background-color: #fff;
+    padding: 15px 20px;
 }
-    .modal.fade .modal-dialog {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        margin: 20px;
-    }
 
-    .modal-dialog.modal-lg {
-        max-width: 90%;
-    }
+/* ボディは角丸なし */
+#deleteConfirmModal .modal-body {
+    border-radius: 0;
+    border: none;
+    background-color: #fff;
+    padding: 20px;
+}
 
-    .modal-body {
-        padding: 20px;
-    }
+/* フッターは下角丸 */
+#deleteConfirmModal .modal-footer {
+    border-radius: 0 0 8px 8px;
+    border: none;
+    background-color: #fff;
+    padding: 15px 20px;
+}
 
- #postContent {
+
+/* 編集モーダルの中央表示と幅調整 */
+#editModal .modal-dialog {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 900px;   /* 最大幅を狭める */
+    margin: 0 auto;     /* 横中央 */
+}
+
+/* モーダルコンテンツの幅を100%にしつつmax-widthに合わせる */
+#editModal .modal-content {
     width: 100%;
-    height: 300px;
-    font-size: 18px;
-    padding: 15px;
-    border-radius: 20px;
-    resize: none; /* ユーザーによるサイズ変更を無効にする場合 */
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1.5px solid #ccc;
 }
 
-    .js-modal-open img,
-    .js-delete-open img {
-        object-fit: cover;
-        border-radius: 5px;
+
+    .custom-delete-modal {
+        z-index: 1055;
     }
 
-        .custom-delete-modal {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1055; /* Bootstrapモーダルと同等のレイヤー */
+    #deleteConfirmModal .modal-content {
+        background-color: #fff;
     }
-
-    #deleteConfirmModal {
-        background-color: transparent !important; /* 背景暗転を無効に */
-    }
-
-
-
-    .modal-backdrop.show {
-    background-color: rgba(255, 255, 255, 1) !important;
-    opacity: 1 !important;
-}
 </style>
 @endsection

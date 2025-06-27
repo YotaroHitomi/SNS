@@ -599,11 +599,13 @@ button {
 }
 
 .post-date-top-right {
-    position: absolute;
+    position: relative;
     top: 10px;
     right: 15px;
     font-size: 0.8rem;
     color: #888;
+    text-align: right;
+    margin-top: -65px;
 }
 
 .username {

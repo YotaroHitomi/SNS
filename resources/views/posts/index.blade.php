@@ -52,24 +52,17 @@
         $isOwnPost = Auth::check() && Auth::user()->id === $post->user_id;
     @endphp
     <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
-        <div class="post-header d-flex align-items-center mb-2">
-            @if ($post->user)
-                <a href="{{ route('users.show', $post->user->id) }}" class="d-flex align-items-center text-decoration-none text-dark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <img src="{{ asset('images/' . $post->user->profile_image) }}"
-     alt="{{ $post->user->username }}'s Profile Image"
-     width="50" height="50" class="me-3 rounded-circle">
-
-<strong class="username">{{ $post->user->username }}</strong>
-
-                </a>
-            @else
-                <p>ユーザー情報がありません</p>
-            @endif
-        </div>
-
+<div class="d-flex align-items-center text-dark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="{{ asset('images/' . $post->user->profile_image) }}"
+         alt="{{ $post->user->username }}'s Profile Image"
+         width="50" height="50" class="me-3 rounded-circle">
+    <strong class="username">{{ $post->user->username }}</strong>
+</div>
         <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
 
-        <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
+               <div class="post-date-top-right">
+    <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
+</div>
 
         @if($isOwnPost)
 <div class="post-actions d-flex align-items-center" style="gap: 0; padding: 0; margin: 0;">

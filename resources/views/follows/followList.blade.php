@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- フォローユーザー一覧 -->
-<div style="display: flex; gap: 15px; font-size:20px; flex-wrap: wrap; min-height: 90px; padding: 20px 0; margin-top:25px;">
+<div style="display: flex; gap: 15px; font-size:20px; flex-wrap: wrap; min-height: 50px; padding: 20px 0; margin-top:65px;">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <p style="margin-left:25px;">Follow List</p>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

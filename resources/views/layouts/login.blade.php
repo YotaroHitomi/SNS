@@ -31,7 +31,7 @@
         .accordion-menu {
             position: absolute;
             top: 60px;
-            left:50px;
+            left: 50px;
             background-color: #fff;
             border: 1px solid #ccc;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -43,7 +43,7 @@
 
         .accordion-menu ul {
             list-style: none;
-            margin-left:0px;
+            margin: 0;
             padding: 0;
         }
 
@@ -55,25 +55,33 @@
             border-bottom: none;
         }
 
-        .accordion-menu a {
+        .accordion-menu a,
+        .accordion-menu button {
             display: block;
+            width: 100%;
             padding: 30px 25px;
             color: #333;
             text-decoration: none;
-            text-align:center;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-.accordion-menu a:hover {
-    background-color: #000080; /* ブルー */
-    color: #fff;               /* 白い文字 */
-}
-    .right {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        font-size: 16px;
-    }
+        .accordion-menu a:hover,
+        .accordion-menu button:hover {
+            background-color: #000080;
+            color: #fff;
+        }
+
+        .right {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -84,13 +92,18 @@
         <div class="header_box">
             <p class="right">{{ Auth::user()->username }}さん</p>
             <div class="menu-trigger"><i class="fas fa-bars"></i></div>
-            <img src="{{ asset('images/icon1.png') }}" width="50" height="50">
+            <img src="{{ asset('images/' . Auth::user()->profile_image) }}" width="50" height="50">
 
             <div class="accordion-menu">
                 <ul>
                     <li><a href="/top">HOME</a></li>
                     <li><a href="/profile">プロフィール編集</a></li>
-                    <li><a href="/login">ログアウト</a></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">ログアウト</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -10,10 +10,10 @@
             <a class="btn btn-primary" href="{{ route('login') }}">ログインしてツイートする</a>
             <a class="btn btn-primary" href="{{ route('register') }}">新規登録してツイートする</a>
         </div>
-    @else
-<div class="d-flex align-items-center w-100" style="position: relative;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @else
+        <div class="d-flex align-items-center w-100" style="position: relative;">
             {{-- ユーザーアイコン --}}
-            <img src="{{ asset('images/icon1.png') }}" alt="User Icon"
+            <img src="{{ asset('images/' . Auth::user()->profile_image) }}" alt="User Icon"
                 style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px ; margin-bottom:-130px;">
 
 @if ($errors->any())
@@ -40,11 +40,11 @@
                 <img src="/images/post.png" alt="Post" style="width: 50px; height: 50px;">
             </button>
         </div>
-    @endguest
-</div>
-<hr class="section-divider">
+            @endguest
+        </div>
+    <hr class="section-divider">
+    {!! Form::close() !!}
 
-{!! Form::close() !!}
     <!-- フォローしているユーザーの投稿のみ表示 -->
     <div class="container">
 @foreach ($posts as $post)
@@ -52,37 +52,36 @@
         $isOwnPost = Auth::check() && Auth::user()->id === $post->user_id;
     @endphp
     <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
-<div class="d-flex align-items-center text-dark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="d-flex align-items-center text-dark">
     <img src="{{ asset('images/' . $post->user->profile_image) }}"
          alt="{{ $post->user->username }}'s Profile Image"
          width="50" height="50" class="me-3 rounded-circle">
     <strong class="username">{{ $post->user->username }}</strong>
 </div>
-        <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
+        <p class="mt-2">{{ $post->post }}</p>
 
-               <div class="post-date-top-right">
-    <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
-</div>
+        <div class="post-date-top-right">
+            <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>
+        </div>
 
         @if($isOwnPost)
-<div class="post-actions d-flex align-items-center" style="gap: 0; padding: 0; margin: 0;">
-    <button class="js-modal-open"
-            data-id="{{ $post->id }}"
-            data-content="{{ $post->post }}"
-            style="background: none; border: none; padding: 0; margin: 0;">
-        <img src="{{ asset('images/edit.png') }}" alt="編集"
-             style="width: 25px; height: 25px;">
-    </button>
-<button type="button"
-            class="delete-btn js-delete-open"
-            data-post-id="{{ $post->id }}">
-        <img src="{{ asset('images/trash.png') }}" alt="削除" style="width: 25px; height: 25px;">
-    </button>
-</div>
+        <div class="post-actions d-flex align-items-center" style="gap: 0; padding: 0; margin: 0;">
+            <button class="js-modal-open"
+                    data-id="{{ $post->id }}"
+                    data-content="{{ $post->post }}"
+                    style="background: none; border: none; padding: 0; margin: 0;">
+                <img src="{{ asset('images/edit.png') }}" alt="編集"
+                     style="width: 25px; height: 25px;">
+            </button>
+            <button type="button"
+                    class="delete-btn js-delete-open"
+                    data-post-id="{{ $post->id }}">
+                <img src="{{ asset('images/trash.png') }}" alt="削除" style="width: 25px; height: 25px;">
+            </button>
+        </div>
         @endif
     </div>
 @endforeach
-
     </div>
 </div>
 
@@ -125,11 +124,13 @@
                     "></textarea>
         </div>
 
-        <div class="modal-footer" style="justify-content: center; border-top: none; padding-top: 0; padding-bottom: 0;">
-          <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
-            <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 40px; height: 40px;">
-          </button>
-        </div>
+<div class="modal-footer" style="border-top: none; padding-top: 0; padding-bottom: 0; text-align: center; width: 100%;">
+  <div style="display: inline-block;">
+    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+      <img src="{{ asset('images/edit.png') }}" alt="更新" style="width: 40px; height: 40px;">
+    </button>
+  </div>
+</div>
 
       </form>
     </div>

@@ -18,24 +18,24 @@ class UsersTableSeeder extends Seeder
         // Admin User
         $admin = User::create([
             'username' => 'Admin User',
-            'email' => 'admin@example.com',
+            'mail' => 'admin@example.com',
             'password' => Hash::make('away13590022'),
-            'profile_image' => 'icon1.png',
+            'images' => 'icon1.png',
         ]);
 
         // Other Users
         $user1 = User::create([
             'username' => 'User One',
-            'email' => 'user1@example.com',
+            'mail' => 'user1@example.com',
             'password' => Hash::make('password'),
-            'profile_image' => 'icon2.png',
+            'images' => 'icon2.png',
         ]);
 
         $user2 = User::create([
             'username' => 'User Two',
-            'email' => 'user2@example.com',
+            'mail' => 'user2@example.com',
             'password' => Hash::make('password'),
-            'profile_image' => 'icon3.png',
+            'images' => 'icon3.png',
         ]);
 
         // Create some default follows for users

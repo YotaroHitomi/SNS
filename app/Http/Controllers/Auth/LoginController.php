@@ -42,7 +42,7 @@ class LoginController extends Controller
     public function login(Request $request){
         if($request->isMethod('post')){
 
-            $data=$request->only('email','password');
+            $data=$request->only('mail','password');
             // ログインが成功したら、トップページへ
             //↓ログイン条件は公開時には消すこと
             if(Auth::attempt($data)){
@@ -51,4 +51,10 @@ class LoginController extends Controller
         }
         return view("auth.login");
     }
+
+    public function username()
+{
+    return 'mail';  // email の代わりに mail を使う
+}
+
 }

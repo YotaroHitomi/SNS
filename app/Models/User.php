@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $fillable = ['username', 'email', 'password', 'bio', 'profile_image'];
+    protected $fillable = ['username', 'mail', 'password', 'bio', 'profile_image'];
 
     protected $hidden = ['password', 'remember_token'];
 
@@ -51,4 +51,9 @@ public function followers()
             ? asset('storage/' . $this->profile_image)  // 画像URLを生成
             : asset('storage/images/default-icon.png');  // デフォルト画像
     }
+
+    public function getAuthIdentifierName()
+{
+    return 'mail';  // 'email' ではなく 'mail'
+}
 }

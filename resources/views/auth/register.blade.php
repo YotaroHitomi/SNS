@@ -87,11 +87,11 @@
     </div>
 
     <div class="input-block">
-        @if ($errors->has('email'))
-            <span class="invalid-feedback" role="alert">{{ $errors->first('email') }}</span>
+        @if ($errors->has('mail'))
+            <span class="invalid-feedback" role="alert">{{ $errors->first('mail') }}</span>
         @endif
-        {{ Form::label('email', 'メールアドレス') }}
-        {{ Form::text('email', null, ['class' => 'input']) }}
+        {{ Form::label('mail', 'メールアドレス') }}
+        {{ Form::text('mail', null, ['class' => 'input']) }}
     </div>
 
     <div class="input-block">

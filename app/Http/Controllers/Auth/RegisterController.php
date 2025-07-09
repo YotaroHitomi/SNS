@@ -44,21 +44,21 @@ public function register(Request $request)
     if ($request->isMethod('post')) {
 $validated = $request->validate([
     'username' => 'required|max:12|min:2',
-    'email' => 'required|max:40|min:5|unique:users,email|email',
+    'mail' => 'required|max:40|min:5|unique:users,mail|mail',
     'password' => 'required|max:20|min:8|alpha_num|not_regex:/^[ぁ-ゞ ァ-ヴー]/u|confirmed',
 ], [
-    'email.required' => 'メールアドレスは必須です。',
-    'email.email' => 'メールアドレスの形式が正しくありません。',
-    'email.unique' => 'そのメールアドレスは既に登録されています。',
+    'mail.required' => 'メールアドレスは必須です。',
+    'mail.mail' => 'メールアドレスの形式が正しくありません。',
+    'mail.unique' => 'そのメールアドレスは既に登録されています。',
 ]);
 
         $name = $request->input('username');
-        $email = $request->input('email');
+        $mail = $request->input('mail');
         $password = $request->input('password');
 
         User::create([
             'username' => $name,
-            'email' => $email,
+            'mail' => $mail,
             'password' => bcrypt($password),
         ]);
 

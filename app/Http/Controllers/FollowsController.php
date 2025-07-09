@@ -71,25 +71,10 @@ class FollowsController extends Controller
         }
     }
 
-    public function index(Request $request)
+public function index()
 {
-    $query = $request->input('query');
-
-    // 現在のユーザーのフォロワー一覧を取得
-    $followersQuery = auth()->user()->followers();
-
-    // 検索キーワードがある場合、フィルタリングする
-    if ($query) {
-        $followersQuery = $followersQuery->where(function($q) use ($query) {
-            $q->where('username', 'like', "%{$query}%")
-              ->orWhere('username', 'like', "%{$query}%");
-        });
-    }
-
-    // 実行して取得
-    $followers = $followersQuery->get();
-
-    return view('users.search', compact('followers'));
+    $users = User::all(); // 全ユーザー取得
+    return view('users.search', compact('users'));
 }
 
 }

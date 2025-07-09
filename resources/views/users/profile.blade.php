@@ -31,7 +31,7 @@
 
 <div class="form-row">
   <dt>メールアドレス</dt>
-  <dd><input type="text" name="email" value="{{ old('email', auth()->user()->email) }}"></dd>
+  <dd><input type="text" name="mail" value="{{ old('mail', auth()->user()->mail) }}"></dd>
 </div>
 
       <div class="form-row">

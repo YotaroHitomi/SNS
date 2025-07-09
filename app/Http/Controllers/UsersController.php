@@ -33,7 +33,7 @@ class UsersController extends Controller
         // バリデーション
         $validated = $request->validate([
             'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,mail,' . $user->id,  // 'mail'カラムに合わせる
+            'mail' => 'required|mail|unique:users,mail,' . $user->id,  // 'mail'カラムに合わせる
             'newpassword' => 'nullable|min:6|confirmed',
             'bio' => 'nullable|string',
             'iconimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -41,7 +41,7 @@ class UsersController extends Controller
 
         // ユーザー情報を更新
         $user->username = $request->username;
-        $user->mail = $request->email;
+        $user->mail = $request->mail;
 
         // パスワードが設定されていれば更新
         if ($request->filled('newpassword')) {
@@ -152,16 +152,16 @@ class UsersController extends Controller
     }
 
     // ユーザー検索機能（フォロー中・フォロワー）
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $user = auth()->user();
+public function search(Request $request)
+{
+    $query = $request->input('query');
 
-        $followings = $user->followings()->where('username', 'like', "%{$query}%")->get();
-        $followers = $user->followers()->where('username', 'like', "%{$query}%")->get();
+    $users = User::where('username', 'like', "%{$query}%")
+                 ->where('id', '<>', auth()->id()) // 自分は除くなら
+                 ->get();
 
-        return view('users.search', compact('query', 'followings', 'followers'));
-    }
+    return view('users.search', compact('users', 'query'));
+}
 
     // フォロワー一覧表示（投稿も含む）
     public function followersProfile($id)
@@ -194,24 +194,21 @@ class UsersController extends Controller
     }
 
     // フォロワー一覧検索
-    public function followers(Request $request)
-    {
-        $user = Auth::user();
-        $followersQuery = $user->followers();
+public function followers(Request $request)
+{
+    $query = $request->input('query');
 
-        $query = $request->input('query');
+    // ログイン中のユーザーを除くユーザー一覧を取得し、検索ワードがあれば絞り込み
+    $usersQuery = User::where('id', '<>', auth()->id());
 
-        if ($request->filled('query')) {
-            $followersQuery = $followersQuery->where(function ($q) use ($query) {
-                $q->where('username', 'like', "%{$query}%")
-                  ->orWhere('username', 'like', "%{$query}%");
-            });
-        }
-
-        $followers = $followersQuery->get();
-
-        return view('users.search', compact('followers', 'query'));
+    if (!empty($query)) {
+        $usersQuery->where('username', 'like', '%' . $query . '%');
     }
+
+    $users = $usersQuery->get();
+
+    return view('follows.FollowerList', compact('users', 'query'));
+}
 
     // フォロワー一覧を表示（別メソッド）
     public function showFollowers(Request $request)

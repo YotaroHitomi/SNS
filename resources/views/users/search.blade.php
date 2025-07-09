@@ -1,75 +1,96 @@
 @extends('layouts.login')
 
 @section('content')
-<div class="followers-list">
+<div class="followers-list container py-4">
 
-    {{-- メッセージ --}}
+    {{-- 成功メッセージ --}}
     @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success mb-4">{{ session('success') }}</div>
     @endif
 
     {{-- 検索フォーム --}}
-    <div class="search-container">
-<form action="{{ route('followers.index') }}" method="GET"
-    class="search-form d-flex align-items-center w-100"
-    style="max-width: 900px; margin-bottom: 20px;">
-    <input type="text" name="query" placeholder="ユーザー名"
-        value="{{ request('query') }}"
-        class="form-control mr-2"
-        style="height: 50px; font-size: 18px;">
+    <form action="{{ route('followers.index') }}" method="GET"
+          class="search-form d-flex align-items-center mb-4"
+          style="max-width: 900px;">
+        <input type="text" name="query" placeholder="ユーザー名"
+               value="{{ request('query') }}"
+               class="form-control me-2"
+               style="height: 50px; font-size: 18px;">
 
-    <button type="submit" class="btn btn-secondary d-flex align-items-center justify-content-center"
-        style="height: 50px; width: 50px; padding: 0; margin-left:25px;">
-        <img src="{{ asset('images/search.png') }}" alt="検索"
-            style="width: 35px; height: 35px; padding:5px;">
-    </button>
+        <button type="submit" class="btn btn-secondary d-flex align-items-center justify-content-center"
+                style="height: 50px; width: 50px; padding: 0;">
+            <img src="{{ asset('images/search.png') }}" alt="検索"
+                 style="width: 35px; height: 35px; padding:5px;">
+        </button>
+    </form>
 
+    {{-- 検索ワード表示 --}}
     @if(request('query'))
-        <p class="ml-3 mb-0">検索ワード: <strong>{{ request('query') }}</strong></p>
+        <p class="mb-3">検索ワード: <strong>{{ request('query') }}</strong></p>
     @endif
-</form>
 
-<hr class="section-divider">
-        @if($followers->isNotEmpty())
-            <h3>検索結果</h3>
-            <div class="follows-list">
-                @foreach ($followers as $follower)
-                    <div class="follower-item d-flex align-items-center mb-3">
-                        {{-- 画像の割り当て：例としてIDを元にicon1〜7をローテーション --}}
-                        @php
-                            $iconNumber = ($follower->id % 7) + 1;
-                        @endphp
+    <hr class="section-divider">
 
-                        {{-- プロフィール画像 --}}
-                        <a href="{{ route('users.profile', $follower->id) }}" class="d-flex align-items-center">
-<img src="{{ asset('images/' . $follower->profile_image) }}"
-     alt="{{ $follower->username }}'s Profile Image"
-     width="50" height="50"
-     class="me-3 rounded-circle object-fit-cover"
-     style="object-fit: cover;">
-                        </a>
+    {{-- ユーザー一覧の表示 --}}
+    @if($users->isNotEmpty())
+        <div class="follows-list">
+            @foreach ($users as $user)
+                <div class="follower-item d-flex align-items-center mb-3">
 
-                        {{-- ユーザー名の表示（アイコンの横に配置） --}}
-                        <div class="follower-name ml-2">
-                            <p class="mb-0">{{ $follower->username }}</p>
-                        </div>
+                    {{-- プロフィール画像 --}}
+                    <a href="{{ route('users.profile', $user->id) }}" class="d-flex align-items-center me-3">
+                        <img src="{{ asset('images/' . $user->images) }}"
+                             alt="{{ $user->username }} のプロフィール画像"
+                             width="50" height="50"
+                             class="rounded-circle"
+                             style="object-fit: cover;">
+                    </a>
 
-                        {{-- フォローボタン --}}
-                        @if (auth()->id() !== $follower->id)
-                            <form action="{{ route('toggleFollow', $follower->id) }}" method="POST" class="d-inline ml-3">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn {{ auth()->user()->followings->contains($follower->id) ? 'btn-following' : 'btn-not-following' }}">
-                                    {{ auth()->user()->followings->contains($follower->id) ? 'フォロー解除' : 'フォロー' }}
-                                </button>
-                            </form>
-                        @endif
+                    {{-- ユーザー名 --}}
+                    <div class="follower-name me-auto">
+                        <p class="mb-0">{{ $user->username }}</p>
                     </div>
-                @endforeach
-            </div>
-        @elseif(request('query'))
-            <p>検索結果が見つかりませんでした。</p>
-        @endif
-    </div>
+
+                    {{-- フォロー/フォロー解除ボタン --}}
+                    @if (auth()->id() !== $user->id)
+                        <form action="{{ route('toggleFollow', $user->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('PATCH')
+                            @php
+                                $isFollowing = auth()->user()->followings->contains($user->id);
+                            @endphp
+                            <button type="submit"
+                                    class="btn {{ $isFollowing ? 'btn-following' : 'btn-not-following' }}">
+                                {{ $isFollowing ? 'フォロー解除' : 'フォロー' }}
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p>ユーザーが見つかりませんでした。</p>
+    @endif
+
 </div>
+
+{{-- ボタンのスタイル例（CSSファイルに記載してください） --}}
+<style>
+.btn-following {
+    background-color: #dc3545; /* 赤色 */
+    color: white;
+}
+.btn-following:hover {
+    background-color: #c82333;
+    color: white;
+}
+.btn-not-following {
+    background-color: #007bff; /* 青色 */
+    color: white;
+}
+.btn-not-following:hover {
+    background-color: #0069d9;
+    color: white;
+}
+</style>
 @endsection

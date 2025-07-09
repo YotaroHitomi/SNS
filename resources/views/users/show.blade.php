@@ -5,7 +5,7 @@
     <!-- 左側：プロフィール画像と情報 -->
     <div style="display: flex; align-items: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- プロフィール画像 -->
-        <img src="{{ asset('images/' . $user->profile_image) }}"
+        <img src="{{ asset('images/' . $user->images) }}"
              alt="{{ $user->username }}'s Profile Image"
              width="50" height="50"
              class="me-3 rounded-circle"
@@ -46,7 +46,7 @@
                     @php
                         $iconNumber = ($post->user->id % 7) + 1;
                     @endphp
-                    <img src="{{ asset('images/' . $user->profile_image) }}"
+                    <img src="{{ asset('images/' . $user->images) }}"
                          alt="{{ $user->username }}'s Profile Image"
                          width="50" height="50"
                          class="rounded-circle"

@@ -11,7 +11,7 @@
         <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
             <!-- フォロワーユーザーのプロフィール画像 -->
             <a href="{{ route('users.show', $follower->id) }}">
-<img src="{{ asset('images/' . $follower->profile_image) }}"
+<img src="{{ asset('images/' . $follower->images) }}"
      alt="{{ $follower->username }}'s Profile Image"
      width="50" height="50"
      class="rounded-circle object-fit-cover"
@@ -32,7 +32,7 @@
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{ route('users.show', $follower->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
  <img
-    src="{{ asset('images/' . $post->user->profile_image) }}"
+    src="{{ asset('images/' . $post->user->images) }}"
     alt="{{ $post->user->username }}'s Profile Image"
     width="50" height="50"
     class="rounded-circle object-fit-cover"

@@ -10,7 +10,7 @@
             @foreach($followings as $following)
                 <li style="list-style-type: none; display: flex; align-items: center;">
                     <a href="{{ route('users.show', $following->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
-<img src="{{ asset('images/' . $following->profile_image) }}"
+<img src="{{ asset('images/' . $following->images) }}"
      alt="{{ $following->username }}'s Profile Image"
      width="50" height="50"
      class="rounded-circle object-fit-cover"
@@ -29,7 +29,7 @@
             <!-- 投稿ヘッダー：アイコンと名前 -->
             <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{ route('users.show', $post->user->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
-<img src="{{ asset('images/' . $post->user->profile_image) }}"
+<img src="{{ asset('images/' . $post->user->images) }}"
      alt="{{ $post->user->username }}'s Profile Image"
      width="50" height="50"
      class="rounded-circle object-fit-cover"

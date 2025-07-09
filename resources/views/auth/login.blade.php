@@ -17,12 +17,12 @@
         text-align: center;
     }
 
-    .email, .password {
+    .mail, .password {
         margin-bottom: 20px;
         text-align: left;
     }
 
-    .email label,
+    .mail label,
     .password label {
         font-weight: bold;
         display: block;
@@ -72,9 +72,9 @@
 
     <p class="welcome">Atlas SNSへようこそ</p>
 
-    <div class="email">
-        {{ Form::label('email', 'メールアドレス') }}
-        {{ Form::text('email', null, ['class' => 'input']) }}
+    <div class="mail">
+        {{ Form::label('mail', 'メールアドレス') }}
+        {{ Form::text('mail', null, ['class' => 'input']) }}
     </div>
 
     <div class="password">

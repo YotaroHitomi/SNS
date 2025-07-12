@@ -12,27 +12,26 @@
              style="object-fit: cover; margin-right: 30px;">
         <!-- ユーザー名と自己紹介 -->
         <div style="max-width: 500px;">&nbsp;&nbsp;
-            <h1 style="margin-bottom: 8px;">name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }}</h1>&nbsp;&nbsp;
-            <p style="margin: 0; font-size: 1rem;">bxo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->bio }}</p>
+            <h1 style="margin-bottom: 8px;">ユーザ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }}</h1>&nbsp;&nbsp;
+            <p style="margin: 0; font-size: 1rem;">自己紹介 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->bio }}</p>
         </div>
     </div>
 
-    <!-- フォローボタン -->
-    <div>
-        @if (auth()->user()->isFollowing($user))
-            <form action="{{ route('user.unfollow', $user->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}" style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px;">
-                    {{ auth()->user()->followings->contains($user->id) ? 'フォロー解除' : 'フォロー' }}
-                </button>
-            </form>
-        @else
-            <form action="{{ route('user.follow', $user->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px; border-radius: 25px;">フォロー</button>
-            </form>
-        @endif
-    </div>
+<!-- フォローボタン -->
+<div>
+    @if (auth()->user()->isFollowing($user))
+        <button type="button" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}"
+            style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px;">
+            フォロー
+        </button>
+    @else
+        <button type="button" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}"
+            style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px;">
+            フォロー解除
+        </button>
+    @endif
+</div>
+
 </div>
 <hr>
 

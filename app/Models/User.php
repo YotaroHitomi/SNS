@@ -4,56 +4,54 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $fillable = ['username', 'mail', 'password', 'bio', 'profile_image'];
+    protected $fillable = [
+        'username',
+        'mail',
+        'password',
+        'bio',
+        'images',
+    ];
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     // 投稿とのリレーション
-public function posts()
-{
-    return $this->hasMany(Post::class);
-}
-    // 自分がフォローしているユーザー一覧を取得
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    // 自分がフォローしているユーザー一覧
     public function followings()
     {
         return $this->belongsToMany(User::class, 'follows', 'following_id', 'followed_id');
     }
 
-    // フォロワーを取得
-public function followers()
-{
-    return $this->belongsToMany(User::class, 'follows', 'followed_id', 'following_id');
-}
-
-    // フォローしているかどうか判定
-    public function isFollowing(User $user): bool
+    // 自分をフォローしているユーザー一覧
+    public function followers()
     {
-        return $this->followings()->where('followed_id', $user->id)->exists();
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'following_id');
     }
 
-    // フォローされているかどうか判定
-    public function isFollowed(User $user): bool
-    {
-        return $this->followers()->where('following_id', $user->id)->exists();
-    }
-
-    // プロフィール画像URLを取得するアクセサ
+    // プロフィール画像のパスを返すアクセサ
     public function getProfilePictureAttribute()
     {
-        // プロフィール画像が設定されていれば、そのURLを返す。設定されていなければデフォルト画像を返す。
-        return $this->profile_image
-            ? asset('storage/' . $this->profile_image)  // 画像URLを生成
-            : asset('storage/images/default-icon.png');  // デフォルト画像
+        if ($this->images && file_exists(public_path('images/' . $this->images))) {
+            return asset('images/' . $this->images);
+        }
+        return asset('images/default_icon.png');
     }
 
-    public function getAuthIdentifierName()
+    public function isFollowing($userId)
 {
-    return 'mail';  // 'email' ではなく 'mail'
+    return $this->followings()->where('followed_id', $userId)->exists();
 }
+
 }

@@ -138,5 +138,39 @@ Route::get('/index', 'PostsController@index')->name('index');
 
 Route::get('/added', 'Auth\RegisterController@added')->name('register.added');
 
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+Route::get('/search', [UsersController::class, 'following'])->name('users.search');
+
+Route::patch('/follow/{userId}', 'UsersController@toggleFollow')->name('toggleFollow');
+
+Route::get('/following', [UsersController::class, 'showFollowings'])->name('users.following');
+
+// 投稿一覧（トップページ）
+Route::get('/top', 'PostsController@index')->name('timeline');
+
+// 投稿作成（POST）
+Route::post('/posts', 'PostsController@store')->name('posts.store');
+
+// 投稿編集フォーム（GET）
+Route::get('/posts/{post}/edit', 'PostsController@edit')->name('posts.edit');
+
+// 投稿更新（PATCH）
+Route::patch('/posts/{post}', 'PostsController@update')->name('posts.update');
+
+// 投稿削除（DELETE）
+Route::delete('/posts/{post}', 'PostsController@destroy')->name('posts.destroy');
+
+Route::delete('/posts/{post}', 'PostsController@destroy')->name('posts.destroy');
+
+Route::get('/', [PostsController::class, 'index'])->name('top');
+
+Auth::routes();
+
+Route::middleware('auth')->group(function () {
+    Route::get('/followers', [UsersController::class, 'search'])->name('followers.index');
+    Route::patch('/toggle-follow/{userId}', [UsersController::class, 'toggleFollow'])->name('toggleFollow');
+    Route::get('/users/{id}', [UsersController::class, 'show'])->name('users.show');
+});
+
+Route::get('/followings', [UsersController::class, 'showFollowings']);
+
+Route::get('/users/{user?}', 'UsersController@profile')->name('users.profile');

@@ -16,21 +16,22 @@ class FollowsController extends Controller
 }
 
     // フォロー中ユーザーリスト
-    public function followList()
-    {
-        $user = auth()->user();
-        $followings = $user->followings; // フォロー中ユーザーのリストを取得
+public function followList()
+{
+    $user = auth()->user();
 
-        // フォロー中ユーザーがいない場合、投稿も空にする
-        if ($followings->isEmpty()) {
-            $posts = collect();
-        } else {
-            // フォロー中ユーザーの投稿を取得
-            $posts = Post::whereIn('user_id', $followings->pluck('id'))->get();
-        }
+    $followings = $user->followings()->where('users.id', '!=', $user->id)->get();
+    $followers = $user->followers()->where('users.id', '!=', $user->id)->get();
 
-        return view('follows.followList', compact('followings', 'posts'));
+    if ($followings->isEmpty()) {
+        $posts = collect();
+    } else {
+        $posts = Post::whereIn('user_id', $followings->pluck('id'))->get();
     }
+
+    return view('follows.followList', compact('followings', 'followers', 'posts'));
+}
+
 
     // フォローする
     public function follow(User $user)
@@ -50,14 +51,27 @@ class FollowsController extends Controller
         return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
     }
 
-    // フォロワーリスト
-    public function followerList()
-    {
-        $user = auth()->user();
-        $followers = $user->followers;
+// フォロワーリスト
+public function followerList()
+{
+    $user = auth()->user();
 
-        return view('follows.FollowerList', compact('followers'));
+    // ログインユーザ自身を除外して取得
+    $followers = $user->followers()->where('users.id', '!=', $user->id)->get();
+    $followings = $user->followings()->where('users.id', '!=', $user->id)->get();
+
+    // フォロワーの投稿を取得（user_id IN フォロワーID）
+    if ($followers->isEmpty()) {
+        $posts = collect();
+    } else {
+        $posts = Post::whereIn('user_id', $followers->pluck('id'))->get();
     }
+
+    return view('follows.FollowerList', compact('followers', 'followings', 'posts'));
+}
+
+
+
 
     // フォローしているかどうかの状態確認
     public function check_following($id)
@@ -71,10 +85,22 @@ class FollowsController extends Controller
         }
     }
 
-public function index()
+public function index(Request $request)
 {
-    $users = User::all(); // 全ユーザー取得
-    return view('users.search', compact('users'));
+    $query = $request->input('query');
+
+    $users = User::where('id', '!=', auth()->id())
+                 ->when($query, function ($q) use ($query) {
+                     return $q->where('username', 'like', "%{$query}%");
+                 })
+                 ->get();
+
+    $user = auth()->user();
+    $followings = $user->followings;
+    $followers = $user->followers;
+
+    return view('users.search', compact('users', 'followings', 'followers'));
 }
+
 
 }

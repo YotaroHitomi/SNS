@@ -18,16 +18,15 @@
                style="height: 50px; font-size: 18px;">
 
         <button type="submit" class="btn btn-secondary d-flex align-items-center justify-content-center"
-                style="height: 50px; width: 50px; padding: 0;">
+                style="height: 50px; width: 50px; padding: 0; margin-left:35px;">
             <img src="{{ asset('images/search.png') }}" alt="検索"
                  style="width: 35px; height: 35px; padding:5px;">
         </button>
-    </form>
-
-    {{-- 検索ワード表示 --}}
+            {{-- 検索ワード表示 --}}
     @if(request('query'))
         <p class="mb-3">検索ワード: <strong>{{ request('query') }}</strong></p>
     @endif
+    </form>
 
     <hr class="section-divider">
 

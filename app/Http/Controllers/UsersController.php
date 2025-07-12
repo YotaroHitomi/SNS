@@ -4,268 +4,176 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    // プロフィールページの表示
+    /**
+     * プロフィールページ表示
+     */
     public function profile()
     {
-        $user = Auth::user(); // ログインユーザーを取得
-
-        // フォロー数とフォロワー数を取得
-        $followsCount = $user->followings()->count();
-        $followersCount = $user->followers()->count();
-
-        // プロフィール画像ファイル名を取得
-        $profileImage = $user->images;  // ここを 'images' に統一
-
-        return view('users.profile', compact('user', 'followsCount', 'followersCount', 'profileImage'));
+        $user = Auth::user();
+        return view('users.profile', compact('user'));
     }
 
-    // プロフィールの更新
-    public function updateProfile(Request $request)
+    /**
+     * プロフィール更新
+     */
+public function updateProfile(Request $request)
+{
+    $user = Auth::user();
+
+    $request->validate([
+        'username' => 'required|string|max:255',
+        'mail' => 'required|email|max:255|unique:users,mail,' . $user->id,
+        'bio' => 'nullable|string|max:255',
+        'newpassword' => 'nullable|string|confirmed|min:6',
+        'iconimage' => 'nullable|image|max:2048',
+    ]);
+
+    $user->username = $request->input('username');
+    $user->mail = $request->input('mail');
+    $user->bio = $request->input('bio');
+
+    if ($request->filled('newpassword')) {
+        $user->password = bcrypt($request->input('newpassword'));
+    }
+
+    if ($request->hasFile('iconimage')) {
+        $filename = $request->file('iconimage')->getClientOriginalName();
+        $request->file('iconimage')->move(public_path('images'), $filename);
+        $user->profile_image = $filename;
+    }
+
+    $user->save();
+
+    return redirect()->route('index')->with('success', 'プロフィールを更新しました');
+}
+
+
+    /**
+     * ユーザー一覧・検索
+     * 検索ワードがあれば絞り込み
+     */
+public function search(Request $request)
+{
+    $authUser = Auth::user();
+    $query = $request->input('query', '');
+
+    // フォロー中ユーザー取得
+    $followings = $authUser->followings()
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    // フォロワー取得
+    $followers = $authUser->followers()
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    // ユーザー一覧（自分以外）
+    $users = User::where('id', '<>', $authUser->id)
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    return view('users.search', compact('query', 'followings', 'followers', 'users'));
+}
+
+    /**
+     * フォロー中一覧表示
+     */
+    public function showFollowings()
     {
         $user = Auth::user();
 
-        // バリデーション
-        $validated = $request->validate([
-            'username' => 'required|string|max:255',
-            'mail' => 'required|mail|unique:users,mail,' . $user->id,  // 'mail'カラムに合わせる
-            'newpassword' => 'nullable|min:6|confirmed',
-            'bio' => 'nullable|string',
-            'iconimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        // フォローしているユーザーを取得
+        $followings = $user->followings()->paginate(10);
 
-        // ユーザー情報を更新
-        $user->username = $request->username;
-        $user->mail = $request->mail;
-
-        // パスワードが設定されていれば更新
-        if ($request->filled('newpassword')) {
-            $user->password = Hash::make($request->newpassword);
-        }
-
-        // Bioの更新
-        $user->bio = $request->bio;
-
-        // アイコン画像の更新（画像がアップロードされた場合のみ）
-        if ($request->hasFile('iconimage')) {
-            $image = $request->file('iconimage');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $imageName);
-            $user->images = $imageName;  // DBにファイル名だけ保存
-        }
-
-        // ユーザー情報を保存
-        $user->save();
-
-        return redirect()->route('top')->with('success', 'プロフィールが更新されました');
+        return view('users.followings', compact('followings'));
     }
 
-    // フォローの処理
-    public function follow(User $user)
+    /**
+     * フォロワー一覧表示
+     */
+    public function showFollowers()
     {
-        if ($user->id != auth()->id()) {
-            auth()->user()->followings()->attach($user->id); // フォローする
-        }
-        return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
-    }
-
-    // アンフォローの処理
-    public function unfollow(User $user)
-    {
-        if ($user->id != auth()->id()) {
-            auth()->user()->followings()->detach($user->id); // フォロー解除
-        }
-        return redirect()->route('users.profile', $user->id); // プロフィールにリダイレクト
-    }
-
-    // フォロー状態をトグル
-    public function toggleFollow($userId)
-    {
-        $user = auth()->user();
-        $targetUser = User::findOrFail($userId);
-
-        if ($user->followings->contains($targetUser)) {
-            $user->followings()->detach($targetUser);
-        } else {
-            $user->followings()->attach($targetUser);
-        }
-
-        return redirect()->route('users.profile', $userId);
-    }
-
-    // フォロー中ユーザーのプロフィールと投稿を表示
-    public function followsProfile($id)
-    {
-        $user = User::with('followings.posts')->findOrFail($id);
-
-        $followings = $user->followings;
-
-        return view('users.show', compact('followings', 'user'));
-    }
-
-    // プロフィールの更新（別メソッド）
-    public function profileupdate(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'bio' => 'nullable|string|max:1000',
-            'iconimage' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',  // ここも'iconimage'に統一
-        ]);
-
         $user = Auth::user();
 
-        if ($request->hasFile('iconimage')) {
-            $image = $request->file('iconimage');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $imageName);
-            $user->images = $imageName;
-        }
+        // 自分をフォローしているユーザーを取得
+        $followers = $user->followers()->paginate(10);
 
-        $user->username = $request->input('username');
-        $user->bio = $request->input('bio');
-        $user->save();
-
-        return redirect()->route('users.profile')->with('success', 'プロフィールが更新されました');
+        return view('users.followers', compact('followers'));
     }
 
-    // 特定のユーザーのプロフィールページ表示
-    public function show($id)
+    /**
+     * ユーザー個別ページ表示
+     */
+    public function show(User $user)
     {
-        $user = User::with('posts', 'followings.posts')->findOrFail($id);
-
         return view('users.show', compact('user'));
     }
 
-    // ユーザーのフォロー中ユーザー一覧とその投稿を表示
-    public function showFollowings()
+    /**
+     * フォロー・アンフォロー切替
+     */
+    public function toggleFollow($userId)
     {
-        $followings = auth()->user()->followings()->with('posts')->get();
+        $user = Auth::user();
 
-        $posts = Post::whereIn('user_id', $followings->pluck('id'))->get();
-
-        return view('users.followings', compact('followings', 'posts'));
-    }
-
-    // ユーザー検索機能（フォロー中・フォロワー）
-public function search(Request $request)
-{
-    $query = $request->input('query');
-
-    $users = User::where('username', 'like', "%{$query}%")
-                 ->where('id', '<>', auth()->id()) // 自分は除くなら
-                 ->get();
-
-    return view('users.search', compact('users', 'query'));
-}
-
-    // フォロワー一覧表示（投稿も含む）
-    public function followersProfile($id)
-    {
-        $user = User::with('followers.posts')->findOrFail($id);
-
-        $followers = $user->followers;
-
-        return view('follows.FollowerList', compact('followers', 'user'));
-    }
-
-    // フォロー中ユーザー検索
-    public function followingList(Request $request)
-    {
-        $query = $request->input('query');
-        $user = auth()->user();
-
-        $followingsQuery = $user->followings();
-
-        if ($query) {
-            $followingsQuery->where(function ($q) use ($query) {
-                $q->where('username', 'like', "%{$query}%")
-                  ->orWhere('username', 'like', "%{$query}%");
-            });
+        if ($user->id == $userId) {
+            return redirect()->back()->withErrors('自分自身をフォローできません。');
         }
 
-        $followings = $followingsQuery->get();
+        $targetUser = User::findOrFail($userId);
 
-        return view('users.search', compact('followings'));
-    }
+        // 既にフォローしているか
+        $isFollowing = $user->followings()->where('followed_id', $userId)->exists();
 
-    // フォロワー一覧検索
-public function followers(Request $request)
-{
-    $query = $request->input('query');
-
-    // ログイン中のユーザーを除くユーザー一覧を取得し、検索ワードがあれば絞り込み
-    $usersQuery = User::where('id', '<>', auth()->id());
-
-    if (!empty($query)) {
-        $usersQuery->where('username', 'like', '%' . $query . '%');
-    }
-
-    $users = $usersQuery->get();
-
-    return view('follows.FollowerList', compact('users', 'query'));
-}
-
-    // フォロワー一覧を表示（別メソッド）
-    public function showFollowers(Request $request)
-    {
-        $query = $request->input('query');
-
-        $followers = auth()->user()->followers;
-
-        if ($query) {
-            $followers = $followers->filter(function($follower) use ($query) {
-                return str_contains($follower->username, $query);
-            });
-        }
-
-        return view('your_view_name', [
-            'followings' => $followers,
-        ]);
-    }
-
-    // フォロー中ユーザー一覧検索
-    public function following(Request $request)
-    {
-        $query = $request->input('query');
-        $user = auth()->user();
-
-        $followingsQuery = $user->followings();
-
-        if ($query) {
-            $followingsQuery->where('username', 'like', '%' . $query . '%');
-        }
-
-        $followings = $followingsQuery->get();
-
-        return view('users.search', [
-            'followings' => $followings,
-            'followers' => collect(),
-            'query' => $query
-        ]);
-    }
-
-    // フォロー中ユーザーの投稿一覧表示
-    public function followList()
-    {
-        $user = auth()->user();
-        $followings = $user->followings;
-
-        if ($followings->isEmpty()) {
-            $posts = collect();
+        if ($isFollowing) {
+            // フォロー解除
+            $user->followings()->detach($userId);
         } else {
-            $posts = Post::whereIn('user_id', $followings->pluck('id'))->get();
+            // フォロー追加
+            $user->followings()->attach($userId);
         }
 
-        return view('search', compact('followings', 'posts'));
+        return redirect()->back();
     }
 
-    public function createForm()
-    {
-        return view('users.search');
+    public function followsProfile($id)
+{
+    $user = User::findOrFail($id);
+
+    // もし必要なら、ユーザーの投稿やフォロー状況も取得
+    $posts = $user->posts()->latest()->paginate(10);
+
+    // ログインユーザーがこのユーザーをフォローしているかどうか
+    $isFollowing = false;
+    if (auth()->check()) {
+        $isFollowing = auth()->user()->followings()->where('followed_id', $user->id)->exists();
     }
+
+    return view('users.show', compact('user', 'posts', 'isFollowing'));
+}
+
+public function following(Request $request)
+{
+    $user = auth()->user();
+    $query = $request->input('query', '');
+
+    $followings = $user->followings()
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    $followers = $user->followers()
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    // 自分以外の全ユーザー（検索付き）
+    $users = User::where('id', '<>', $user->id)
+        ->when($query, fn($q) => $q->where('username', 'like', "%{$query}%"))
+        ->get();
+
+    return view('users.search', compact('followings', 'followers', 'users', 'query'));
+}
 }

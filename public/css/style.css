@@ -392,8 +392,8 @@ p.btn {
 
 /* 検索ワードの表示をボタンの隣に配置 */
 .search-form p {
-    margin-left: 10px;
-    font-size: 16px;
+    margin-left: 100px;
+    font-size: 25px;
 }
 
 /* 検索フォームの入力フィールドのスタイル調整 */
@@ -583,6 +583,7 @@ button {
 .btn-not-following {
     width: 150px;
     text-align: center;
+    margin-right: 30px;
 }
 
 .delete-btn {

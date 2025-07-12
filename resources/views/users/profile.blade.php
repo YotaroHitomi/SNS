@@ -2,17 +2,11 @@
 
 @section('content')
 
-<div class="profile-container">
-  <!-- プロフィール画像の表示 -->
-  <div class="profile-image">
-    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:35px ; margin-bottom:-35px; ">
-  </div>
 
-  <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">
-    @csrf
-    @method('PUT') <!-- プロフィールの更新にPUTメソッドを使用 -->
 
-    <!-- バリデーションエラーメッセージの表示 -->
+
+
+
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul>
@@ -22,6 +16,16 @@
         </ul>
       </div>
     @endif
+
+<div class="profile-container">
+  <!-- プロフィール画像の表示 -->
+  <div class="profile-image">
+    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:35px ; margin-bottom:-35px; ">
+  </div>
+
+  <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">
+    @csrf
+    @method('PUT') <!-- プロフィールの更新にPUTメソッドを使用 -->
 
     <dl class="UserProfile">
       <div class="form-row">

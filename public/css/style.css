@@ -679,7 +679,7 @@ button {
 
 /* dtは固定幅にすると見栄えがよい */
 .UserProfile dt {
-    width: 120px;
+    width: 190px;
     /* お好みで調整 */
     font-weight: bold;
     margin-right: 90px

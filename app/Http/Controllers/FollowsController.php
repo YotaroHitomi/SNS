@@ -32,7 +32,6 @@ public function followList()
     return view('follows.followList', compact('followings', 'followers', 'posts'));
 }
 
-
     // フォローする
     public function follow(User $user)
     {

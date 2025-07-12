@@ -12,7 +12,7 @@
         </div>
             @else
         <div class="d-flex align-items-center w-100" style="position: relative;">
-            {{-- ユーザーアイコン --}}
+            {{-- ユーザーアイコン --}}&nbsp;&nbsp;&nbsp;
             <img src="{{ asset('images/' . Auth::user()->images) }}" alt="User Icon"
                 style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px ; margin-bottom:-130px;">
 
@@ -52,13 +52,13 @@
         $isOwnPost = Auth::check() && Auth::user()->id === $post->user_id;
     @endphp
     <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
-<div class="d-flex align-items-center text-dark">
+<div class="d-flex align-items-center text-dark">&nbsp;&nbsp;&nbsp;
     <img src="{{ asset('images/' . $post->user->images) }}"
          alt="{{ $post->user->username }}'s Profile Images"
          width="50" height="50" class="me-3 rounded-circle">
     <strong class="username">{{ $post->user->username }}</strong>
-</div>
-        <p class="mt-2">{{ $post->post }}</p>
+</div>&nbsp;&nbsp;&nbsp;
+        <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>
 
         <div class="post-date-top-right">
             <small class="post-date">{{ $post->created_at->format('Y-m-d H:i') }}</small>

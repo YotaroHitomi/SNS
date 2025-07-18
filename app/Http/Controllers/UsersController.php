@@ -43,7 +43,7 @@ public function updateProfile(Request $request)
     if ($request->hasFile('iconimage')) {
         $filename = $request->file('iconimage')->getClientOriginalName();
         $request->file('iconimage')->move(public_path('images'), $filename);
-        $user->profile_image = $filename;
+        $user->images = $filename;
     }
 
     $user->save();

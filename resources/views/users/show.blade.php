@@ -19,19 +19,20 @@
 
 <!-- フォローボタン -->
 <div>
-    @if (auth()->user()->isFollowing($user))
-        <button type="button" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}"
-            style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px;">
-            フォロー
-        </button>
-    @else
-        <button type="button" class="btn {{ auth()->user()->followings->contains($user->id) ? 'btn-following' : 'btn-not-following' }}"
-            style="padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-right: 25px;">
-            フォロー解除
-        </button>
+    @if (auth()->id() !== $user->id)
+        <form action="{{ route('toggleFollow', ['userId' => $user->id]) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('PATCH')
+            <button type="submit"
+                class="btn btn-danger"
+                style="padding: 10px 20px; font-size: 14px; border-radius: 4px;
+                       margin-right: 25px; background-color: red; color: white; border: none;
+                       min-width: 120px; text-align: center;">
+                {{ auth()->user()->isFollowing($user->id) ? 'フォロー解除' : 'フォロー' }}
+            </button>
+        </form>
     @endif
 </div>
-
 </div>
 <hr>
 

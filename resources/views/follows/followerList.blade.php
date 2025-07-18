@@ -3,7 +3,7 @@
 @section('content')
 <div style="display: flex; gap: 15px; font-size: 20px; flex-wrap: wrap; min-height: 50px; padding: 20px 0; margin-top: 65px;">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <p style="margin-left: 25px;">Follower List</p>
+    <p style="margin-left: 25px;">フォロワーリスト</p>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
     <!-- フォロワーユーザーの一覧 -->

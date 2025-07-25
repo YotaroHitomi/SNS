@@ -23,13 +23,15 @@
         <form action="{{ route('toggleFollow', ['userId' => $user->id]) }}" method="POST" style="display:inline;">
             @csrf
             @method('PATCH')
-            <button type="submit"
-                class="btn btn-danger"
-                style="padding: 10px 20px; font-size: 14px; border-radius: 4px;
-                       margin-right: 25px; background-color: red; color: white; border: none;
-                       min-width: 120px; text-align: center;">
-                {{ auth()->user()->isFollowing($user->id) ? 'フォロー解除' : 'フォロー' }}
-            </button>
+@php
+    $isFollowing = auth()->user()->isFollowing($user->id);
+@endphp
+<button type="submit"
+    class="btn {{ $isFollowing ? 'btn-following' : 'btn-not-following' }}"
+    style="min-width: 120px; padding: 10px 20px; font-size: 14px; margin-right: 25px; border-radius: 4px;">
+    {{ $isFollowing ? 'フォロー解除' : 'フォロー' }}
+</button>
+
         </form>
     @endif
 </div>

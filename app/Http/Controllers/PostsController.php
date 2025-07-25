@@ -14,19 +14,19 @@ public function index()
 {
     $user = Auth::user();
 
-    // フォローしているユーザーのIDを取得し、自分のIDも追加
-    $userIds = $user->followings->pluck('id')->toArray(); // フォロー中のユーザーID配列
-    $userIds[] = $user->id; // 自分自身のIDを追加
+    // フォローしているユーザーのIDと自分自身のIDをまとめる
+    $userIds = $user->followings->pluck('id')->toArray();
+    $userIds[] = $user->id;
 
-    // 投稿を取得（デフォルトユーザーの投稿も含めたい場合はここで追加）
-    $defaultUsersPosts = Post::whereIn('user_id', [2, 3])->latest()->get();
-    $mainPosts = Post::whereIn('user_id', $userIds)->latest()->get();
-
-    // 結合して重複排除、日付順にソート
-    $posts = $mainPosts->merge($defaultUsersPosts)->unique('id')->sortByDesc('created_at');
+    // 指定したユーザーのみの投稿を取得
+    $posts = Post::whereIn('user_id', $userIds)
+                ->with('user') // リレーションがある場合の最適化（N+1防止）
+                ->latest()
+                ->get();
 
     return view('posts.index', compact('posts'));
 }
+
 
     // 投稿の保存（新規投稿）
     public function store(Request $request)

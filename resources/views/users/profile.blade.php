@@ -4,9 +4,12 @@
 
 <div class="profile-container">
   <!-- プロフィール画像の表示 -->
-  <div class="profile-image">
-    <img src="images/icon1.png" alt="Profile Icon" style="width: 50px; height: 50px; border-radius: 50%; margin-left:35px ; margin-bottom:-35px; ">
-  </div>
+<div class="profile-image">
+  <img src="{{ asset('images/' . auth()->user()->images) }}"
+       alt="Profile Icon"
+       style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-left:35px; margin-bottom:-35px;">
+</div>
+
 
   <form action="{{ url('/profile') }}" enctype="multipart/form-data" method="POST" class="profile-form">
     @csrf

@@ -8,18 +8,18 @@
 
     <!-- フォロワーユーザーの一覧 -->
     <ul style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: -5px;">
-        @foreach($followers as $follower)
-            <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
-                <!-- フォロワーユーザーのプロフィール画像 -->
-                <a href="{{ route('users.show', $follower->id) }}">
-                    <img src="{{ asset('images/' . $follower->images) }}"
-                         alt="{{ $follower->username }}'s Profile Image"
-                         width="50" height="50"
-                         class="rounded-circle object-fit-cover"
-                         style="object-fit: cover; border-radius: 50%;">
-                </a>
-            </li>
-        @endforeach
+@foreach($followers as $follower)
+    <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
+        <a href="{{ route('users.show', $follower->id) }}">
+            <img src="{{ $follower->profile_picture }}"
+                 alt="{{ $follower->username }}'s Profile Image"
+                 width="50" height="50"
+                 class="rounded-circle object-fit-cover"
+                 style="object-fit: cover; border-radius: 50%;">
+        </a>
+    </li>
+@endforeach
+
     </ul>
 </div>
 

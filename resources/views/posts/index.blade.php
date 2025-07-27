@@ -1,6 +1,7 @@
 @extends('layouts.login')
 
 @section('content')
+TOPページ
 <div class="container mt-3">
     {!! Form::open(['route' => 'posts.store', 'method' => 'POST']) !!}
         {{ csrf_field() }}

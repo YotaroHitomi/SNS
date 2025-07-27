@@ -76,7 +76,7 @@
 {{-- ボタンのスタイル例（CSSファイルに記載してください） --}}
 <style>
 .btn-following {
-    background-color: #dc3545; /* 赤色 */
+    background-color: red; /* 赤色 */
     color: white;
 }
 .btn-following:hover {

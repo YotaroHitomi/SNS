@@ -13,8 +13,10 @@
             @else
         <div class="d-flex align-items-center w-100" style="position: relative;">
             {{-- ユーザーアイコン --}}&nbsp;&nbsp;&nbsp;
-            <img src="{{ asset('images/' . Auth::user()->images) }}" alt="User Icon"
-                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; margin-top: 10px ; margin-bottom:-130px;">
+<img src="{{ asset('images/' . Auth::user()->images) }}"
+     alt="User Icon"
+     class="rounded-circle"
+     style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px; margin-top: 10px; margin-bottom:-130px; border-radius:50px;">
 
 @if ($errors->any())
     <div class="alert alert-danger error-box">
@@ -53,9 +55,11 @@
     @endphp
     <div style="height: {{ $isOwnPost ? '200px' : '125px' }};" class="post mb-4 border rounded p-3 bg-light">
 <div class="d-flex align-items-center text-dark">&nbsp;&nbsp;&nbsp;
-    <img src="{{ asset('images/' . $post->user->images) }}"
-         alt="{{ $post->user->username }}'s Profile Images"
-         width="50" height="50" class="me-3 rounded-circle">
+<img src="{{ asset('images/' . $post->user->images) }}"
+     alt="{{ $post->user->username }}'s Profile Images"
+     width="50" height="50"
+     style="border-radius: 50%; object-fit: cover;">
+
     <strong class="username">{{ $post->user->username }}</strong>
 </div>&nbsp;&nbsp;&nbsp;
         <p class="mt-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $post->post }}</p>

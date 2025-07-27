@@ -3,7 +3,7 @@
 @section('content')
 <!-- フォローユーザー一覧 -->
 <div style="display: flex; gap: 15px; font-size: 20px; flex-wrap: wrap; min-height: 50px; padding: 20px 0; margin-top: 65px;">
-    <p style="margin-left: 25px;">フォローリスト</p>
+    <p style="margin-left: 25px;">フォローリスト　</p>
 
     <ul style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: -50px;">
         @foreach($followings as $following)

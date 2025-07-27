@@ -1,15 +1,16 @@
 @extends('layouts.login')
 
 @section('content')
+<!-- フォロワー一覧 -->
 <div style="display: flex; gap: 15px; font-size: 20px; flex-wrap: wrap; min-height: 50px; padding: 20px 0; margin-top: 65px;">
     <p style="margin-left: 25px;">フォロワーリスト</p>
 
-    <!-- フォロワーユーザーの一覧 -->
-    <ul style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: -5px;">
+    <ul style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: -50px;">
         @foreach($followers as $follower)
             @if($follower->id !== Auth::id())
-                <li style="list-style-type: none; display: flex; flex-direction: column; align-items: center;">
-                    <a href="{{ route('users.show', $follower->id) }}">
+                <li style="list-style-type: none; display: flex; align-items: center;">
+                    <a href="{{ route('users.show', $follower->id) }}"
+                       style="display: flex; align-items: center; text-decoration: none; color: black;">
                         <img src="{{ $follower->profile_picture }}"
                              alt="{{ $follower->username }}'s Profile Image"
                              width="50" height="50"
@@ -22,16 +23,17 @@
     </ul>
 </div>
 
+<!-- フォロワーユーザーの投稿 -->
 <hr class="section-divider">
 
-<!-- フォロワーユーザーの投稿を表示 -->
 @foreach($followers as $follower)
     @if($follower->id !== Auth::id())
         @foreach($follower->posts as $post)
             <div style="height: 90px;" class="post mb-4 border rounded p-3 bg-light">
-                <!-- 投稿ヘッダー（アイコンと名前を横並び） -->
+                <!-- 投稿ヘッダー：アイコンと名前 -->
                 <div class="post-header" style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <a href="{{ route('users.show', $post->user->id) }}" style="display: flex; align-items: center; text-decoration: none; color: black;">
+                    <a href="{{ route('users.show', $post->user->id) }}"
+                       style="display: flex; align-items: center; text-decoration: none; color: black;">
                         <img src="{{ $post->user->profile_picture }}"
                              alt="{{ $post->user->username }}'s Profile Image"
                              width="50" height="50"

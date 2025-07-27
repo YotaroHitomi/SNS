@@ -92,7 +92,7 @@
         <div class="header_box">
             <p class="right">{{ Auth::user()->username }}さん</p>
             <div class="menu-trigger"><i class="fas fa-bars"></i></div>
-            <img src="{{ asset('images/' . Auth::user()->images) }}" width="50" height="50">
+<img src="{{ asset('images/' . Auth::user()->images) }}" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
 
             <div class="accordion-menu">
                 <ul>

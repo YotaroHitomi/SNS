@@ -10,7 +10,7 @@
 
     {{-- 検索フォーム --}}
     <form action="{{ route('followers.index') }}" method="GET"
-          class="search-form d-flex align-items-center mb-4"
+          class="search-form d-flex align-items-center mb-2"
           style="max-width: 900px;">
         <input type="text" name="query" placeholder="ユーザー名"
                value="{{ request('query') }}"
@@ -18,15 +18,16 @@
                style="height: 50px; font-size: 18px;">
 
         <button type="submit" class="btn btn-secondary d-flex align-items-center justify-content-center"
-                style="height: 50px; width: 50px; padding: 0; margin-left:35px;">
+                style="height: 50px; width: 50px; padding: 0;">
             <img src="{{ asset('images/search.png') }}" alt="検索"
                  style="width: 35px; height: 35px; padding:5px;">
         </button>
-            {{-- 検索ワード表示 --}}
+    </form>
+
+    {{-- 検索ワード表示 --}}
     @if(request('query'))
         <p class="mb-3">検索ワード: <strong>{{ request('query') }}</strong></p>
     @endif
-    </form>
 
     <hr class="section-divider">
 
@@ -38,16 +39,15 @@
 
                     {{-- プロフィール画像 --}}
                     <a href="{{ route('users.profile', $user->id) }}" class="d-flex align-items-center me-3">
-                        <img src="{{ asset('images/' . $user->images) }}"
-                             alt="{{ $user->username }} のプロフィール画像"
-                             width="50" height="50"
-                             class="rounded-circle"
-                             style="object-fit: cover;">
+<img src="{{ asset('images/' . $user->images) }}"
+     alt="{{ $user->username }} のプロフィール画像"
+     width="60" height="60"
+     style="border-radius: 50%; object-fit: cover;">
                     </a>
 
                     {{-- ユーザー名 --}}
                     <div class="follower-name me-auto">
-                        <p class="mb-0">{{ $user->username }}</p>
+                        <p class="mb-0 fs-5">{{ $user->username }}</p>
                     </div>
 
                     {{-- フォロー/フォロー解除ボタン --}}
@@ -73,19 +73,26 @@
 
 </div>
 
-{{-- ボタンのスタイル例（CSSファイルに記載してください） --}}
+{{-- フォローボタンのスタイル --}}
 <style>
 .btn-following {
-    background-color: red; /* 赤色 */
+    background-color: #dc3545; /* Bootstrapの赤 */
     color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
 }
 .btn-following:hover {
     background-color: #c82333;
     color: white;
 }
+
 .btn-not-following {
-    background-color: #007bff; /* 青色 */
+    background-color: #007bff; /* Bootstrapの青 */
     color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
 }
 .btn-not-following:hover {
     background-color: #0069d9;

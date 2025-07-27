@@ -4,12 +4,12 @@
 <div class="profile" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
     <!-- 左側：プロフィール画像と情報 -->
     <div style="display: flex; align-items: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <!-- プロフィール画像 -->
-        <img src="{{ asset('images/' . $user->images) }}"
-             alt="{{ $user->username }}'s Profile Image"
-             width="50" height="50"
-             class="me-3 rounded-circle"
-             style="object-fit: cover; margin-right: 30px;">
+<!-- プロフィール画像 -->
+<img src="{{ asset('images/' . $user->images) }}"
+     alt="{{ $user->username }}'s Profile Image"
+     width="50" height="50"
+     class="me-3 rounded-circle"
+     style="object-fit: cover; border-radius: 50%; margin-right: 30px;">
         <!-- ユーザー名と自己紹介 -->
         <div style="max-width: 500px;">&nbsp;&nbsp;
             <h1 style="margin-bottom: 8px;">ユーザ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }}</h1>&nbsp;&nbsp;
@@ -48,11 +48,12 @@
                     @php
                         $iconNumber = ($post->user->id % 7) + 1;
                     @endphp
-                    <img src="{{ asset('images/' . $user->images) }}"
-                         alt="{{ $user->username }}'s Profile Image"
-                         width="50" height="50"
-                         class="rounded-circle"
-                         style="object-fit: cover; margin-right: 20px;">
+<!-- 投稿内ユーザー画像 -->
+<img src="{{ asset('images/' . $user->images) }}"
+     alt="{{ $user->username }}'s Profile Image"
+     width="50" height="50"
+     class="rounded-circle"
+     style="object-fit: cover; border-radius: 50%; margin-right: 20px;">
                     <strong style="font-size: 1.1rem;">{{ $post->user->username }}</strong>
                 </div>
                 <!-- 右上：投稿日時 -->
